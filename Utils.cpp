@@ -28,19 +28,12 @@ std::vector<std::string> returnCommands(char data[50], size_t arraySize)
 	{
 		commandVector.push_back(s);
 	}
-
-	/*
-	int i;
-	int size = static_cast<int>(arraySize);
-	std::string s = "";
-	std::vector<std::string> commandVector;
-
-	for (i = 0; i < size; i++) 
-	{
-		s = s + data[i];
-	}
-	*/
 	
-
 	return commandVector;
+}
+
+//This is used to remove null characters from when the server sends information
+char[] removeNullBytes(char data[], size_t arraySize)
+{
+	
 }

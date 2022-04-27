@@ -11,7 +11,8 @@ int main()
 	sf::Socket::Status status = socket.connect(addr, port);
 
 	//char data[100];
-	std::string data[1];
+	//std::string data[1];
+	unsigned char data[100]; //This may work but if not I am going to make a null thing
 	std::size_t received;
 
 	try

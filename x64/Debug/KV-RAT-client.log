@@ -1,0 +1,5 @@
+﻿  Client.cpp
+E:\Programming\KV-RAT-client\Client.cpp(27,69): error C2660: 'returnCommands': function does not take 1 arguments
+E:\Programming\KV-RAT-client\Utils.h(13,26): message : see declaration of 'returnCommands'
+  Utils.cpp
+  Generating Code...

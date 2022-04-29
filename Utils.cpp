@@ -31,9 +31,3 @@ std::vector<std::string> returnCommands(char data[50], size_t arraySize)
 	
 	return commandVector;
 }
-
-//This is used to remove null characters from when the server sends information
-char[] removeNullBytes(char data[], size_t arraySize)
-{
-	
-}

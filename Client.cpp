@@ -2,7 +2,10 @@
 #include <SFML/Network.hpp>
 #include "Utils.h"
 
-#define MAX_DATA_SIZE 10
+#define MAX_DATA_SIZE	10
+#define ADDRESS			"192.168.0.2"
+#define PORT			4560
+#define
 
 int main()
 {

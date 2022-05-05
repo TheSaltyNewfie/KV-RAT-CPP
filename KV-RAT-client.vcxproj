@@ -148,10 +148,12 @@
     <ClCompile Include="Config.cpp" />
     <ClCompile Include="Math.cpp" />
     <ClCompile Include="Utils.cpp" />
+    <ClCompile Include="Commands.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Config.h" />
     <ClInclude Include="Utils.h" />
+    <ClInclude Include="Commands.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

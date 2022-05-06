@@ -1,6 +1,4 @@
-﻿  Config.cpp
-  Utils.cpp
-  Generating Code...
+﻿  Client.cpp
   KV-RAT-client.vcxproj -> E:\Programming\KV-RAT-client\x64\Debug\KV-RAT-client.exe
   E:\Programming\KV-RAT-client\packages\SFML-cpp.redist.2.5.1.1\build\native\bin\x64\Debug\openal32.dll
   1 File(s) copied

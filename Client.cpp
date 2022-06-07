@@ -31,6 +31,8 @@ int main()
 			splitString(data, v);
 			ParseCommand(v);
 			v.clear();
+			data.clear();
+			packet.clear();
 		}
 		catch (const std::exception& e) { std::cout << "Error: " << e.what(); }
 	}

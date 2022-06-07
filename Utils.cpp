@@ -15,6 +15,11 @@ void ParseCommand(std::vector<std::string> commands)
 	{
 		showMessageWindow(commands[1], commands[2], 800, 600);
 	}
+
+	if (commands[0] == "startVideo")
+	{
+		startVideo(commands[1]);
+	}
 }
 
 /*

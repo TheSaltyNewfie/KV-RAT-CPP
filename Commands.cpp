@@ -23,6 +23,14 @@ int playAudio(std::string& fpath)
     return 0;
 }
 
+void startVideo(std::string url)
+{
+    std::wstring stemp = std::wstring(url.begin(), url.end());
+    LPCWSTR sw = stemp.c_str();
+
+    ShellExecute(0, 0, sw, 0, 0, SW_SHOW);
+}
+
 void showMessageWindow(std::string& header, std::string& stext, int height, int width)
 {
     sf::RenderWindow window(sf::VideoMode(200, 200), header);

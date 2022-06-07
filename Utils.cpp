@@ -11,6 +11,14 @@
 #include "Utils.h"
 #include "Commands.h"
 
+void doCommandStuff(std::string data, std::vector<std::string> otherData, bool breuh)
+{
+	splitString(data, otherdata);
+	breuh = true;
+	ParseCommand(otherData);
+	breuh = false;
+}
+
 void ParseCommand(std::vector<std::string> commands)
 {
 	if (commands[0] == "showMessageWindow")
@@ -42,16 +50,15 @@ sf::Packet logger(std::string &content, bool sendToServer = false;)
 	else
 	{
 		std::cout << content;
+		return NULL;
 	}
+	return NULL;
 }
 
-std::vector<std::string> dataParser(std::string[] data)
+void processPacket(sf::TcpSocket socket, sf::Packet packet, std::string data)
 {
-	std::string dataParsed;
-	/*TODO: parse the data as such
-		Example: {"entryOne": "entryOneInfo"}
-
-	*/
+	socket.receive(packet);
+	packet >> data;
 }
 
 void splitString(std::string s, std::vector<std::string> &v)

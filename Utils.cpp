@@ -6,6 +6,8 @@
 #include <string>
 #include <vector>
 #include <sstream>
+#include <TCHAR.h>
+#include <pdh.h>
 #include "Utils.h"
 #include "Commands.h"
 
@@ -15,6 +17,16 @@ void ParseCommand(std::vector<std::string> commands)
 	{
 		showMessageWindow(commands[1], commands[2], 800, 600);
 	}
+}
+
+DWORDLONG allocated_memory()
+{
+	PROCESS_MEMORY_COUNTERS_EX pmc;
+	GetProcessMemoryInfo(GetCurrentProcess(), (PROCESS_MEMORY_COUNTERS*)&pmc, sizeof(pmc));
+	SIZE_T virtualMemUsedByMe = pmc.PrivateUsage;
+	DWORDLONG physMemUsed = pmc.WorkingSetSize;
+
+	return physMemUsed;
 }
 
 /*

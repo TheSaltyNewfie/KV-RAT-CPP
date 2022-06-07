@@ -23,6 +23,12 @@ int playAudio(std::string& fpath)
     return 0;
 }
 
+void lookatye()
+{
+    // This is supposed to scare the ever living shit out of kasean
+    
+}
+
 void showMessageWindow(std::string& header, std::string& stext, int height, int width)
 {
     sf::RenderWindow window(sf::VideoMode(200, 200), header);

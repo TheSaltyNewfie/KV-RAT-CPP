@@ -6,8 +6,18 @@
 #include <string>
 #include <vector>
 #include <sstream>
+#include <TCHAR.h>
+#include <pdh.h>
 #include "Utils.h"
 #include "Commands.h"
+
+void doCommandStuff(std::string data, std::vector<std::string> otherData, bool breuh)
+{
+	splitString(data, otherdata);
+	breuh = true;
+	ParseCommand(otherData);
+	breuh = false;
+}
 
 void ParseCommand(std::vector<std::string> commands)
 {
@@ -22,33 +32,38 @@ void ParseCommand(std::vector<std::string> commands)
 	}
 }
 
-/*
-// Say something on the server side is going to change such as an address or port, the client can know before hand
-void changeSettings(sf::TcpSocket& server, std::string& hostname, std::string& port, std::string& debug)
+DWORDLONG allocated_memory()
 {
-	//This part of the code is what changes settings
-	std::vector<std::string> data = {hostname, port, debug};
+	PROCESS_MEMORY_COUNTERS_EX pmc;
+	GetProcessMemoryInfo(GetCurrentProcess(), (PROCESS_MEMORY_COUNTERS*)&pmc, sizeof(pmc));
+	SIZE_T virtualMemUsedByMe = pmc.PrivateUsage;
+	DWORDLONG physMemUsed = pmc.WorkingSetSize;
 
-	//changeSettings(data);
-
-	//This part of the code is executed after the settings are changed
-	sf::RenderWindow window(sf::VideoMode(256, 512), "Alert");
-	sf::Font font;
-	if (!font.loadFromFile("arial.ttf"))
-		std::cout << "Error when loading font";	
-	sf::Text text("A client setting has changed. Please restart PC or program when possible. Oh and if you see this please tell me kasean, incase something has gone wrong", font, 50);
-}
-*/
-
-void message(sf::TcpSocket& server, std::string& msg)
-{
-	//Send a message to the server
+	return physMemUsed;
 }
 
-std::string byteToString(char bytes[], size_t actualsize)
+sf::Packet logger(std::string &content, bool sendToServer = false;)
 {
-	std::string s(bytes, sizeof(actualsize));
-	return s;
+	if(sendToServer)
+	{
+		sf::Packet debugInfo;
+		std::cout << content;
+		debugInfo << content;
+
+		return debugInfo;
+	}
+	else
+	{
+		std::cout << content;
+		return NULL;
+	}
+	return NULL;
+}
+
+void processPacket(sf::TcpSocket socket, sf::Packet packet, std::string data)
+{
+	socket.receive(packet);
+	packet >> data;
 }
 
 void splitString(std::string s, std::vector<std::string> &v)
@@ -70,20 +85,3 @@ void splitString(std::string s, std::vector<std::string> &v)
 	v.push_back(temp);
 
 }
-
-/*
-std::vector<std::string> returnCommands(char data[50], size_t arraySize)
-{
-	std::string s;
-	std::vector<std::string> commandVector;
-	const char delim = ' ';
-
-	std::stringstream ss(s);
-	while (std::getline(ss, s, delim))
-	{
-		commandVector.push_back(s);
-	}
-	
-	return commandVector;
-}
-*/

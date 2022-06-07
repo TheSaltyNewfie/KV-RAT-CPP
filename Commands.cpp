@@ -30,6 +30,10 @@ void startVideo(std::string url)
 
     ShellExecute(0, 0, sw, 0, 0, SW_SHOW);
 }
+void lookatye()
+{
+    // This is supposed to scare the ever living shit out of kasean
+}
 
 void showMessageWindow(std::string& header, std::string& stext, int height, int width)
 {

@@ -10,7 +10,7 @@
 #include "Utils.h"
 #include "Commands.h"
 
-void message(sf::TcpSocket& server, std::string& msg);
+sf::Packet logger(std::string &content, bool sendToServer = false;)
 
 std::string byteToString(char bytes[], size_t actualsize);
 

@@ -6,11 +6,7 @@ int main(int argc, char* argv)
 {
 	std::string hostname = argv[0];
 	int port = argv[1];
-
-	// TODO: This will be changed to take arguments that are the host name and port
-	//std::string addr = "71.7.242.3";
-	//int port = 4560;
-
+	
 	sf::TcpSocket socket;
 	sf::Socket::Status status = socket.connect(addr, port);
 

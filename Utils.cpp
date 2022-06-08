@@ -66,7 +66,7 @@ void processPacket(sf::TcpSocket socket, sf::Packet packet, std::string data)
 	packet >> data;
 }
 
-void experimentalsplit(std::string s, std::vector<std::string> &v)
+void YOOOexperimentalsplit(std::string s, std::vector<std::string> &v)
 {
     std::string temp = "";
     char quotationcode = '\u0027';

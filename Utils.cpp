@@ -68,46 +68,49 @@ void processPacket(sf::TcpSocket socket, sf::Packet packet, std::string data)
 
 void experimentalsplit(std::string s, std::vector<std::string> &v)
 {
-    int quotations;
     std::string temp = "";
+    char quotationcode = '\u0027';
+    char space = ' ';
+    int markcount = 0;
     
-    for(int i = 0; i < s.length();)
+    for(int i = 0; i < s.length(); ++i)
     {
-        quotations = 0;
-        if(s[i] == '\u0027')
+        if(s[i] == quotationcode)
         {
-            std::cout << "quotation found" << std::endl;
             ++i;
-            ++quotations;
-            while(quotations < 2)
+            ++markcount;
+            while(markcount < 2)
             {
-                if(s[i] == '\u0027')
+                if(s[i] == quotationcode)
                 {
-                    std::cout << "quotation found" << std::endl;
-                    ++quotations;
-                    break;
+                    std::cout << "quotationcode found in slot: " << i << " " << s[i] << "markcount: " << markcount << std::endl;
+                    v.push_back(temp);
+                    temp = "";
+                    ++markcount;
+                    std::cout << "breaking while loop" << std::endl;
                 }
-                else
+                if(s[i] != quotationcode)
                 {
-                    std::cout << "pushing " << s[i] << " to vector" << std::endl;
+                    std::cout << "word arg found in slot: " << i << " " << s[i] << std::endl;
                     temp.push_back(s[i]);
-                    ++i;
+                    ++i;   
                 }
             }
+            markcount = 0;
         }
-        else if(s[i] == ' ')
+        
+        if(s[i] == space)
         {
-            std::cout << "Removing space" << std::endl;
+            std::cout << "space found in slot: " << i << " " << s[i] << std::endl;
             v.push_back(temp);
             temp = "";
         }
-        else
+        else if(s[i] != quotationcode and s[i] != space)
         {
-            std::cout << "Adding word to string" << std::endl;
+            std::cout << "word found in slot: " << i << " " << s[i] << std::endl;
             temp.push_back(s[i]);
         }
-        ++i;
-        v.push_back(temp);
+        std::cout << "-------" << std::endl;
     }
 }
 

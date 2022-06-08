@@ -66,7 +66,7 @@ void processPacket(sf::TcpSocket socket, sf::Packet packet, std::string data)
 	packet >> data;
 }
 
-void experimentalsplit(std::string s, std::vector<std::string> &v) //This isnt exactly working, but is close
+void experimentalsplit(std::string s, std::vector<std::string> &v)
 {
     int quotations;
     std::string temp = "";
@@ -97,11 +97,13 @@ void experimentalsplit(std::string s, std::vector<std::string> &v) //This isnt e
         }
         else if(s[i] == ' ')
         {
+            std::cout << "Removing space" << std::endl;
             v.push_back(temp);
             temp = "";
         }
         else
         {
+            std::cout << "Adding word to string" << std::endl;
             temp.push_back(s[i]);
         }
         ++i;

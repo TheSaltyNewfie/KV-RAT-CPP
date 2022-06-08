@@ -71,41 +71,58 @@ void processPacket(sf::TcpSocket socket, sf::Packet packet, std::string data)
 	packet >> data;
 }
 
-void experimentalSplit(std::string s, std::vector<std::string>& v)
+void YOOOexperimentalsplit(std::string s, std::vector<std::string> &v)
 {
-	int marks = 0;
-
-	std::string temp = "";
-	for (int i = 0; i < s.length(); ++i)
-	{
-		if (s[i] == '"')
-		{
-			std::cout << "found first quotation" << std::endl;
-			if (s[i] != '"')
-			{
-				std::cout << "letter in quotes: " << s[i] << std::endl;
-				temp.push_back(s[i]);
-				++i;
-			}
-			else
-			{
-				std::cout << "found second quotation" << std::endl;
-				v.push_back(temp);
-				temp = "";
-			}
-		}
-		else if (s[i] == ' ')
-		{
-			v.push_back(temp);
-			temp = "";
-		}
-		else
-		{
-			temp.push_back(s[i]);
-		}
-		v.push_back(temp);
-	}
-
+    std::string temp = "";
+    char quotationcode = '\u0027';
+    char space = ' ';
+    int markcount = 0;
+    
+    for(int i = 0; i < s.length(); ++i)
+    {
+        //std::cout << "Temp at cycle: " << i << " = " << temp << std::endl;
+        
+        if(s[i] == quotationcode)
+        {
+            ++i;
+            ++markcount;
+            while(markcount < 2)
+            {
+                if(s[i] == quotationcode)
+                {
+                    //std::cout << "quotationcode found in slot: " << i << " " << s[i] << "markcount: " << markcount << std::endl;
+                    //std::cout << temp << std::endl;
+                    v.push_back(temp);
+                    temp = "";
+                    ++markcount;
+                    //std::cout << "breaking while loop" << std::endl;
+                }
+                else
+                {
+                    //std::cout << "word arg found in slot: " << i << " " << s[i] << std::endl;
+                    temp.push_back(s[i]);
+                    ++i;   
+                }
+            }
+            markcount = 0;
+        }
+        
+        if(s[i] == space)
+        {
+            //std::cout << "space found in slot: " << i << " " << s[i] << std::endl;
+            if(temp.size() > 2)
+            {
+                v.push_back(temp);
+                temp = "";
+            }
+        }
+        if(s[i] != quotationcode and s[i] != space)
+        {
+            //std::cout << "word found in slot: " << i << " " << s[i] << std::endl;
+            temp.push_back(s[i]);
+        }
+        //std::cout << "-------" << std::endl;
+    }
 }
 
 void splitString(std::string s, std::vector<std::string> &v)

@@ -75,6 +75,8 @@ void experimentalsplit(std::string s, std::vector<std::string> &v)
     
     for(int i = 0; i < s.length(); ++i)
     {
+        //std::cout << "Temp at cycle: " << i << " = " << temp << std::endl;
+        
         if(s[i] == quotationcode)
         {
             ++i;
@@ -83,15 +85,16 @@ void experimentalsplit(std::string s, std::vector<std::string> &v)
             {
                 if(s[i] == quotationcode)
                 {
-                    std::cout << "quotationcode found in slot: " << i << " " << s[i] << "markcount: " << markcount << std::endl;
+                    //std::cout << "quotationcode found in slot: " << i << " " << s[i] << "markcount: " << markcount << std::endl;
+                    //std::cout << temp << std::endl;
                     v.push_back(temp);
                     temp = "";
                     ++markcount;
-                    std::cout << "breaking while loop" << std::endl;
+                    //std::cout << "breaking while loop" << std::endl;
                 }
-                if(s[i] != quotationcode)
+                else
                 {
-                    std::cout << "word arg found in slot: " << i << " " << s[i] << std::endl;
+                    //std::cout << "word arg found in slot: " << i << " " << s[i] << std::endl;
                     temp.push_back(s[i]);
                     ++i;   
                 }
@@ -101,16 +104,19 @@ void experimentalsplit(std::string s, std::vector<std::string> &v)
         
         if(s[i] == space)
         {
-            std::cout << "space found in slot: " << i << " " << s[i] << std::endl;
-            v.push_back(temp);
-            temp = "";
+            //std::cout << "space found in slot: " << i << " " << s[i] << std::endl;
+            if(temp.size() > 2)
+            {
+                v.push_back(temp);
+                temp = "";
+            }
         }
-        else if(s[i] != quotationcode and s[i] != space)
+        if(s[i] != quotationcode and s[i] != space)
         {
-            std::cout << "word found in slot: " << i << " " << s[i] << std::endl;
+            //std::cout << "word found in slot: " << i << " " << s[i] << std::endl;
             temp.push_back(s[i]);
         }
-        std::cout << "-------" << std::endl;
+        //std::cout << "-------" << std::endl;
     }
 }
 

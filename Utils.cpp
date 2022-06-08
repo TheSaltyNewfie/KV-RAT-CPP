@@ -66,6 +66,49 @@ void processPacket(sf::TcpSocket socket, sf::Packet packet, std::string data)
 	packet >> data;
 }
 
+void experimentalsplit(std::string s, std::vector<std::string> &v) //This isnt exactly working, but is close
+{
+    int quotations;
+    std::string temp = "";
+    
+    for(int i = 0; i < s.length();)
+    {
+        quotations = 0;
+        if(s[i] == '\u0027')
+        {
+            std::cout << "quotation found" << std::endl;
+            ++i;
+            ++quotations;
+            while(quotations < 2)
+            {
+                if(s[i] == '\u0027')
+                {
+                    std::cout << "quotation found" << std::endl;
+                    ++quotations;
+                    break;
+                }
+                else
+                {
+                    std::cout << "pushing " << s[i] << " to vector" << std::endl;
+                    temp.push_back(s[i]);
+                    ++i;
+                }
+            }
+        }
+        else if(s[i] == ' ')
+        {
+            v.push_back(temp);
+            temp = "";
+        }
+        else
+        {
+            temp.push_back(s[i]);
+        }
+        ++i;
+        v.push_back(temp);
+    }
+}
+
 void splitString(std::string s, std::vector<std::string> &v)
 {
 	std::string temp = "";

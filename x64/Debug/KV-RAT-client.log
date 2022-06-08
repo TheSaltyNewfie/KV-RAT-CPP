@@ -1,4 +1,7 @@
-﻿  Client.cpp
+﻿  Utils.cpp
+  Commands.cpp
+  Generating Code...
+E:\Programming\KV-RAT-client\Utils.cpp(66): warning C4715: 'logger': not all control paths return a value
   KV-RAT-client.vcxproj -> E:\Programming\KV-RAT-client\x64\Debug\KV-RAT-client.exe
   E:\Programming\KV-RAT-client\packages\SFML-cpp.redist.2.5.1.1\build\native\bin\x64\Debug\openal32.dll
   1 File(s) copied

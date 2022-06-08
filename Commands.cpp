@@ -23,16 +23,35 @@ int playAudio(std::string& fpath)
     return 0;
 }
 
-void startVideo(std::string url)
+void execute(std::string url)
 {
     std::wstring stemp = std::wstring(url.begin(), url.end());
     LPCWSTR sw = stemp.c_str();
 
     ShellExecute(0, 0, sw, 0, 0, SW_SHOW);
 }
+
 void lookatye()
 {
-    // This is supposed to scare the ever living shit out of kasean
+    sf::RenderWindow window(sf::VideoMode(680, 680), "Look at ye. Postin' cringe");
+    sf::Texture texture;
+    texture.loadFromFile("179.png");
+
+    sf::Sprite sprite(texture);
+
+    while (window.isOpen())
+    {
+        sf::Event event;
+        while (window.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+                window.close();
+        }
+
+        window.clear();
+        window.draw(sprite);
+        window.display();
+    }
 }
 
 void showMessageWindow(std::string& header, std::string& stext, int height, int width)

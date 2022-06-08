@@ -10,4 +10,5 @@
 
 int playAudio(std::string& fpath);
 void showMessageWindow(std::string& header, std::string& stext, int height, int width);
-void startVideo(std::string url);
+void execute(std::string url);
+void lookatye();

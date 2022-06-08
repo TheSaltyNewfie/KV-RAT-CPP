@@ -14,13 +14,13 @@
 
 void doCommandStuff(std::string data, std::vector<std::string> otherData, bool breuh);
 
-sf::Packet logger(std::string &content, bool sendToServer = false;);
-
-DWORDLONG allocated_memory();
+sf::Packet logger(std::string &content, bool sendToServer);
 
 void processPacket(sf::TcpSocket socket, sf::Packet packet, std::string data);
 
 std::string byteToString(char bytes[], size_t actualsize);
+
+void experimentalSplit(std::string s, std::vector<std::string>& v);
 
 void splitString(std::string s, std::vector<std::string>& v);
 

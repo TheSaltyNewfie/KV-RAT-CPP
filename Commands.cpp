@@ -92,3 +92,27 @@ void showMessageWindow(std::string& header, std::string& stext, int height, int 
     sf::Text text(stext, font, 50);
     */
 }
+
+void moveCursor(int x, int y, float rate)
+{
+    int x2 = 0;
+    int y2 = 0;
+    float z = 0;
+
+    while(z < rate)
+    {
+        if(x2<x)
+        {
+            x2 =+ 5;
+        }
+
+        if(y2<y)
+        {
+            y2 =+ 5;
+        }
+
+        SetCursorPos(x2, y2);
+
+        z =+ rate / 10;
+    }
+}

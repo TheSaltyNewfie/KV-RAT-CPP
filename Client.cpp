@@ -3,6 +3,17 @@
 #include "Utils.h"
 #include <thread>
 
+extern "C"
+{
+#include "Lua542/include/lua.h"
+#include "Lua542/include/lauxlib.h"
+#include "Lua542/include/lualib.h"
+}
+
+#ifdef _WIN32
+#pragma comment(lib, "lua542/liblua54.a")
+#endif
+
 int main()
 {
 	std::string hostname = "71.7.242.3";
@@ -30,7 +41,7 @@ int main()
 
 		std::cout << "Data:" << data << std::endl << "Received:" << "Maybe 3 could be 4" << std::endl;
 		//experimentalSplit(data, v);
-		splitString(data, v);
+		experimentalSplit(data, v);
 		processingCommand = true;
 		ParseCommand(v);
 		std::cout << "VECTOR DATA: " << v.size();

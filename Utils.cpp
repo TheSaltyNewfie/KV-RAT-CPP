@@ -10,6 +10,7 @@
 #include <pdh.h>
 #include "Utils.h"
 #include "Commands.h"
+#include <chrono>
 
 void doCommandStuff(std::string data, std::vector<std::string> otherData, bool breuh)
 {
@@ -49,19 +50,21 @@ DWORDLONG allocated_memory()
 }
 */
 
-sf::Packet logger(std::string &content, bool sendToServer)
+sf::Packet logger(std::string content, bool sendToServer)
 {
+	std::string debugMessage = "[DEBUG]: ";
+
 	if(sendToServer)
 	{
 		sf::Packet debugInfo;
-		std::cout << content;
+		std::cout << debugMessage << content;
 		debugInfo << content;
 
 		return debugInfo;
 	}
 	else
 	{
-		std::cout << content;
+		std::cout << debugMessage << content;
 	}
 }
 
@@ -71,7 +74,7 @@ void processPacket(sf::TcpSocket socket, sf::Packet packet, std::string data)
 	packet >> data;
 }
 
-void YOOOexperimentalsplit(std::string s, std::vector<std::string> &v)
+void experimentalSplit(std::string s, std::vector<std::string> &v)
 {
     std::string temp = "";
     char quotationcode = '\u0027';
@@ -80,8 +83,6 @@ void YOOOexperimentalsplit(std::string s, std::vector<std::string> &v)
     
     for(int i = 0; i < s.length(); ++i)
     {
-        //std::cout << "Temp at cycle: " << i << " = " << temp << std::endl;
-        
         if(s[i] == quotationcode)
         {
             ++i;
@@ -90,16 +91,12 @@ void YOOOexperimentalsplit(std::string s, std::vector<std::string> &v)
             {
                 if(s[i] == quotationcode)
                 {
-                    //std::cout << "quotationcode found in slot: " << i << " " << s[i] << "markcount: " << markcount << std::endl;
-                    //std::cout << temp << std::endl;
                     v.push_back(temp);
                     temp = "";
                     ++markcount;
-                    //std::cout << "breaking while loop" << std::endl;
                 }
                 else
                 {
-                    //std::cout << "word arg found in slot: " << i << " " << s[i] << std::endl;
                     temp.push_back(s[i]);
                     ++i;   
                 }
@@ -109,7 +106,6 @@ void YOOOexperimentalsplit(std::string s, std::vector<std::string> &v)
         
         if(s[i] == space)
         {
-            //std::cout << "space found in slot: " << i << " " << s[i] << std::endl;
             if(temp.size() > 2)
             {
                 v.push_back(temp);
@@ -118,14 +114,12 @@ void YOOOexperimentalsplit(std::string s, std::vector<std::string> &v)
         }
         if(s[i] != quotationcode and s[i] != space)
         {
-            //std::cout << "word found in slot: " << i << " " << s[i] << std::endl;
             temp.push_back(s[i]);
         }
-        //std::cout << "-------" << std::endl;
     }
 }
 
-void splitString(std::string s, std::vector<std::string> &v)
+void splitString(std::string s, std::vector<std::string> &v) //Keeping for legacy reasons
 {
 	std::string temp = "";
 	//std::vector<std::string> v;
@@ -143,4 +137,15 @@ void splitString(std::string s, std::vector<std::string> &v)
 	}
 	v.push_back(temp);
 
+}
+
+int getAproxPing(sf::Packet packet)
+{
+	std::string serversTime;
+	//std::string clientTime;
+
+	const auto p1 = std::chrono::system_clock::now();
+	auto clientTime = std::chrono::duration_cast<std::chrono::seconds>(p1.time_since_epoch()).count();
+
+	//logger(clientTime, false);
 }

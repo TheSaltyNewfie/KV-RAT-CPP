@@ -21,6 +21,7 @@ int playAudio(std::string& fpath)
     }
     audio.play();
     return 0;
+    logger("Music was played", false);
 }
 
 void execute(std::string url)

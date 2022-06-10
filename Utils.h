@@ -14,7 +14,7 @@
 
 void doCommandStuff(std::string data, std::vector<std::string> otherData, bool breuh);
 
-sf::Packet logger(std::string &content, bool sendToServer);
+sf::Packet logger(std::string content, bool sendToServer);
 
 void processPacket(sf::TcpSocket socket, sf::Packet packet, std::string data);
 

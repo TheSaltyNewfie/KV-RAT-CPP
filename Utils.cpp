@@ -36,6 +36,11 @@ void ParseCommand(std::vector<std::string> commands)
 	{
 		lookatye();
 	}
+
+	if (commands[0] == "playAudio")
+	{
+		std::cout << "Not available";
+	}
 }
 
 /*

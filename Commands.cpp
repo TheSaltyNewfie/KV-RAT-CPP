@@ -81,38 +81,32 @@ void showMessageWindow(std::string& header, std::string& stext, int height, int 
         window.draw(text);
         window.display();
     }
-
-    /*
-    sf::RenderWindow window(sf::VideoMode(1024,1024), header);
-    sf::Font font;
-    if (!font.loadFromFile("arial.ttf"))
-    {
-        std::cout << "Error loading font...";
-    }
-    sf::Text text(stext, font, 50);
-    */
 }
 
-void moveCursor(int x, int y, float rate)
+void moveMouse(int x, int y)
 {
     int x2 = 0;
     int y2 = 0;
-    float z = 0;
-
-    while(z < rate)
+    bool shouldrun = true;
+    
+    while (shouldrun)
     {
-        if(x2<x)
+        if(x > x2)
         {
-            x2 =+ 5;
+            x2 += 1;
         }
-
-        if(y2<y)
+        else
         {
-            y2 =+ 5;
+            if (y > y2)
+            {
+                y2 += 1;
+            }
+            else
+            {
+                shouldrun = false;
+            }
         }
-
+        //cout << "X Y = " << x << " " << y << endl << "X2 Y2 = " << x2 << " " << y2 << endl;
         SetCursorPos(x2, y2);
-
-        z =+ rate / 10;
     }
 }

@@ -30,11 +30,27 @@ int main()
 	int bufferSize = sizeof(commandBuffer);
 	bool processingCommand = false;
 
+	bool isConnected = false;
+
 	while (true)
 	{
 		if (status != sf::Socket::Done)
 			std::cout << "Unable to connect to server " << hostname << ":" << port;
 		std::cout << "Connected to " << hostname << ":" << port << std::endl;
+		isConnected = true;
+
+		if (status == sf::Socket::Disconnected)
+		{
+			//break;
+		}
+
+		while(!isConnected) // This absolutely doesnt work, I can already tell
+		{
+			std::cout << "Disconnected from server, retrying in 5 seconds" << std::endl;
+			sleep(5000);
+			socket.connect(hostname, port);
+		}
+
 
 		socket.receive(packet);
 		packet >> data;
@@ -48,33 +64,6 @@ int main()
 		v.clear();
 		data.clear();
 		packet.clear();
-
-
-		//std::thread receivingData (processPacket, socket, packet, data);
-		//std::thread processing (doCommandStuff, data, v, processingCommand);
-
-		/*
-		try
-		{
-			if (status != sf::Socket::Done)
-			{
-				std::cout << "Unable to connect to server " << addr << ":" << port;
-			}
-			std::cout << "Connected to " << addr << ":" << port << std::endl;
-
-			socket.receive(packet);
-			packet >> data;
-
-			std::cout << "Data:" << data << std::endl << "Received:" << "Maybe 3 could be 4" << std::endl;
-			splitString(data, v);
-			processingCommand = true;
-			ParseCommand(v);
-			v.clear();
-			data.clear();
-			packet.clear();
-		}
-		catch (const std::exception& e) { std::cout << "Error: " << e.what(); }
-		*/
 	}
 	
 	return 0;

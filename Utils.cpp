@@ -55,6 +55,16 @@ DWORDLONG allocated_memory()
 }
 */
 
+sf::Packet timeoutReset() // Just sends a message to the server letting it know the connection is still open
+{
+	std::string upkeepmsg = "timeoutReset";
+	sf::Packet datatosend;
+
+	datatosend << upkeepmsg;
+
+	return datatosend;
+}
+
 sf::Packet logger(std::string content, bool sendToServer)
 {
 	std::string debugMessage = "[DEBUG]: ";

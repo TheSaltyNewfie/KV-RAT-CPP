@@ -14,6 +14,13 @@ extern "C"
 #pragma comment(lib, "lua542/liblua54.a")
 #endif
 
+struct
+{
+	bool isConnected;
+	std::string lastReceived;
+} debugData;
+
+
 int main()
 {
 	std::string hostname = "71.7.242.3";
@@ -39,28 +46,17 @@ int main()
 		std::cout << "Connected to " << hostname << ":" << port << std::endl;
 		isConnected = true;
 
-		if (status == sf::Socket::Disconnected)
-		{
-			//break;
-		}
-
-		while(!isConnected) // This absolutely doesnt work, I can already tell
-		{
-			std::cout << "Disconnected from server, retrying in 5 seconds" << std::endl;
-			sleep(5000);
-			socket.connect(hostname, port);
-		}
-
 
 		socket.receive(packet);
 		packet >> data;
 
-		std::cout << "Data:" << data << std::endl << "Received:" << "Maybe 3 could be 4" << std::endl;
+		//std::cout << "Data:" << data << std::endl << "Received:" << "Maybe 3 could be 4" << std::endl;
 		//experimentalSplit(data, v);
 		experimentalSplit(data, v);
 		processingCommand = true;
 		ParseCommand(v);
-		std::cout << "VECTOR DATA: " << v.size();
+		debugData.lastReceived = data;
+		std::cout << debugData.lastReceived;
 		v.clear();
 		data.clear();
 		packet.clear();

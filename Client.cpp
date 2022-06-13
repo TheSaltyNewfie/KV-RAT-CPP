@@ -15,44 +15,62 @@ extern "C"
 #endif
 
 struct{
-	std::string;
+	std::string hostname = "71.7.242.3";
+	int port = 4560;
+} config;
 
+struct{
+	int code; // 100 means OK, 200 means Error, 300 means disconnecting
+	std::string name; // This only represents the name of the server we connect to.
 } serverInfo;
 
 int main()
 {
-	std::string hostname = "71.7.242.3";
-	int port = 4560;
+		sf::Packet packet;
+		std::string data;
+		std::vector<std::string> v;
+
+		sf::Packet statusData;
+
+		bool isConnected = false;
+
+	while(true)
+	{
+		sf::TcpSocket socket;
+		sf::Socket::Status status = socket.connect(config.hostname, config.port);
+
+		if(status != sf::Socket::Done)
+		{
+			std::cout << "Unable to connect to server " << hostname << ":" << port;
+		}
+		std::cout << "Connected to " << hostname << ":" << port << std::endl;
+		isConnected = true;
+
+		while(isConnected)
+		{
+			socket.send(serverActions::readyMessage());
+			socket.receive(statusData);
+			statusData >> serverInfo.code;
+			if(serverInfo.code == "100")
+			{
+				socket.receive(packet);
+				packet >> data;
+				experimentalSplit(data, v);
+				ParseCommand(v);
+			}
+			if(serverInfo.code == "200")
+			{
+				std::cout << "Error occurred on the server side..." << std::endl;
+			}
+			if(serverInfo.code == "300")
+			{
+				std::cout << "Server is closing..." << std::endl;
+				socket.disconnect();
+				isConnected = false;
+			}
+		}
+	}
 	
-	sf::TcpSocket socket;
-	sf::Socket::Status status = socket.connect(hostname, port);
-
-	sf::Packet packet;
-	std::string data;
-	std::vector<std::string> v;
-
-	std::vector<std::string> commandBuffer;
-	int bufferSize = sizeof(commandBuffer);
-	bool processingCommand = false;
-
-	bool isConnected = false;
-
-	if(status != sf::Socket::Done)
-	{
-		std::cout << "Unable to connect to server " << hostname << ":" << port;
-	}
-	std::cout << "Connected to " << hostname << ":" << port << std::endl;
-	isConnected = true;
-
-	while(isConnected)
-	{
-		socket.send(readyMessage());
-		socket.receive(packet);
-		packet >> data;
-		experimentalSplit(data, v);
-		ParseCommand(v);
-
-	}
 
 
 	/*

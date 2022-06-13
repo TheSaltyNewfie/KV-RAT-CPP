@@ -12,6 +12,11 @@
 #include "Utils.h"
 #include "Commands.h"
 
+namespace serverActions
+{
+	sf::Packet readyMessage();
+}
+
 void doCommandStuff(std::string data, std::vector<std::string> otherData, bool breuh);
 
 sf::Packet timeoutReset();

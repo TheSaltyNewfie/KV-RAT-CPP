@@ -14,9 +14,14 @@
 
 namespace serverActions
 {
-	std::string readyMessage()
+	sf::Packet readyMessage()
 	{
+		int data = 1;
+		sf::Packet datapacket;
 
+		datapacket << data;
+
+		return datapacket;
 	}
 }
 

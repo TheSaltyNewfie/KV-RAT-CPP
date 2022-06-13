@@ -25,6 +25,95 @@ namespace serverActions
 	}
 }
 
+namespace logging
+{
+	sf::Packet logger(std::string content, bool sendToServer)
+	{
+		std::string debugMessage = "[DEBUG]: ";
+
+		if(sendToServer)
+		{
+			sf::Packet debugInfo;
+			std::cout << debugMessage << content;
+			debugInfo << content;
+
+			return debugInfo;
+		}
+		else
+		{
+			std::cout << debugMessage << content;
+		}
+	}
+}
+
+namespace StringUtils
+{
+	void experimentalSplit(std::string s, std::vector<std::string> &v)
+	{
+    	std::string temp = "";
+    	char quotationcode = '\u0027';
+    	char space = ' ';
+    	int markcount = 0;
+    
+    	for(int i = 0; i < s.length(); ++i)
+    	{
+        	if(s[i] == quotationcode)
+        	{
+            	++i;
+            	++markcount;
+            	while(markcount < 2)
+            	{
+                	if(s[i] == quotationcode)
+                	{
+                    	v.push_back(temp);
+                    	temp = "";
+                    	++markcount;
+                	}
+                	else
+                	{
+                    	temp.push_back(s[i]);
+                    	++i;   
+                	}
+            	}
+            	markcount = 0;
+        	}
+        
+        	if(s[i] == space)
+        	{
+            	if(temp.size() > 2)
+            	{
+                	v.push_back(temp);
+                	temp = "";
+            	}
+        	}
+        	if(s[i] != quotationcode and s[i] != space)
+        	{
+            	temp.push_back(s[i]);
+        	}
+    	}
+	}
+
+	void splitString(std::string s, std::vector<std::string> &v) //Keeping for legacy reasons
+	{
+		std::string temp = "";
+		//std::vector<std::string> v;
+		for (int i = 0; i < s.length(); ++i)
+		{
+			if (s[i] == ';')
+			{
+				v.push_back(temp);
+				temp = "";
+			}
+			else
+			{
+				temp.push_back(s[i]);
+			}
+		}
+		v.push_back(temp);
+
+	}
+}
+
 void doCommandStuff(std::string data, std::vector<std::string> otherData, bool breuh)
 {
 	splitString(data, otherData);
@@ -102,70 +191,7 @@ void processPacket(sf::TcpSocket socket, sf::Packet packet, std::string data)
 	packet >> data;
 }
 
-void experimentalSplit(std::string s, std::vector<std::string> &v)
-{
-    std::string temp = "";
-    char quotationcode = '\u0027';
-    char space = ' ';
-    int markcount = 0;
-    
-    for(int i = 0; i < s.length(); ++i)
-    {
-        if(s[i] == quotationcode)
-        {
-            ++i;
-            ++markcount;
-            while(markcount < 2)
-            {
-                if(s[i] == quotationcode)
-                {
-                    v.push_back(temp);
-                    temp = "";
-                    ++markcount;
-                }
-                else
-                {
-                    temp.push_back(s[i]);
-                    ++i;   
-                }
-            }
-            markcount = 0;
-        }
-        
-        if(s[i] == space)
-        {
-            if(temp.size() > 2)
-            {
-                v.push_back(temp);
-                temp = "";
-            }
-        }
-        if(s[i] != quotationcode and s[i] != space)
-        {
-            temp.push_back(s[i]);
-        }
-    }
-}
 
-void splitString(std::string s, std::vector<std::string> &v) //Keeping for legacy reasons
-{
-	std::string temp = "";
-	//std::vector<std::string> v;
-	for (int i = 0; i < s.length(); ++i)
-	{
-		if (s[i] == ';')
-		{
-			v.push_back(temp);
-			temp = "";
-		}
-		else
-		{
-			temp.push_back(s[i]);
-		}
-	}
-	v.push_back(temp);
-
-}
 
 int getAproxPing(sf::Packet packet)
 {

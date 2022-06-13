@@ -55,7 +55,7 @@ int main()
 			{
 				socket.receive(packet);
 				packet >> data;
-				experimentalSplit(data, v);
+				StringUtils::experimentalSplit(data, v);
 				ParseCommand(v);
 			}
 			if(serverInfo.code == "200")

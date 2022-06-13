@@ -17,18 +17,24 @@ namespace serverActions
 	sf::Packet readyMessage();
 }
 
+namespace logging
+{
+	sf::Packet logger(std::string content, bool sendToServer);
+}
+
+namespace StringUtils
+{
+	void experimentalSplit(std::string s, std::vector<std::string>& v);
+
+	void splitString(std::string s, std::vector<std::string>& v);
+}
+
 void doCommandStuff(std::string data, std::vector<std::string> otherData, bool breuh);
 
 sf::Packet timeoutReset();
 
-sf::Packet logger(std::string content, bool sendToServer);
-
 void processPacket(sf::TcpSocket socket, sf::Packet packet, std::string data);
 
 std::string byteToString(char bytes[], size_t actualsize);
-
-void experimentalSplit(std::string s, std::vector<std::string>& v);
-
-void splitString(std::string s, std::vector<std::string>& v);
 
 void ParseCommand(std::vector<std::string> commands);

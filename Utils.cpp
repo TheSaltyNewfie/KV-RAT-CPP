@@ -12,6 +12,14 @@
 #include "Commands.h"
 #include <chrono>
 
+namespace serverActions
+{
+	std::string readyMessage()
+	{
+
+	}
+}
+
 void doCommandStuff(std::string data, std::vector<std::string> otherData, bool breuh)
 {
 	splitString(data, otherData);

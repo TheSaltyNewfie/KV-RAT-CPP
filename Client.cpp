@@ -14,12 +14,10 @@ extern "C"
 #pragma comment(lib, "lua542/liblua54.a")
 #endif
 
-struct
-{
-	bool isConnected;
-	std::string lastReceived;
-} debugData;
+struct{
+	std::string;
 
+} serverInfo;
 
 int main()
 {
@@ -39,6 +37,25 @@ int main()
 
 	bool isConnected = false;
 
+	if(status != sf::Socket::Done)
+	{
+		std::cout << "Unable to connect to server " << hostname << ":" << port;
+	}
+	std::cout << "Connected to " << hostname << ":" << port << std::endl;
+	isConnected = true;
+
+	while(isConnected)
+	{
+		socket.send(readyMessage());
+		socket.receive(packet);
+		packet >> data;
+		experimentalSplit(data, v);
+		ParseCommand(v);
+
+	}
+
+
+	/*
 	while (true)
 	{
 		if (status != sf::Socket::Done)
@@ -61,6 +78,6 @@ int main()
 		data.clear();
 		packet.clear();
 	}
-	
+	*/
 	return 0;
 }

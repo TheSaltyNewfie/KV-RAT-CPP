@@ -44,6 +44,11 @@ namespace logging
 			std::cout << debugMessage << content;
 		}
 	}
+
+	void local(std::string content)
+	{
+		std::cout << "[LOG] " << content << std::endl;
+	}
 }
 
 namespace StringUtils

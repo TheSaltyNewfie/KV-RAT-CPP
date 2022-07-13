@@ -20,6 +20,7 @@ namespace serverActions
 namespace logging
 {
 	sf::Packet logger(std::string content, bool sendToServer);
+	void local(std::string content);
 }
 
 namespace StringUtils

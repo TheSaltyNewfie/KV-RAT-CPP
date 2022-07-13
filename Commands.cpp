@@ -6,12 +6,6 @@
 #include <SFML/Audio.hpp>
 #include "Utils.h"
 
-/*
-Takes 3 inputs, file path, delay, delay amount
-
-This uses SFML for streaming and playing the audio and is considered music so it will be streamed
-returns 1 if it errors out, returns 0 if it was successful.
-*/
 int playAudio(std::string& fpath)
 {
     sf::Music audio;
@@ -21,7 +15,6 @@ int playAudio(std::string& fpath)
     }
     audio.play();
     return 0;
-    logger("Music was played", false);
 }
 
 void execute(std::string url)

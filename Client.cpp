@@ -41,16 +41,22 @@ int main()
 
 		if(status != sf::Socket::Done)
 		{
-			std::cout << "Unable to connect to server " << hostname << ":" << port;
+			std::cout << "Unable to connect to server " << config.hostname << ":" << config.port;
 		}
-		std::cout << "Connected to " << hostname << ":" << port << std::endl;
+		std::cout << "Connected to " << config.hostname << ":" << config.port << std::endl;
 		isConnected = true;
 
 		while(isConnected)
 		{
-			socket.send(serverActions::readyMessage());
+			statusData << 100;
+
+			//socket.send(serverActions::readyMessage());
+			socket.send(statusData);
 			socket.receive(statusData);
 			statusData >> serverInfo.code;
+
+
+			/*
 			if(serverInfo.code == "100")
 			{
 				socket.receive(packet);
@@ -68,6 +74,7 @@ int main()
 				socket.disconnect();
 				isConnected = false;
 			}
+			*/
 		}
 	}
 	

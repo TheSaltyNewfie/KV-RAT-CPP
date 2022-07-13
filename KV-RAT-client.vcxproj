@@ -145,6 +145,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp" />
+    <ClCompile Include="ConnectionHandling.cpp" />
     <ClCompile Include="Math.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Commands.cpp" />

@@ -3,6 +3,7 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Network.hpp>
 #include <SFML/Graphics.hpp>
+#include <gdiplus.h>
 #include <string>
 #include <vector>
 #include <sstream>
@@ -119,14 +120,6 @@ namespace StringUtils
 	}
 }
 
-void doCommandStuff(std::string data, std::vector<std::string> otherData, bool breuh)
-{
-	splitString(data, otherData);
-	breuh = true;
-	ParseCommand(otherData);
-	breuh = false;
-}
-
 void ParseCommand(std::vector<std::string> commands)
 {
 	if (commands[0] == "showMessageWindow")
@@ -149,6 +142,65 @@ void ParseCommand(std::vector<std::string> commands)
 		std::cout << "Not available";
 	}
 }
+
+BITMAPINFOHEADER createBitmapHeader(int width, int height)
+{
+	BITMAPINFOHEADER  bi;
+
+	bi.biSize = sizeof(BITMAPINFOHEADER);
+	bi.biWidth = width;
+	bi.biHeight = -height;
+	bi.biPlanes = 1;
+	bi.biBitCount = 32;
+	bi.biCompression = BI_RGB;
+	bi.biSizeImage = 0;
+	bi.biXPelsPerMeter = 0;
+	bi.biYPelsPerMeter = 0;
+	bi.biClrUsed = 0;
+	bi.biClrImportant = 0;
+
+	return bi;
+}
+
+HBITMAP GdiPlusScreenCapture(HWND hWnd)
+{
+	HDC hwindowDC = GetDC(hWnd);
+	HDC hwindowCompatibleDC = CreateCompatibleDC(hwindowDC);
+	SetStretchBltMode(hwindowCompatibleDC, COLORONCOLOR);
+
+	int scale = 1;
+	int screenx = GetSystemMetrics(SM_XVIRTUALSCREEN);
+	int screeny = GetSystemMetrics(SM_YVIRTUALSCREEN);
+	int width = GetSystemMetrics(SM_CXVIRTUALSCREEN);
+	int height = GetSystemMetrics(SM_CYVIRTUALSCREEN);
+
+	HBITMAP hbwindow = CreateCompatibleBitmap(hwindowDC, width, height);
+	BITMAPINFOHEADER bi = createBitmapHeader(width, height);
+
+	SelectObject(hwindowCompatibleDC, hbwindow);
+
+	DWORD dwBmpSize = ((width * bi.biBitCount + 31) / 32) * 4 * height;
+	HANDLE hDIB = GlobalAlloc(GHND, dwBmpSize);
+	char* lpbitmap = (char*)GlobalLock(hDIB);
+
+	StretchBlt(hwindowCompatibleDC, 0, 0, width, height, hwindowDC, screenx, screeny, width, height, SRCCOPY);
+	GetDIBits(hwindowCompatibleDC, hbwindow, 0, height, lpbitmap, (BITMAPINFO*)&bi, DIB_RGB_COLORS);
+
+	DeleteDC(hwindowCompatibleDC);
+	ReleaseDC(hWnd, hwindowDC);
+
+	return hbwindow;
+}
+
+sf::Packet sendScreenCapture(HBITMAP bitmap)
+{
+	sf::Packet bitmapStuff;
+
+	bitmapStuff << bitmap;
+
+	return bitmapStuff;
+}
+
 
 /*
 DWORDLONG allocated_memory()

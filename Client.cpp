@@ -15,7 +15,7 @@ extern "C"
 #endif
 
 struct{
-	std::string hostname = "71.7.242.3";
+	std::string hostname = "127.0.0.1";
 	int port = 4560;
 } config;
 

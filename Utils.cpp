@@ -12,6 +12,7 @@
 #include "Utils.h"
 #include "Commands.h"
 #include <chrono>
+#include <Python.h>
 
 namespace serverActions
 {

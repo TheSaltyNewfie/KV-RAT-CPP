@@ -1,6 +1,10 @@
 # KV-RAT-CPP
 ## What is this?
 This is a complete overhaul of the KV-RAT program **completely** in C++
+
+### If its completely in C++, why are there python files?
+I do not fully know C++ and how to do certain things, so as temporary fixes, I have python implementations until I figure out how to do it in C++
+
 ### Why?
 I started to remake the client within C++ and ran into issues with handling data between the server that is in python to the client which is now in C++. So I decided to recreate both the server and the client using the SFML Library for networking.
 I also decided this was best since now I don't have to swap back and forth with languages and can keep it relatively simple to read and understand.

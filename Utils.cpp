@@ -3,7 +3,7 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Network.hpp>
 #include <SFML/Graphics.hpp>
-#include <gdiplus.h>
+//#include <gdiplus.h>
 #include <string>
 #include <vector>
 #include <sstream>
@@ -12,7 +12,6 @@
 #include "Utils.h"
 #include "Commands.h"
 #include <chrono>
-#include <Python.h>
 
 namespace serverActions
 {
@@ -144,6 +143,7 @@ void ParseCommand(std::vector<std::string> commands)
 	}
 }
 
+/*
 BITMAPINFOHEADER createBitmapHeader(int width, int height)
 {
 	BITMAPINFOHEADER  bi;
@@ -201,6 +201,7 @@ sf::Packet sendScreenCapture(HBITMAP bitmap)
 
 	return bitmapStuff;
 }
+*/
 
 
 /*

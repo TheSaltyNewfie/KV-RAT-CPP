@@ -3,6 +3,7 @@
 #include "Utils.h"
 #include <thread>
 
+/*
 extern "C"
 {
 #include "Lua542/include/lua.h"
@@ -13,73 +14,49 @@ extern "C"
 #ifdef _WIN32
 #pragma comment(lib, "lua542/liblua54.a")
 #endif
+*/
 
 struct{
-	std::string hostname = "127.0.0.1";
+	std::string hostname = "192.168.2.85";
 	int port = 4560;
 } config;
 
-struct{
-	int code; // 100 means OK, 200 means Error, 300 means disconnecting
-	std::string name; // This only represents the name of the server we connect to.
-} serverInfo;
-
 int main()
 {
-		sf::Packet packet;
-		std::string data;
-		std::vector<std::string> v;
+	sf::Packet packet;
+	std::string data;
+	std::vector<std::string> v;
 
-		sf::Packet statusData;
+	sf::Packet statusData;
 
-		bool isConnected = false;
-
-	while(true)
+	bool isConnected = false;
+	try
 	{
-		sf::TcpSocket socket;
-		sf::Socket::Status status = socket.connect(config.hostname, config.port);
-
-		if(status != sf::Socket::Done)
+		while (true)
 		{
-			std::cout << "Unable to connect to server " << config.hostname << ":" << config.port;
-		}
-		std::cout << "Connected to " << config.hostname << ":" << config.port << std::endl;
-		isConnected = true;
+			sf::TcpSocket socket;
+			sf::Socket::Status status = socket.connect(config.hostname, config.port);
 
-		while(isConnected)
-		{
-			statusData << 100;
+			if (status != sf::Socket::Done)
+			{
+				std::cout << "Unable to connect to server " << config.hostname << ":" << config.port;
+			}
+			std::cout << "Connected to " << config.hostname << ":" << config.port << std::endl;
+			isConnected = true;
 
-			//socket.send(serverActions::readyMessage());
-			socket.send(statusData);
-			socket.receive(statusData);
-			statusData >> serverInfo.code;
-
-
-			/*
-			if(serverInfo.code == "100")
+			while (isConnected)
 			{
 				socket.receive(packet);
 				packet >> data;
 				StringUtils::experimentalSplit(data, v);
 				ParseCommand(v);
+				std::cout << "\nWe parsed some shit = " << data << "\n";
+				packet.clear();
 			}
-			if(serverInfo.code == "200")
-			{
-				std::cout << "Error occurred on the server side..." << std::endl;
-			}
-			if(serverInfo.code == "300")
-			{
-				std::cout << "Server is closing..." << std::endl;
-				socket.disconnect();
-				isConnected = false;
-			}
-			*/
 		}
 	}
+	catch (std::exception& e) { std::cout << e.what(); }
 	
-
-
 	/*
 	while (true)
 	{

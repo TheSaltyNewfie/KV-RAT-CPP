@@ -142,6 +142,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="screenshot.py" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp" />

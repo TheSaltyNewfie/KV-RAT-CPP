@@ -17,7 +17,7 @@ extern "C"
 */
 
 struct{
-	std::string hostname = "192.168.2.85";
+	std::string hostname = "127.0.0.1";
 	int port = 4560;
 } config;
 
@@ -29,7 +29,38 @@ int main()
 
 	sf::Packet statusData;
 
-	bool isConnected = false;
+	sf::TcpSocket socket;
+	sf::Socket::Status status = socket.connect(config.hostname, config.port);
+
+	if (status != sf::Socket::Done)
+		std::cout << "Unable to connect to any servers on your defined values";
+	std::cout << "Connected!\n" << "DEV: " << config.hostname << ":" << config.port;
+
+	while (true)
+	{
+		socket.receive(packet);
+		std::cout << "DEV: PACKET RECV\n";
+
+		packet >> data;
+		std::cout << "DEV: PACKET INFO: " << data << "\n";
+
+		StringUtils::experimentalSplit(data, v);
+		std::cout << "DEV: SHIT SPLIT\n";
+
+		std::cout << "DEV: VECTOR INFO: " << v.data() << "\n";
+
+		ParseCommand(v);
+		std::cout << "DEV: PARSED!";
+
+		packet.clear();
+		data.clear();
+		std::cout << "DEV: DATA AND PACKET CLEARED!\n" << "DATA: " << data << "\nPACKET: " << packet.getData();
+	}
+
+
+
+
+	/*s
 	try
 	{
 		while (true)
@@ -42,9 +73,8 @@ int main()
 				std::cout << "Unable to connect to server " << config.hostname << ":" << config.port;
 			}
 			std::cout << "Connected to " << config.hostname << ":" << config.port << std::endl;
-			isConnected = true;
 
-			while (isConnected)
+			while (true)
 			{
 				socket.receive(packet);
 				packet >> data;
@@ -55,9 +85,9 @@ int main()
 			}
 		}
 	}
-	catch (std::exception& e) { std::cout << e.what(); }
+	catch (std::exception& e) { std::cout << "COVERING ALL: " << e.what(); }
 	
-	/*
+	
 	while (true)
 	{
 		if (status != sf::Socket::Done)

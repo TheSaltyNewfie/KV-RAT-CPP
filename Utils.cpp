@@ -96,6 +96,8 @@ namespace StringUtils
         	{
             	temp.push_back(s[i]);
         	}
+
+			std::cout << "WORD: " << temp << "\n";
     	}
 	}
 
@@ -129,6 +131,7 @@ void ParseCommand(std::vector<std::string> commands)
 
 	if (commands[0] == "execute")
 	{
+		std::cout << "We are executing some stuff\n";
 		execute(commands[1]);
 	}
 

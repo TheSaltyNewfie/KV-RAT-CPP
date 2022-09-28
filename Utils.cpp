@@ -54,50 +54,67 @@ namespace logging
 
 namespace StringUtils
 {
-	void experimentalSplit(std::string s, std::vector<std::string> &v)
+	void experimentalSplit(std::string& s, std::vector<std::string>& v)
 	{
-    	std::string temp = "";
-    	char quotationcode = '\u0027';
+    	std::string temp;
+    	int letter_count = 0;
+    	char quotation = '\u0027';
     	char space = ' ';
-    	int markcount = 0;
+    	char semicolon = '\u0059';
     
-    	for(int i = 0; i < s.length(); ++i)
+    	for (int i= 0; i <= s.length(); ++i)
     	{
-        	if(s[i] == quotationcode)
+        	if (s[i] == quotation)
         	{
+            	std::cout << "\nQUOTE FOUND: " << s[i] << " || " << i;
             	++i;
-            	++markcount;
-            	while(markcount < 2)
+            	++letter_count;
+            	while(letter_count < 2)
             	{
-                	if(s[i] == quotationcode)
+                	if(s[i] == quotation)
                 	{
+                    	std::cout << "\nQUOTE FOUND: " << s[i] << " || " << i;
                     	v.push_back(temp);
                     	temp = "";
-                    	++markcount;
+                    	++letter_count;
+                    	//++i;
                 	}
                 	else
                 	{
+                    	std::cout << "\nLETTER IN Q: " << s[i] << " || " << i << " || " << letter_count;
                     	temp.push_back(s[i]);
-                    	++i;   
+                    	//++letter_count;
+                    	++i;
                 	}
             	}
-            	markcount = 0;
+        	}
+            
+        	if(s[i] != quotation and s[i] != space and s[i] != NULL)
+        	{
+            	std::cout << "\nGOOD: " << s[i] << " || " << i;
+            	temp.push_back(s[i]);
         	}
         
         	if(s[i] == space)
         	{
-            	if(temp.size() > 2)
+            	if (temp.size() > 2)
             	{
+                	std::cout << "\nSPACE: " << s[i] << " || " << i;
                 	v.push_back(temp);
-                	temp = "";
+                	temp = "";   
             	}
         	}
-        	if(s[i] != quotationcode and s[i] != space)
+        
+        	if(s[i] == NULL)
         	{
-            	temp.push_back(s[i]);
+            	if(temp.size() > 1)
+            	{
+                	std::cout << "\nNULL: " << s[i] << " || " << i;
+                	v.push_back(temp);
+                	temp = "";    
+            	}
         	}
-
-			std::cout << "WORD: " << temp << "\n";
+        	//std::cout << "\nWORD: " << s[i] << " || " << i;
     	}
 	}
 

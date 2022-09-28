@@ -51,4 +51,6 @@ int checkConnection(sf::Packet &packet)
 		logging::local("Server returned response code 500");
 		return 2;
 	}
+
+	return NULL;
 }

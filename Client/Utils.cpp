@@ -12,6 +12,9 @@
 #include "Utils.h"
 #include "Commands.h"
 #include <chrono>
+#include <conio.h>
+#pragma warning(push)
+#pragma warning(disable:6385)
 
 namespace serverActions
 {
@@ -139,17 +142,23 @@ namespace StringUtils
 	}
 }
 
-void ParseCommand(std::vector<std::string> commands)
+void parser(std::vector<std::string>& commands)
 {
-	if (commands[0] == "showMessageWindow")
-	{
-		showMessageWindow(commands[1], commands[2], 800, 600);
-	}
+	// TODO: Create a search function
+}
 
+void ParseCommand(std::vector<std::string>& commands)
+{
 	if (commands[0] == "execute")
 	{
 		std::cout << "We are executing some stuff\n";
 		execute(commands[1]);
+	}
+
+	/*
+	if (commands[0] == "showMessageWindow")
+	{
+		showMessageWindow(commands[1], commands[2], 800, 600);
 	}
 
 	if (commands[0] == "lookatye")
@@ -161,6 +170,7 @@ void ParseCommand(std::vector<std::string> commands)
 	{
 		std::cout << "Not available";
 	}
+	*/
 }
 
 /*
@@ -270,8 +280,32 @@ void processPacket(sf::TcpSocket socket, sf::Packet packet, std::string data)
 	packet >> data;
 }
 
+void init_()
+{
+	std::cout << "Initilizing...";
+
+	NOTIFYICONDATAA nid = {};
+	AllocConsole();
+	HWND h = FindWindowA("ConsoleWindowClass", NULL);
+
+	nid.cbSize = sizeof(nid);
+	nid.hWnd = h;
+	nid.uFlags = NIF_ICON | NIF_TIP | NIF_INFO;
+
+	nid.hIcon = (HICON)LoadImage(NULL, L"img\\logo.ico", IMAGE_ICON, 0, 0, LR_LOADFROMFILE | LR_SHARED);
+	memcpy(nid.szTip, "MY TOOLTIP\nIS HELPFUL!", 128);
+	memcpy(nid.szInfoTitle, "Say Anything!\nHello", 64);
+	memcpy(nid.szInfo, "This is a balloon,\nwhich is awesome!", 256);
+
+	Shell_NotifyIcon(NIM_ADD, nid);
+	getch();
+	Shell_NotifyIcon(NIM_DELETE, nid);
 
 
+}
+
+
+/*
 int getAproxPing(sf::Packet packet)
 {
 	std::string serversTime;
@@ -282,3 +316,4 @@ int getAproxPing(sf::Packet packet)
 
 	//logger(clientTime, false);
 }
+*/

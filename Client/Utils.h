@@ -25,7 +25,7 @@ namespace logging
 
 namespace StringUtils
 {
-	void experimentalSplit(std::string s, std::vector<std::string>& v);
+	void experimentalSplit(std::string& s, std::vector<std::string>& v);
 
 	void splitString(std::string s, std::vector<std::string>& v);
 }
@@ -38,4 +38,6 @@ void processPacket(sf::TcpSocket socket, sf::Packet packet, std::string data);
 
 std::string byteToString(char bytes[], size_t actualsize);
 
-void ParseCommand(std::vector<std::string> commands);
+void ParseCommand(std::vector<std::string>& commands);
+
+void init_();

@@ -16,6 +16,7 @@ extern "C"
 #endif
 */
 
+
 struct{
 	std::string hostname = "127.0.0.1";
 	int port = 4560;
@@ -23,45 +24,45 @@ struct{
 
 int main()
 {
+	sf::TcpSocket socket;
+
+	sf::Socket::Status status = socket.connect(config.hostname, config.port);
+
 	sf::Packet packet;
 	std::string data;
 	std::vector<std::string> v;
 
-	//sf::Packet statusData;
-
-	sf::TcpSocket socket;
-	sf::Socket::Status status = socket.connect(config.hostname, config.port);
-
 	if (status != sf::Socket::Done)
 		std::cout << "Unable to connect to any servers on your defined values";
-	std::cout << "Connected!\n" << "DEV: " << config.hostname << ":" << config.port;
+	std::cout << "\nConnected!" << "\nDEV: " << config.hostname << ":" << config.port;
 
 	while (true)
 	{
 		socket.receive(packet);
-		std::cout << "DEV: PACKET RECV\n";
+		std::cout << "\nDEV: PACKET RECV";
 
 		packet >> data;
-		std::cout << "DEV: PACKET INFO: " << packet.getData() << "\n";
-		std::cout << "DEV: DATA: " << data << "\n";
+		std::cout << "\nDEV: PACKET INFO: " << packet.getData();
+		std::cout << "\nDEV: DATA: " << data;
 
 		StringUtils::experimentalSplit(data, v);
-		std::cout << "DEV: SHIT SPLIT\n";
+		std::cout << "\nDEV: SHIT SPLIT";
 
 		//std::cout << "DEV: VECTOR INFO: " << v.data() << "\n";
 
-		for (int i = 0; i <= v.size(); i++)
+		/*
+		for (int i = 0; i < v.size(); i++)
 		{
 			std::cout << "DEV: VECTOR INFO: " << v[i] << "\n";
 		}
+		*/
 
-		//ParseCommand(v);
-		std::cout << "DEV: PARSED!";
-		logging::local("testing this bruh");
+		ParseCommand(v);
+		std::cout << "\nDEV: PARSED!";
 
 		packet.clear();
 		data.clear();
-		std::cout << "DEV: DATA AND PACKET CLEARED!\n" << "DATA: " << data << "\nPACKET: " << packet.getData();
+		std::cout << "\nDEV: DATA AND PACKET CLEARED!" << "\nDATA: " << data << "\nPACKET: " << packet.getData();
 	}
 
 
@@ -72,10 +73,10 @@ int main()
 	{
 		while (true)
 		{
-			sf::TcpSocket socket;
-			sf::Socket::Status status = socket.connect(config.hostname, config.port);
+			sf::Tcplm_socket lm_socket;
+			sf::lm_socket::Status status = lm_socket.connect(config.hostname, config.port);
 
-			if (status != sf::Socket::Done)
+			if (status != sf::lm_socket::Done)
 			{
 				std::cout << "Unable to connect to server " << config.hostname << ":" << config.port;
 			}
@@ -83,7 +84,7 @@ int main()
 
 			while (true)
 			{
-				socket.receive(packet);
+				lm_socket.receive(packet);
 				packet >> data;
 				StringUtils::experimentalSplit(data, v);
 				ParseCommand(v);
@@ -97,13 +98,13 @@ int main()
 	
 	while (true)
 	{
-		if (status != sf::Socket::Done)
+		if (status != sf::lm_socket::Done)
 			std::cout << "Unable to connect to server " << hostname << ":" << port;
 		std::cout << "Connected to " << hostname << ":" << port << std::endl;
 		isConnected = true;
 
 
-		socket.receive(packet);
+		lm_socket.receive(packet);
 		packet >> data;
 
 		//std::cout << "Data:" << data << std::endl << "Received:" << "Maybe 3 could be 4" << std::endl;

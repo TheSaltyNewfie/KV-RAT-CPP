@@ -284,23 +284,21 @@ void init_()
 {
 	std::cout << "Initilizing...";
 
-	NOTIFYICONDATAA nid = {};
-	AllocConsole();
-	HWND h = FindWindowA("ConsoleWindowClass", NULL);
+	NOTIFYICONDATA nid = {};
 
 	nid.cbSize = sizeof(nid);
-	nid.hWnd = h;
-	nid.uFlags = NIF_ICON | NIF_TIP | NIF_INFO;
+	nid.hWnd = hWnd;
+	nid.uFlags = NIF_ICON | NIF_TIP | NIF_GUID;
 
-	nid.hIcon = (HICON)LoadImage(NULL, L"img\\logo.ico", IMAGE_ICON, 0, 0, LR_LOADFROMFILE | LR_SHARED);
-	memcpy(nid.szTip, "MY TOOLTIP\nIS HELPFUL!", 128);
-	memcpy(nid.szInfoTitle, "Say Anything!\nHello", 64);
-	memcpy(nid.szInfo, "This is a balloon,\nwhich is awesome!", 256);
+	static const GUID _guid = {0x23977b55, 0x10e0, 0x4041, {0xb8, 0x62, 0xb1, 0x95, 0x41, 0x96, 0x36, 0x69}};
+	nid.guidItem = _guid;
+	nid.guidItem = guid;
 
-	Shell_NotifyIcon(NIM_ADD, nid);
-	getch();
-	Shell_NotifyIcon(NIM_DELETE, nid);
+	StringCchCopy(nid.szTip, ARRAYSIZE(nid.szTip), L"bruh momento");
 
+	LoadIconMetric(hInst, MAKEINTRESOURCE(IDI_SMALL), LIM_SMALL, &(nid.hIcon));
+	
+	Shell_NotifyIcon(NIM_ADD, &nid) ? S_OK : E_FAIL;
 
 }
 

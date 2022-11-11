@@ -37,20 +37,16 @@ int main()
 
 		while (client_connected)
 		{
-			if (client.getRemotePort() == 0)
-			{
-				listener.close();
-				std::cout << "Client Disconnected!\n";
-				client_connected = false;
-			}
-			std::cout << "\nREMOTE PORT: " << client.getRemotePort();
 
+
+			/*
 			std::getline(std::cin, user_input);
 			std::cout << "This is what is containt in the balls: " << user_input << "\n";
 			packet << user_input;
 			client.send(packet);
 			packet.clear();
 			user_input.clear();
+			*/
 		}
 	}
 

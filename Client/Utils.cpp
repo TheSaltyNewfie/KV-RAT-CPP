@@ -280,6 +280,7 @@ void processPacket(sf::TcpSocket socket, sf::Packet packet, std::string data)
 	packet >> data;
 }
 
+/*
 void init_()
 {
 	std::cout << "Initilizing...";
@@ -301,7 +302,7 @@ void init_()
 	Shell_NotifyIcon(NIM_ADD, &nid) ? S_OK : E_FAIL;
 
 }
-
+*/
 
 /*
 int getAproxPing(sf::Packet packet)

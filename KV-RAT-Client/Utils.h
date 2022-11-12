@@ -40,4 +40,4 @@ std::string byteToString(char bytes[], size_t actualsize);
 
 void ParseCommand(std::vector<std::string>& commands);
 
-void init_();
+//void init_();

@@ -1,11 +1,9 @@
 #include <SFML/Graphics.hpp>
 #define NOMINMAX
-#include <objidl.h>
+#include <Windows.h>
 #include <gdiplus.h>
-#include <gdiplustypes.h>
 #include<iostream>
-#include <windows.h>
-#pragma comment (lib,"Gdiplus.lib")
+
 
 
 void displayScreenCapture(HBITMAP hbitmap)
@@ -27,7 +25,7 @@ void displayScreenCapture(HBITMAP hbitmap)
 	{
 		sf::Event event;
 		while (window.pollEvent(event))
-		{ 
+		{
 			if (event.type == sf::Event::Closed)
 				window.close();
 		}

@@ -35,7 +35,7 @@ namespace logging
 	{
 		std::string debugMessage = "[DEBUG]: ";
 
-		if(sendToServer)
+		if (sendToServer)
 		{
 			sf::Packet debugInfo;
 			std::cout << debugMessage << content;
@@ -59,69 +59,69 @@ namespace StringUtils
 {
 	void experimentalSplit(std::string& s, std::vector<std::string>& v)
 	{
-    	std::string temp;
-    	int letter_count = 0;
-    	char quotation = '\u0027';
-    	char space = ' ';
-    	char semicolon = '\u0059';
-    
-    	for (int i= 0; i <= s.length(); ++i)
-    	{
-        	if (s[i] == quotation)
-        	{
-            	std::cout << "\nQUOTE FOUND: " << s[i] << " || " << i;
-            	++i;
-            	++letter_count;
-            	while(letter_count < 2)
-            	{
-                	if(s[i] == quotation)
-                	{
-                    	std::cout << "\nQUOTE FOUND: " << s[i] << " || " << i;
-                    	v.push_back(temp);
-                    	temp = "";
-                    	++letter_count;
-                    	//++i;
-                	}
-                	else
-                	{
-                    	std::cout << "\nLETTER IN Q: " << s[i] << " || " << i << " || " << letter_count;
-                    	temp.push_back(s[i]);
-                    	//++letter_count;
-                    	++i;
-                	}
-            	}
-        	}
-            
-        	if(s[i] != quotation and s[i] != space and s[i] != NULL)
-        	{
-            	std::cout << "\nGOOD: " << s[i] << " || " << i;
-            	temp.push_back(s[i]);
-        	}
-        
-        	if(s[i] == space)
-        	{
-            	if (temp.size() > 2)
-            	{
-                	std::cout << "\nSPACE: " << s[i] << " || " << i;
-                	v.push_back(temp);
-                	temp = "";   
-            	}
-        	}
-        
-        	if(s[i] == NULL)
-        	{
-            	if(temp.size() > 1)
-            	{
-                	std::cout << "\nNULL: " << s[i] << " || " << i;
-                	v.push_back(temp);
-                	temp = "";    
-            	}
-        	}
-        	//std::cout << "\nWORD: " << s[i] << " || " << i;
-    	}
+		std::string temp;
+		int letter_count = 0;
+		char quotation = '\u0027';
+		char space = ' ';
+		char semicolon = '\u0059';
+
+		for (int i = 0; i <= s.length(); ++i)
+		{
+			if (s[i] == quotation)
+			{
+				std::cout << "\nQUOTE FOUND: " << s[i] << " || " << i;
+				++i;
+				++letter_count;
+				while (letter_count < 2)
+				{
+					if (s[i] == quotation)
+					{
+						std::cout << "\nQUOTE FOUND: " << s[i] << " || " << i;
+						v.push_back(temp);
+						temp = "";
+						++letter_count;
+						//++i;
+					}
+					else
+					{
+						std::cout << "\nLETTER IN Q: " << s[i] << " || " << i << " || " << letter_count;
+						temp.push_back(s[i]);
+						//++letter_count;
+						++i;
+					}
+				}
+			}
+
+			if (s[i] != quotation and s[i] != space and s[i] != NULL)
+			{
+				std::cout << "\nGOOD: " << s[i] << " || " << i;
+				temp.push_back(s[i]);
+			}
+
+			if (s[i] == space)
+			{
+				if (temp.size() > 2)
+				{
+					std::cout << "\nSPACE: " << s[i] << " || " << i;
+					v.push_back(temp);
+					temp = "";
+				}
+			}
+
+			if (s[i] == NULL)
+			{
+				if (temp.size() > 1)
+				{
+					std::cout << "\nNULL: " << s[i] << " || " << i;
+					v.push_back(temp);
+					temp = "";
+				}
+			}
+			//std::cout << "\nWORD: " << s[i] << " || " << i;
+		}
 	}
 
-	void splitString(std::string s, std::vector<std::string> &v) //Keeping for legacy reasons
+	void splitString(std::string s, std::vector<std::string>& v) //Keeping for legacy reasons
 	{
 		std::string temp = "";
 		//std::vector<std::string> v;
@@ -160,12 +160,10 @@ void ParseCommand(std::vector<std::string>& commands)
 	{
 		showMessageWindow(commands[1], commands[2], 800, 600);
 	}
-
 	if (commands[0] == "lookatye")
 	{
 		lookatye();
 	}
-
 	if (commands[0] == "playAudio")
 	{
 		std::cout << "Not available";
@@ -177,7 +175,6 @@ void ParseCommand(std::vector<std::string>& commands)
 BITMAPINFOHEADER createBitmapHeader(int width, int height)
 {
 	BITMAPINFOHEADER  bi;
-
 	bi.biSize = sizeof(BITMAPINFOHEADER);
 	bi.biWidth = width;
 	bi.biHeight = -height;
@@ -189,46 +186,34 @@ BITMAPINFOHEADER createBitmapHeader(int width, int height)
 	bi.biYPelsPerMeter = 0;
 	bi.biClrUsed = 0;
 	bi.biClrImportant = 0;
-
 	return bi;
 }
-
 HBITMAP GdiPlusScreenCapture(HWND hWnd)
 {
 	HDC hwindowDC = GetDC(hWnd);
 	HDC hwindowCompatibleDC = CreateCompatibleDC(hwindowDC);
 	SetStretchBltMode(hwindowCompatibleDC, COLORONCOLOR);
-
 	int scale = 1;
 	int screenx = GetSystemMetrics(SM_XVIRTUALSCREEN);
 	int screeny = GetSystemMetrics(SM_YVIRTUALSCREEN);
 	int width = GetSystemMetrics(SM_CXVIRTUALSCREEN);
 	int height = GetSystemMetrics(SM_CYVIRTUALSCREEN);
-
 	HBITMAP hbwindow = CreateCompatibleBitmap(hwindowDC, width, height);
 	BITMAPINFOHEADER bi = createBitmapHeader(width, height);
-
 	SelectObject(hwindowCompatibleDC, hbwindow);
-
 	DWORD dwBmpSize = ((width * bi.biBitCount + 31) / 32) * 4 * height;
 	HANDLE hDIB = GlobalAlloc(GHND, dwBmpSize);
 	char* lpbitmap = (char*)GlobalLock(hDIB);
-
 	StretchBlt(hwindowCompatibleDC, 0, 0, width, height, hwindowDC, screenx, screeny, width, height, SRCCOPY);
 	GetDIBits(hwindowCompatibleDC, hbwindow, 0, height, lpbitmap, (BITMAPINFO*)&bi, DIB_RGB_COLORS);
-
 	DeleteDC(hwindowCompatibleDC);
 	ReleaseDC(hWnd, hwindowDC);
-
 	return hbwindow;
 }
-
 sf::Packet sendScreenCapture(HBITMAP bitmap)
 {
 	sf::Packet bitmapStuff;
-
 	bitmapStuff << bitmap;
-
 	return bitmapStuff;
 }
 */
@@ -241,7 +226,6 @@ DWORDLONG allocated_memory()
 	GetProcessMemoryInfo(GetCurrentProcess(), (PROCESS_MEMORY_COUNTERS*)&pmc, sizeof(pmc));
 	SIZE_T virtualMemUsedByMe = pmc.PrivateUsage;
 	DWORDLONG physMemUsed = pmc.WorkingSetSize;
-
 	return physMemUsed;
 }
 */
@@ -260,7 +244,7 @@ sf::Packet logger(std::string content, bool sendToServer)
 {
 	std::string debugMessage = "[DEBUG]: ";
 
-	if(sendToServer)
+	if (sendToServer)
 	{
 		sf::Packet debugInfo;
 		std::cout << debugMessage << content;
@@ -284,23 +268,17 @@ void processPacket(sf::TcpSocket socket, sf::Packet packet, std::string data)
 void init_()
 {
 	std::cout << "Initilizing...";
-
 	NOTIFYICONDATA nid = {};
-
 	nid.cbSize = sizeof(nid);
 	nid.hWnd = hWnd;
 	nid.uFlags = NIF_ICON | NIF_TIP | NIF_GUID;
-
 	static const GUID _guid = {0x23977b55, 0x10e0, 0x4041, {0xb8, 0x62, 0xb1, 0x95, 0x41, 0x96, 0x36, 0x69}};
 	nid.guidItem = _guid;
 	nid.guidItem = guid;
-
 	StringCchCopy(nid.szTip, ARRAYSIZE(nid.szTip), L"bruh momento");
-
 	LoadIconMetric(hInst, MAKEINTRESOURCE(IDI_SMALL), LIM_SMALL, &(nid.hIcon));
-	
-	Shell_NotifyIcon(NIM_ADD, &nid) ? S_OK : E_FAIL;
 
+	Shell_NotifyIcon(NIM_ADD, &nid) ? S_OK : E_FAIL;
 }
 */
 
@@ -309,10 +287,8 @@ int getAproxPing(sf::Packet packet)
 {
 	std::string serversTime;
 	//std::string clientTime;
-
 	const auto p1 = std::chrono::system_clock::now();
 	auto clientTime = std::chrono::duration_cast<std::chrono::seconds>(p1.time_since_epoch()).count();
-
 	//logger(clientTime, false);
 }
 */

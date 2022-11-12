@@ -13,30 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\PythonCode">
-      <UniqueIdentifier>{d78f595f-7981-4444-9706-b76b8fea7be7}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="screenshot.py">
-      <Filter>Source Files\PythonCode</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Client.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Utils.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Math.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Commands.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ConnectionHandling.cpp">
+    <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ScreenCapture.cpp">
@@ -44,13 +26,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Utils.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Commands.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ScreenCapture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Overrides.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

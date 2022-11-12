@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="packages\SFML-cpp.2.5.1\build\native\SFML-cpp.props" Condition="Exists('packages\SFML-cpp.2.5.1\build\native\SFML-cpp.props')" />
-  <Import Project="packages\SFML-cpp.redist.2.5.1.1\build\native\SFML-cpp.redist.props" Condition="Exists('packages\SFML-cpp.redist.2.5.1.1\build\native\SFML-cpp.redist.props')" />
+  <Import Project="..\packages\SFML-cpp.2.5.1\build\native\SFML-cpp.props" Condition="Exists('..\packages\SFML-cpp.2.5.1\build\native\SFML-cpp.props')" />
+  <Import Project="..\packages\SFML-cpp.redist.2.5.1.1\build\native\SFML-cpp.redist.props" Condition="Exists('..\packages\SFML-cpp.redist.2.5.1.1\build\native\SFML-cpp.redist.props')" />
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -23,8 +23,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{167919f7-17bc-41b4-83c1-1292bb13c906}</ProjectGuid>
-    <RootNamespace>KVRATclient</RootNamespace>
+    <ProjectGuid>{c146ec5f-60fb-427a-a5fa-f5dfb8cf0d59}</ProjectGuid>
+    <RootNamespace>KVRATServer</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.22621.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -72,18 +72,6 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LinkIncremental>true</LinkIncremental>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LinkIncremental>false</LinkIncremental>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LinkIncremental>true</LinkIncremental>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LinkIncremental>false</LinkIncremental>
-  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -118,6 +106,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -142,20 +131,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="screenshot.py" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Client.cpp" />
-    <ClCompile Include="ConnectionHandling.cpp" />
-    <ClCompile Include="Math.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="ScreenCapture.cpp" />
-    <ClCompile Include="Utils.cpp" />
-    <ClCompile Include="Commands.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Overrides.h" />
     <ClInclude Include="ScreenCapture.h" />
-    <ClInclude Include="Utils.h" />
-    <ClInclude Include="Commands.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
@@ -163,7 +146,7 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('packages\SFML-cpp.redist.2.5.1.1\build\native\SFML-cpp.redist.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\SFML-cpp.redist.2.5.1.1\build\native\SFML-cpp.redist.props'))" />
-    <Error Condition="!Exists('packages\SFML-cpp.2.5.1\build\native\SFML-cpp.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\SFML-cpp.2.5.1\build\native\SFML-cpp.props'))" />
+    <Error Condition="!Exists('..\packages\SFML-cpp.redist.2.5.1.1\build\native\SFML-cpp.redist.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SFML-cpp.redist.2.5.1.1\build\native\SFML-cpp.redist.props'))" />
+    <Error Condition="!Exists('..\packages\SFML-cpp.2.5.1\build\native\SFML-cpp.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SFML-cpp.2.5.1\build\native\SFML-cpp.props'))" />
   </Target>
 </Project>

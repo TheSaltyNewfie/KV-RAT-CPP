@@ -35,6 +35,8 @@ HBITMAP GetScreenShot(void)
     CloseClipboard();
     */
 
+    BITMAP bitmap;
+    GetObject(hBitmap, sizeof(bitmap), &bitmap);
     return hBitmap;
 
     // clean up
@@ -43,6 +45,8 @@ HBITMAP GetScreenShot(void)
     ReleaseDC(NULL, hScreen);
     DeleteObject(hBitmap);
 }
+
+
 
 void StreamBuffer()
 {

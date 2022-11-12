@@ -5,12 +5,12 @@
 #include <vector>
 #include <SFML/Audio.hpp>
 #include "Utils.h"
- 
+
 
 int playAudio(std::string& fpath)
 {
     sf::Music audio;
-    if(!audio.openFromFile(fpath))
+    if (!audio.openFromFile(fpath))
     {
         return 1;
     }
@@ -82,10 +82,10 @@ void moveMouse(int x, int y)
     int x2 = 0;
     int y2 = 0;
     bool shouldrun = true;
-    
+
     while (shouldrun)
     {
-        if(x > x2)
+        if (x > x2)
         {
             x2 += 1;
         }
@@ -108,20 +108,17 @@ void moveMouse(int x, int y)
 /*
 void hampter()
 {
-    try 
+    try
     {
         sf::RenderWindow hamptime(sf::VideoMode(1920, 1080), "HAMPTER TIME :)", sf::Style::Fullscreen);
         sf::Texture texture;
         texture.loadFromFile("img/hampter.jpg");
         sf::Sprite sprite(texture);
-
         sf::Music audio;
         if (!audio.openFromFile("audio/hampterd.mp3"))
         {
             std::cout << "Yo we dead!";
         }
-
-
         while (hamptime.isOpen())
         {
             sf::Event event;
@@ -130,7 +127,6 @@ void hampter()
                 if (event.type == sf::Event::Closed)
                     hamptime.close();
             }
-
             audio.play();
             hamptime.clear();
             hamptime.draw(sprite);

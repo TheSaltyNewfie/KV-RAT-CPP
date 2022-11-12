@@ -1,8 +1,12 @@
 #include <iostream>
 #include <SFML/Network.hpp>
 #include <vector>
+#include "ScreenCapture.h"
+#include <Windows.h>
+#include <comdef.h>
+#include "Overrides.h"
 
-void packet_cleaner(std::vector<sf::Packet> &packets)
+void packet_cleaner(std::vector<sf::Packet>& packets)
 {
 	for (int i = 0; i < packets.size(); ++i)
 	{
@@ -20,6 +24,9 @@ int main()
 	sf::Packet client_data;
 	std::string client_data_format;
 	bool client_connected = false;
+	HBITMAP bitmap = 0;
+	char* buffer = {0};
+	std::size_t received;
 
 	while (true)
 	{
@@ -37,7 +44,25 @@ int main()
 
 		while (client_connected)
 		{
+			//client.receive(bitmap, sizeof(bitmap), received);
+			
+			if (client.receive((BYTE*)(bitmap), sizeof(bitmap), received) != sf::Socket::Done)
+			{
+				std::cout << "Error when receiving";
+			}
 
+			//client_data >> buffer;
+			//bitmap = (HBITMAP)(buffer);
+			std::cout << "HBITMAP DATA: " << ((char*)(bitmap), sizeof(bitmap)) << "||" << bitmap << "\n";
+			OpenClipboard(NULL);
+			EmptyClipboard();
+			SetClipboardData(CF_BITMAP, bitmap);
+			CloseClipboard();
+			//displayScreenCapture(bitmap);
+			//client_data.clear();
+			//bitmap = NULL;
+			
+			
 
 			/*
 			std::getline(std::cin, user_input);

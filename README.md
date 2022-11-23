@@ -1,6 +1,6 @@
 # KV-RAT-CPP
 ## What is this?
-This is a complete overhaul of the KV-RAT program **completely** in C++
+This is a complete overhaul of the KV-RAT program **completely** in C++/C
 
 ### If its completely in C++, why are there python files?
 I do not fully know C++ and how to do certain things, so as temporary fixes, I have python implementations until I figure out how to do it in C++

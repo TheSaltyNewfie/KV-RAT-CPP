@@ -17,7 +17,30 @@ Before I continue, **This was made for educational purposes and I am not liable 
 - To build the project, download the source code in its entirety and then build which ever solution is needed, if needed, you may need to get/update some of the packages though nuget.
 - If you don't want to build the project yourself, there should be a somewhat up to date version in the releases tab
 ## What's to come?
-Currently, nothing. I am currently trying to get a stable version working and while doing that I do not want any expectations
+### Networking overhaul
+SFML is just not worth it to continue using as a networking library for this project. Can be used for GUI based things though.
+Potential libraries are as such
+
+- Boost.Asio
+- Winsock
+- [C++ Networking library](https://cpp-netlib.org/index.html)
+- [Libuv](https://github.com/libuv/libuv)
+
+I may also switch from TCP to UDP depending on how screen capture ends up working
+
+### Data handling
+Because of how the screen capture function works, we have to serialize the output to be able to send it over the network for the server to receive and display. Not sure how I will handle this, but it will probably will have to be custom.
+
+### P2P idea
+Considering the server is just really another person, this would be considered peer to peer, so my new idea is as such.
+Instead of having a seperate client and server application, it would only be one application and use arguments to change modes
+
+server ex. `kv-rat.exe -server ip=127.0.0.1 -port=4560 -logging=false` || This allows the program to start as a server and receive data from a client
+
+client ex. `kv-rat.exe -client -ip=127.0.0.1 -port=4560`  || This allows the program to start as a client and connect to the defined network details
+
+### Why do all this
+Well, with all the issues I have been having with this project and the libraries, I have decided that it would be easier and worth it in the long run to just make everything to fit the project
 ## Is this meant to be malicious?
 The straight answer is **no**. I do not condone this software being used to exploit other people for either the benefit of the attacker or for blackmail. This was made for a friend of mine who finds humor in being messed with and I intend to keep it that way. It should never be hidden from the client that the software is running on their computer. This can also be noted from the KV in the name, which stands for *"Kasean Virus"* which also used to be known as *"The dumbasses virus"* as that is a running joke with this person.
 

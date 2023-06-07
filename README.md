@@ -1,4 +1,7 @@
 # KV-RAT-CPP
+## UPDATE:
+This project is currently being continued over at https://gitea.thesaltynewfie.ca/ballinadmin/kv-rat
+
 ## What is this?
 This is a complete overhaul of the KV-RAT program **completely** in C++/C
 

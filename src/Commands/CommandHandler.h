@@ -8,7 +8,7 @@
 #include "Commands.h"
 #include <regex>
 #include <iomanip>
-#include "../Utils/utils.h"
+#include "../Utils/Utils.h"
 
 namespace CommandHandler {
 	std::vector<std::string> cleanFunctions(const std::string& input);

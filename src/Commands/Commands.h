@@ -1,10 +1,10 @@
 #pragma once
 #include <iostream>
 #include <stdio.h>
-#include <Windows.h>
+#include <windows.h>
 #include <vector>
-#include <SDL2/SDL.h>
-#include <SDL2_image/SDL_image.h>
+//#include "../../external/SDL2/SDL.h"
+//#include <SDL2_image/SDL_image.h>
 
 namespace commands
 {

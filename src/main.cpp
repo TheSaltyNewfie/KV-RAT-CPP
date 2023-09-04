@@ -1,7 +1,7 @@
 #include <iostream>
 #define ASIO_STANDALONE
 #include "networking.h"
-#include "Commands/commands.h"
+#include "Commands/Commands.h"
 #include "Commands/CommandHandler.h"
 #include "onload.h"
 #include <thread>

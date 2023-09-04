@@ -1,7 +1,4 @@
-#include <Windows.h>
-#include <iostream>
-#include <d3d11.h>
-#include <tchar.h>
+#include "onload.h"
 
 int onload()
 {

@@ -1,7 +1,7 @@
 #pragma once
-#include <Windows.h>
+#include <windows.h>
 #include <wincodec.h>
-#include <Shlwapi.h>
+#include <shlwapi.h>
 #include <iostream>
 #pragma comment(lib, "windowscodecs.lib")
 #pragma comment(lib, "Shlwapi.lib")

@@ -2,10 +2,10 @@
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
 #include <iostream>
 #include <string>
-#include <WinSock2.h>
+#include <winsock2.h>
 #include "Commands/CommandHandler.h"
-#include "Commands/commands.h"
-#include "Utils/utils.h"
+#include "Commands/Commands.h"
+#include "Utils/Utils.h"
 #include <fstream>
 #include <algorithm>
 

@@ -1,4 +1,4 @@
-#include "commands.h"
+#include "Commands.h"
 
 void commands::showMessageBox(const std::vector<std::string>& args) 
 {

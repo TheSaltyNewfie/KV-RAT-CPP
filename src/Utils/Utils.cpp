@@ -1,4 +1,4 @@
-#include "utils.h"
+#include "Utils.h"
 
 void capture::SaveScreenshotToWorkingDirectory(IWICBitmapSource* bitmap)
 {

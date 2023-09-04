@@ -5,7 +5,7 @@
 #include <unordered_map>
 #include <functional>
 #include <sstream>
-#include "commands.h"
+#include "Commands.h"
 #include <regex>
 #include <iomanip>
 #include "../Utils/utils.h"

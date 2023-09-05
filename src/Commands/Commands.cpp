@@ -23,16 +23,15 @@ void commands::execute(const std::vector<std::string>& args)
     std::string stemp = std::string(args[0].begin(), args[0].end());
     LPCSTR sw = stemp.c_str();
 
-    ShellExecute(0, 0, sw, 0, 0, SW_SHOW);
+    ShellExecuteA(0, 0, sw, 0, 0, SW_SHOW);
 }
 
 
 void commands::cringe()
 {
     std::cout << "Cringe() Will return once we can compile without SDL2\n";
-    /*
-    const int SCREEN_WIDTH = 680;
-    const int SCREEN_HEIGHT = 680;
+    const int SCREEN_WIDTH = 1072;
+    const int SCREEN_HEIGHT = 1092;
 
     SDL_Window* window = NULL;
     SDL_Surface* screenSurface = NULL;
@@ -82,5 +81,61 @@ void commands::cringe()
 
     // Quit SDL subsystems
     SDL_Quit();
-    */
+}
+
+void commands::KillYourSelf()
+{
+    SDL_Init(SDL_INIT_EVERYTHING);
+    IMG_Init(IMG_INIT_PNG);
+    Mix_Init(MIX_INIT_MP3);
+
+    // Initialize audio
+    Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096);
+
+    // Load image
+    SDL_Surface* imageSurface = IMG_Load("assets/imgs/killyourself.png");
+
+    // Get image dimensions
+    int imgWidth = imageSurface->w;
+    int imgHeight = imageSurface->h;
+
+    SDL_Window* window = SDL_CreateWindow("KILL YOURSELF", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, imgWidth, imgHeight, SDL_WINDOW_SHOWN);
+    SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+
+    // Log dimensions (or use as you need)
+    printf("Image Width: %d, Height: %d\n", imgWidth, imgHeight);
+
+    SDL_Texture* imageTexture = SDL_CreateTextureFromSurface(renderer, imageSurface);
+    SDL_FreeSurface(imageSurface);
+    // Load audio
+    Mix_Music* bgMusic = Mix_LoadMUS("assets/audio/killyourself.mp3");
+
+    // Play audio
+    Mix_PlayMusic(bgMusic, -1);
+
+    SDL_Event event;
+    bool running = true;
+
+    while (running) {
+        while (SDL_PollEvent(&event)) {
+            if (event.type == SDL_QUIT) {
+                running = false;
+            }
+        }
+
+        SDL_RenderClear(renderer);
+        SDL_RenderCopy(renderer, imageTexture, NULL, NULL);
+        SDL_RenderPresent(renderer);
+    }
+
+    // Cleanup
+    Mix_FreeMusic(bgMusic);
+    SDL_DestroyTexture(imageTexture);
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+
+    Mix_CloseAudio();
+    Mix_Quit();
+    IMG_Quit();
+    SDL_Quit();
 }

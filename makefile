@@ -1,6 +1,6 @@
 CC = x86_64-w64-mingw32-g++
-CFLAGS = -Wall -I/usr/x86_64-w64-mingw32/include/
-LFLAGS = -lws2_32 -lole32 -lgdi32 -luuid -static-libgcc -static-libstdc++ -lshlwapi
+CFLAGS = -Wall -I/usr/x86_64-w64-mingw32/include/ -I./external/SDL2
+LFLAGS = -lws2_32 -lole32 -lgdi32 -luuid -static-libgcc -static-libstdc++ -lshlwapi -L/home/tobyd/Documents/Libs/ -lSDL2 -lSDL2_image -lSDL2_mixer
 
 
 # Directories
@@ -16,6 +16,7 @@ OBJS = $(addprefix $(BUILD_DIR)/, $(notdir $(SRCS:.cpp=.o)))
 .PHONY: directories clean all post-build
 
 all: directories KV-RAT post-build
+	@echo "Debug: CFLAGS= $(CFLAGS)"
 
 directories:
 	mkdir -p $(BUILD_DIR)

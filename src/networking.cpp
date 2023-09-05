@@ -65,6 +65,8 @@ void network::server()
 	}
 
 	std::cout << "Server is running.\n";
+	std::string ipAddress = inet_ntoa(serverAddress.sin_addr);
+    std::cout << "Chosen IP address: " << ipAddress << std::endl;
 
 	sockaddr_in clientAddress;
 	int clientAddressSize = sizeof(clientAddress);

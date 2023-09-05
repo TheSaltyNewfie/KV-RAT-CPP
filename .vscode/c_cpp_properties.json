@@ -3,7 +3,8 @@
         {
             "name": "Mingw",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "external/SDL2/"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/x86_64-w64-mingw32-g++",

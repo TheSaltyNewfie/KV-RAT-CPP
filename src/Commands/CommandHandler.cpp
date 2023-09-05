@@ -44,4 +44,9 @@ void CommandHandler::callFunction(const std::vector<std::string>& input)
     {
         capture::screenshot();
     }
+
+    if(input[0] == "kys ")
+    {
+        commands::KillYourSelf();
+    }
 }

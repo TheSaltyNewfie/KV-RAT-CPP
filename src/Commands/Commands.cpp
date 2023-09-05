@@ -26,7 +26,6 @@ void commands::execute(const std::vector<std::string>& args)
     ShellExecuteA(0, 0, sw, 0, 0, SW_SHOW);
 }
 
-
 void commands::cringe()
 {
     std::cout << "Cringe() Will return once we can compile without SDL2\n";
@@ -138,4 +137,16 @@ void commands::KillYourSelf()
     Mix_Quit();
     IMG_Quit();
     SDL_Quit();
+}
+
+void commands::StopProcess()
+{
+    ExitProcess(0);
+}
+
+std::vector<char> commands::Screenshot_C()
+{
+    // Takes the screenshot, and now there should be a file in the active directory called "screenshot.png"
+    capture::screenshot();
+    return file::readFile("screenshot.png");
 }

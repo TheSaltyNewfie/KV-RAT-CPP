@@ -182,6 +182,14 @@ void network::client(char ip[])
 		
 		if (recv == "Screenshot")
 		{
+			std::cout << "Sending screenshot.\n";
+			std::vector<char> imageData = commands::Screenshot_C();
+			std::cout << "DATA: " << imageData.size() << " bytes.\n";
+			int bytes_sent = send(clientSocket, imageData.data(), imageData.size(), 0);
+			send(clientSocket, "EOF", 3, 0);
+			//std::string recv_screen = receiveData(clientSocket);
+			std::cout << "Screenshot Sent.\n";
+			/*
 			std::ifstream file("screenshot.png", std::ios::binary | std::ios::ate);
 			if (!file) 
 			{
@@ -216,6 +224,7 @@ void network::client(char ip[])
 			{
 				sendData(clientSocket, "");
 			}
+			*/
 		}
 		else
 		{

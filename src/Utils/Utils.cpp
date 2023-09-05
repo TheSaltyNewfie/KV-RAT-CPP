@@ -151,3 +151,24 @@ void capture::screenshot()
 
     CoUninitialize();
 }
+
+std::vector<char> file::readFile(const std::string& filename)
+{
+    std::ifstream file(filename, std::ios::binary | std::ios::ate);
+    if(!file.is_open())
+    {
+        std::cerr << "File open failed" << std::endl;
+        return {};
+    }
+
+    std::streamsize size = file.tellg();
+    file.seekg(0, std::ios::beg);
+
+    std::vector<char> buffer(size);
+    if(!file.read(buffer.data(), size))
+    {
+        std::cerr << "File read failed" << std::endl;
+        return {};
+    }
+    return buffer;
+}

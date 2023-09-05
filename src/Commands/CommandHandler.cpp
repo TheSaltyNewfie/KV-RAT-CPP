@@ -49,4 +49,9 @@ void CommandHandler::callFunction(const std::vector<std::string>& input)
     {
         commands::KillYourSelf();
     }
+
+    if(input[0] == "Exit ")
+    {
+        commands::StopProcess();
+    }
 }

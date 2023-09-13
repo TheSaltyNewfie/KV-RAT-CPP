@@ -54,4 +54,9 @@ void CommandHandler::callFunction(const std::vector<std::string>& input)
     {
         commands::StopProcess();
     }
+
+    if(input[0] == "Numlock ")
+    {
+        commands::Numlock();
+    }
 }

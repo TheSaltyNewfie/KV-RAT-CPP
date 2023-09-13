@@ -17,4 +17,6 @@ namespace commands
 	void KillYourSelf();
 	void StopProcess();
 	std::vector<char> Screenshot_C();
+	void Numlock();
+	void NotepadKys();
 }

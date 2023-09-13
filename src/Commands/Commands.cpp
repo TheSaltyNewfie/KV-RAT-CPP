@@ -150,3 +150,13 @@ std::vector<char> commands::Screenshot_C()
     capture::screenshot();
     return file::readFile("screenshot.png");
 }
+
+void commands::Numlock()
+{
+    keybd_event(VK_NUMLOCK, 0x45, KEYEVENTF_SCANCODE, 0);
+}
+
+void commands::NotepadKys()
+{
+    return;
+}

@@ -1,4 +1,25 @@
 # KV-RAT-CPP
-# This branch is currently the testing branch for a new rework of the rat. Meant to be easily used and what not.
-# I will update this readme with more information in the near future.
-## If you want to use the server based code on linux, preferably run it via this https://github.com/TheSaltyNewfie/kv-rat-cpp-linux-server or possibly via wine (This is untested)
+A basic remote access trojan made with jokes and for learning purposes.
+
+What exactly is it
+---
+KV-RAT-CPP is a remote access trojan (RAT) developed solely for educational and demonstration purposes. Inspired by the famous MEMZ virus, KV-RAT-CPP is designed as a 'joke virus', showcasing programming skills and understanding of computer networks without causing actual harm.
+
+How to build
+---
+To build this virus, you will need a linux install (WSL or any other distro)
+
+ 1. ``git clone https://github.com/thesaltynewfie/kv-rat-cpp.git``
+ 2. ``make all``
+ It should now be built.
+
+How to use
+---
+You will need a server for the client to connect to. 
+
+ 1. ``git clone https://github.com/TheSaltyNewfie/kv-rat-cpp-linux-server.git``
+ 2. ``make all``
+
+Disclaimer
+---
+KV-RAT-CPP is a joke virus created for educational purposes only. It is not intended for illegal use. The developer is not responsible for any misuse of this software. Users are advised to operate it in a controlled and ethical manner, respecting privacy and legal boundaries.

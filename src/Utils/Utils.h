@@ -5,8 +5,8 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#pragma comment(lib, "windowscodecs.lib")
-#pragma comment(lib, "Shlwapi.lib")
+//#pragma comment(lib, "windowscodecs.lib")
+//#pragma comment(lib, "Shlwapi.lib")
 
 namespace capture
 {

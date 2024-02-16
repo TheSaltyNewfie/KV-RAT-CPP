@@ -1,10 +1,12 @@
 #include <iostream>
-#define ASIO_STANDALONE
 #include "networking.h"
 #include "Commands/Commands.h"
 #include "Commands/CommandHandler.h"
 #include "onload.h"
-#include <thread>
+#include <../../external/SDL2/SDL.h>
+#include <../../external/SDL2/SDL_image.h>
+#include <../../external/SDL2/SDL_mixer.h>
+//#include <thread>
 
 int main(int argc, char** argv)
 {

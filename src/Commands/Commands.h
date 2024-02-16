@@ -4,6 +4,7 @@
 #include <string>
 #include <windows.h>
 #include <vector>
+#define SDL_MAIN_HANDLED
 #include <../../external/SDL2/SDL.h>
 #include <../../external/SDL2/SDL_image.h>
 #include <../../external/SDL2/SDL_mixer.h>

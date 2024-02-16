@@ -1,5 +1,5 @@
 #pragma once
-#define _WINSOCK_DEPRECATED_NO_WARNINGS
+//#define _WINSOCK_DEPRECATED_NO_WARNINGS
 #include <iostream>
 #include <string>
 #include <winsock2.h>
@@ -10,7 +10,7 @@
 #include <algorithm>
 
 
-#pragma comment(lib, "ws2_32.lib")
+//#pragma comment(lib, "ws2_32.lib")
 
 namespace network
 {

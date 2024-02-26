@@ -5,6 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <mfapi.h>
 //#pragma comment(lib, "windowscodecs.lib")
 //#pragma comment(lib, "Shlwapi.lib")
 

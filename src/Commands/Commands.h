@@ -4,6 +4,7 @@
 #include <string>
 #include <windows.h>
 #include <vector>
+#include <mfapi.h>
 #define SDL_MAIN_HANDLED
 #include <../../external/SDL2/SDL.h>
 #include <../../external/SDL2/SDL_image.h>
@@ -15,6 +16,7 @@ namespace commands
 	void showMessageBox(const std::vector<std::string>& args);
 	void execute(const std::vector<std::string>& args);
 	void cringe();
+	void feesh();
 	void KillYourSelf();
 	void StopProcess();
 	std::vector<char> Screenshot_C();

@@ -28,7 +28,7 @@ void commands::execute(const std::vector<std::string>& args)
 
 void commands::cringe()
 {
-    std::cout << "Cringe() Will return once we can compile without SDL2\n";
+    //std::cout << "Cringe() Will return once we can compile without SDL2\n";
     const int SCREEN_WIDTH = 1072;
     const int SCREEN_HEIGHT = 1092;
 
@@ -80,6 +80,11 @@ void commands::cringe()
 
     // Quit SDL subsystems
     SDL_Quit();
+}
+
+void commands::feesh()
+{
+
 }
 
 void commands::KillYourSelf()

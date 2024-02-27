@@ -21,7 +21,7 @@ int main(int argc, char** argv)
         exit(0);
 
     std::string ip = argv[1];
-    network::client(ip);
+    network::reworkedClient(argv[1]);
     
     return 0;
 }

@@ -8,13 +8,14 @@
 #include "Utils/Utils.h"
 #include <fstream>
 #include <algorithm>
+#include "../../external/json/json.hpp"
 
 
 //#pragma comment(lib, "ws2_32.lib")
 
+
 namespace network
 {
 	void client(char ip[]);
-
-	void server();
+	int reworkedClient(char ip[]);
 }

@@ -6,8 +6,17 @@
 #include <fstream>
 #include <vector>
 #include <mfapi.h>
+#include "../../external/json/json.hpp"
 //#pragma comment(lib, "windowscodecs.lib")
 //#pragma comment(lib, "Shlwapi.lib")
+
+namespace networking
+{
+	using json = nlohmann::json;
+
+	json recvData(SOCKET clientSocket);
+	void sendData(SOCKET clientSocket, const json data);
+}
 
 namespace capture
 {

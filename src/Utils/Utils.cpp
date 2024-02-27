@@ -1,5 +1,25 @@
 #include "Utils.h"
 
+const int BUFFER_SIZE = 4096;
+
+using json = nlohmann::json;
+
+json networking::recvData(SOCKET clientSocket)
+{
+	char buffer[BUFFER_SIZE];
+	int bytesRead = recv(clientSocket, buffer, BUFFER_SIZE, 0);
+	if (bytesRead <= 0)
+		return "";
+
+	json Data = json::parse(buffer);
+}
+
+void networking::sendData(SOCKET clientSocket, const json data)
+{
+	std::string sdata = data.dump();
+	int bytesSent = send(clientSocket, sdata.c_str(), static_cast<int>(sdata.length()), 0);
+}
+
 void capture::SaveScreenshotToWorkingDirectory(IWICBitmapSource* bitmap)
 {
     HRESULT hr;

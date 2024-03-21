@@ -79,6 +79,14 @@ struct packet
 	std::string information;
 	int mx;
 	int my;
+
+	void clear()
+	{
+		command = "";
+		information = "";
+		mx = 0;
+		my = 0;
+	}
 };
 
 int network::reworkedClient(char ip[])
@@ -124,12 +132,23 @@ int network::reworkedClient(char ip[])
 	while(true)
 	{
 		//Receive data from the server
-		nlohmann::json data = networking::recvData(clientSocket);
+
+		auto dd = networking::recvData(clientSocket);
+
+		std::cout << dd << "\n";
+
+		if(dd == NULL)
+		{
+			return -1;
+		}
+
+		//std::cout << dd["command"].get<std::string>() << "\n";
+
 		packet np{
-			data["command"].template get<std::string>(),
-			data["information"].template get<std::string>(),
-			0,
-			0
+			dd["command"].get<std::string>(),
+			dd["information"].get<std::string>(),
+			dd["mouseData"]["x"].get<int>(),
+			dd["mouseData"]["y"].get<int>()
 		};
 
 		//Check for information before we do anything, e.g. server shutting down
@@ -141,9 +160,14 @@ int network::reworkedClient(char ip[])
 			exit(0);
 		}
 
-		std::string test = data.dump(4);
+		printf("AA\n");
 
-		printf("%s", test.c_str());
+		dd.clear();
+		np.clear();
+
+		//std::string test = data.dump(4);
+
+		//printf("%s", test.c_str());
 	}
 
 	return 0;

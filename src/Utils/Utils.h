@@ -15,6 +15,7 @@ namespace networking
 	using json = nlohmann::json;
 
 	json recvData(SOCKET clientSocket);
+	std::string recvDataSTR(SOCKET clientSocket);
 	void sendData(SOCKET clientSocket, const json data);
 }
 

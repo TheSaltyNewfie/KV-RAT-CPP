@@ -7,12 +7,41 @@ using json = nlohmann::json;
 json networking::recvData(SOCKET clientSocket)
 {
 	char buffer[BUFFER_SIZE];
-	int bytesRead = recv(clientSocket, buffer, BUFFER_SIZE, 0);
-	if (bytesRead <= 0)
-		return "";
+    std::string jsonData;
 
-	json Data = json::parse(buffer);
+    while(true)
+    {
+        int bytesRead = recv(clientSocket, buffer, BUFFER_SIZE, 0);
+        if(bytesRead <= 0)
+        {
+            return json(nullptr);
+        }
+
+        jsonData.append(buffer, bytesRead);
+
+        try
+        {
+            json data = json::parse(jsonData.begin(), jsonData.end());
+            return data;
+        } catch (const json::parse_error& e)
+        {
+            //std::cout << "Error happen: " << e.what();
+            //break;
+        }
+    }
 }
+
+std::string networking::recvDataSTR(SOCKET clientSocket)
+{
+	//char buffer[BUFFER_SIZE];
+	//int bytesRead = recv(clientSocket, buffer, BUFFER_SIZE, 0);
+	//if (bytesRead <= 0)
+	//	return "";
+
+	//json Data = json::parse(buffer);
+    //return buffer;
+}
+
 
 void networking::sendData(SOCKET clientSocket, const json data)
 {

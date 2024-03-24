@@ -4,6 +4,26 @@ const int BUFFER_SIZE = 4096;
 
 using json = nlohmann::json;
 
+std::string compressData(const std::vector<char>& data)
+{
+    /*
+    std::stringstream compressedDataStream;
+
+    if(!gzip::compress(data.data(), data.size(), compressedDataStream))
+    {
+        std::cerr << "[!] Compression of data has failed\n";
+        return "";
+    }
+
+    std::string compressedData = compressedDataStream.str();
+
+    std::cout << "[+] Data compressed successfully!\n";
+
+    return compressedData;
+    */
+   return "";
+}
+
 json networking::recvData(SOCKET clientSocket)
 {
 	char buffer[BUFFER_SIZE];
@@ -30,18 +50,6 @@ json networking::recvData(SOCKET clientSocket)
         }
     }
 }
-
-std::string networking::recvDataSTR(SOCKET clientSocket)
-{
-	//char buffer[BUFFER_SIZE];
-	//int bytesRead = recv(clientSocket, buffer, BUFFER_SIZE, 0);
-	//if (bytesRead <= 0)
-	//	return "";
-
-	//json Data = json::parse(buffer);
-    //return buffer;
-}
-
 
 void networking::sendData(SOCKET clientSocket, const json data)
 {

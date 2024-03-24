@@ -73,22 +73,6 @@ void network::client(char ip[])
 }
 */
 
-struct packet
-{
-	std::string command;
-	std::string information;
-	int mx;
-	int my;
-
-	void clear()
-	{
-		command = "";
-		information = "";
-		mx = 0;
-		my = 0;
-	}
-};
-
 int network::reworkedClient(char ip[])
 {
 	printf("[+] Attempting connection to %s\n", ip);
@@ -142,18 +126,11 @@ int network::reworkedClient(char ip[])
 			return -1;
 		}
 
-		//std::cout << dd["command"].get<std::string>() << "\n";
 
-		packet np{
-			dd["command"].get<std::string>(),
-			dd["information"].get<std::string>(),
-			dd["mouseData"]["x"].get<int>(),
-			dd["mouseData"]["y"].get<int>()
-		};
+		networking::ServerPacket sp;
+		sp.parse(dd);
 
-		//Check for information before we do anything, e.g. server shutting down
-		//auto information = data["information"].template get<std::string>();
-		if(np.information == "Shutdown")
+		if(sp.information == "Shutdown")
 		{
 			closesocket(clientSocket);
 			WSACleanup();
@@ -163,11 +140,16 @@ int network::reworkedClient(char ip[])
 		printf("AA\n");
 
 		dd.clear();
-		np.clear();
+		sp.clear();
 
-		//std::string test = data.dump(4);
+		networking::ClientPacket clientPacket;
+		clientPacket.resp = "handled";
+		clientPacket.screenData = commands::Screenshot_C();
+		nlohmann::json clientData = clientPacket.create();
 
-		//printf("%s", test.c_str());
+		std::cout << clientData.dump(4) << "\n";
+
+		//networking::sendData(clientSocket, clientData);
 	}
 
 	return 0;

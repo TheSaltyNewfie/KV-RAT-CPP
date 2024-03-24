@@ -10,5 +10,16 @@ int onload()
 
 	int result = MessageBoxW(nullptr, wMessage.c_str(), wTitle.c_str(), MB_OKCANCEL | MB_ICONEXCLAMATION);
 
+	lua_State *L = luaL_newstate();
+
+	luaL_openlibs(L);
+
+	lua_register(L, "SDLWindow", SDLWindow);
+	lua_register(L, "moveMouse", moveMouse);
+
+	luaL_dofile(L, "script.lua");
+	
+	lua_close(L);
+
 	return result;
 }

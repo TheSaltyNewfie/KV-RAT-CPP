@@ -98,3 +98,74 @@ std::vector<char> commands::Screenshot_C()
     capture::screenshot();
     return file::readFile("screenshot.png");
 }
+
+void DrawPixel(HDC hdc, int x, int y, COLORREF color)
+{
+    SetPixel(hdc, x, y, color);
+    //pixelsRendered[x][y] = true;
+}
+
+void RemovePixel(HDC hdc, int x, int y)
+{
+    SetPixel(hdc, x, y, RGB(0, 0, 0));
+    //pixelsRendered[x][y] = true;
+}
+
+void commands::randomPixel(int x, int y, int radius)
+{
+    //bool pixelsRendered[GetSystemMetrics(SM_CXSCREEN)][GetSystemMetrics(SM_CYSCREEN)] = {false};
+
+    POINT mousepos;
+
+    const char class_name[] = "randomPixel";
+
+    WNDCLASS wc = {};
+
+    wc.lpfnWndProc = DefWindowProc;
+    wc.hInstance = GetModuleHandle(NULL);
+    wc.lpszClassName = class_name;
+
+    RegisterClass(&wc);
+
+    HWND hwnd = CreateWindowEx(
+        WS_EX_LAYERED | WS_EX_TRANSPARENT | WS_EX_TOPMOST,
+        class_name,
+        "Fook off m8",
+        WS_POPUP,
+        0, 0, GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN), // Position and size, in this case, the entire screen
+        NULL, 
+        NULL, 
+        GetModuleHandle(NULL), 
+        NULL
+    );
+
+    if (hwnd == NULL)
+    {
+        std::cerr << "[randomPixel] [!] Failed to create window.\n";
+        return;
+    }
+
+    SetLayeredWindowAttributes(hwnd, RGB(0, 0, 0), 0, LWA_COLORKEY);
+
+    ShowWindow(hwnd, SW_SHOWNORMAL);
+
+    HDC hdc = GetDC(hwnd);
+
+    DrawPixel(hdc, x, y, RGB(255, 0, 0));
+
+    ReleaseDC(hwnd, hdc);
+
+    while(true) 
+    {
+        GetCursorPos(&mousepos);
+        std::cout << "Mouse X: " << mousepos.x << " Mouse Y: " << mousepos.y << "\n";
+
+        int dx = mousepos.x - x;
+        int dy = mousepos.y - y;
+        if (sqrt(dx * dx + dy * dy) <= radius) {
+            break;
+        }
+    }
+
+    DestroyWindow(hwnd);
+}

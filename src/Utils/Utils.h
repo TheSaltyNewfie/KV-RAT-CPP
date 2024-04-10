@@ -8,8 +8,7 @@
 #include <mfapi.h>
 #include "../../external/json/json.hpp"
 #include "../../external/base64/base64_rfc4648.hpp"
-//#pragma comment(lib, "windowscodecs.lib")
-//#pragma comment(lib, "Shlwapi.lib")
+#include "../../external/gzip/zlib.h"
 
 namespace networking
 {
@@ -32,9 +31,10 @@ namespace networking
 			json data;
 			//std::string screenDataCompressed = compressData(screenData);
 			//std::string base64_data = base64::encode(screenDataCompressed.data(), screenDataCompressed.size());
-			//std::cout << convertedData << "\n";
+			//std::cout << screenDataCompressed << "\n";
+
 			data["response"] = resp;
-			data["screenData"]["binaryData"] = "base64_data";
+			data["screenData"]["binaryData"] = "Totally compressed";
 			return data;
 		}
 	};
@@ -64,7 +64,7 @@ namespace networking
 	};
 
 	
-
+	std::string compressData(const std::vector<char>& data);
 	json recvData(SOCKET clientSocket);
 	std::string compressData(const std::vector<char>& data);
 	void sendData(SOCKET clientSocket, const json data);

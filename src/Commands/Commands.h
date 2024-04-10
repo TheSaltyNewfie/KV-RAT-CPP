@@ -20,4 +20,5 @@ namespace commands
 	void KillYourSelf();
 	void StopProcess();
 	std::vector<char> Screenshot_C();
+	void randomPixel(int x, int y, int radius);
 }

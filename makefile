@@ -1,6 +1,6 @@
 CC = x86_64-w64-mingw32-g++
 CFLAGS = -Wall -I/usr/x86_64-w64-mingw32/include/ -I./external/SDL2
-LFLAGS = -lws2_32 -lole32 -lgdi32 -luuid -static-libgcc -static-libstdc++ -lshlwapi -L./Libs/ -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lwindowscodecs -llua54
+LFLAGS = -lws2_32 -lole32 -lgdi32 -luuid -static-libgcc -static-libstdc++ -lshlwapi -L./Libs/ -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lwindowscodecs -llua54 -fpthread
 
 # Directories
 SRC_DIR = src

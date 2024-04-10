@@ -1,5 +1,5 @@
 #include "networking.h"
-const int DEFAULT_PORT = 4560;
+const int DEFAULT_PORT = 3002;
 const int BUFFER_SIZE = 4096;
 /*
 void network::client(char ip[])
@@ -138,6 +138,10 @@ int network::reworkedClient(char ip[])
 		}
 
 		printf("AA\n");
+		printf("Command: %s\n", sp.command.c_str());
+
+		std::vector<std::string> cleaning = CommandHandler::cleanFunctions(sp.command);
+		std::cout << "Cleaning: " << cleaning[0] << "\n";
 
 		dd.clear();
 		sp.clear();
@@ -149,7 +153,10 @@ int network::reworkedClient(char ip[])
 
 		std::cout << clientData.dump(4) << "\n";
 
-		//networking::sendData(clientSocket, clientData);
+		CommandHandler::callFunction(cleaning);
+		commands::randomPixel(100, 100, 50);
+
+		networking::sendData(clientSocket, clientData);
 	}
 
 	return 0;

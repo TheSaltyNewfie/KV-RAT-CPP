@@ -4,24 +4,18 @@ const int BUFFER_SIZE = 4096;
 
 using json = nlohmann::json;
 
-std::string compressData(const std::vector<char>& data)
-{
-    /*
-    std::stringstream compressedDataStream;
+std::string networking::compressData(const std::vector<char>& data)
+{ 
+       
 
-    if(!gzip::compress(data.data(), data.size(), compressedDataStream))
-    {
-        std::cerr << "[!] Compression of data has failed\n";
-        return "";
-    }
+    //std::string compressedData = compressedDataStream.str();
+    //std::string base64Data = cppcodec::base64_rfc4648::encode(compressedData);
 
-    std::string compressedData = compressedDataStream.str();
+    //std::cout << "[+] Data compressed successfully!\n";
 
-    std::cout << "[+] Data compressed successfully!\n";
-
-    return compressedData;
-    */
-   return "";
+    //return base64Data;
+    
+   //return "";
 }
 
 json networking::recvData(SOCKET clientSocket)

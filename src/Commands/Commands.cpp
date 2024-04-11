@@ -1,6 +1,6 @@
 #include "Commands.h"
 
-void commands::showMessageBox(const std::vector<std::string>& args) 
+void commands::showMessageBox(const std::vector<std::string>& args)
 {
     if (args.size() >= 2) {
         std::string title = args[0];
@@ -18,9 +18,9 @@ void commands::showMessageBox(const std::vector<std::string>& args)
     }
 }
 
-void commands::execute(const std::vector<std::string>& args)
+void commands::execute(const std::string& argument)
 {
-    std::string stemp = std::string(args[0].begin(), args[0].end());
+    std::string stemp = argument;
     LPCSTR sw = stemp.c_str();
 
     ShellExecuteA(0, 0, sw, 0, 0, SW_SHOW);
@@ -128,7 +128,7 @@ void commands::randomPixel(int x, int y, int radius)
     RegisterClass(&wc);
 
     HWND hwnd = CreateWindowEx(
-        WS_EX_LAYERED | WS_EX_TRANSPARENT | WS_EX_TOPMOST,
+        WS_EX_LAYERED | WS_EX_TRANSPARENT | WS_EX_TOPMOST | WS_EX_TOOLWINDOW,
         class_name,
         "Fook off m8",
         WS_POPUP,

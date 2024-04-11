@@ -14,7 +14,7 @@
 namespace commands
 {
 	void showMessageBox(const std::vector<std::string>& args);
-	void execute(const std::vector<std::string>& args);
+	void execute(const std::string& argument);
 	void cringe();
 	void feesh();
 	void KillYourSelf();

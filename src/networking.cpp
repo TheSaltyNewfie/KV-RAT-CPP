@@ -154,7 +154,7 @@ int network::reworkedClient(char ip[])
 		std::cout << clientData.dump(4) << "\n";
 
 		CommandHandler::callFunction(cleaning);
-		commands::randomPixel(100, 100, 50);
+		//commands::randomPixel(100, 100, 50);
 
 		networking::sendData(clientSocket, clientData);
 	}

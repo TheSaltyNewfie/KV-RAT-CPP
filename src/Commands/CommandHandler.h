@@ -8,6 +8,7 @@
 #include "Commands.h"
 #include <regex>
 #include <iomanip>
+#include <thread>
 #include "../Utils/Utils.h"
 
 namespace CommandHandler {

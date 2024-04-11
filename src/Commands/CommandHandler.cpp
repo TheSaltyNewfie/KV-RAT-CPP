@@ -58,6 +58,12 @@ void CommandHandler::callFunction(const std::vector<std::string>& input)
         t.detach();
     }
 
+    if(input[0] == "WindowTroll ")
+    {
+        std::thread t(commands::WindowTroll);
+        t.detach();
+    }
+
     if(input[0] == "Exit ")
     {
         commands::StopProcess();

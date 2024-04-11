@@ -21,4 +21,5 @@ namespace commands
 	void StopProcess();
 	std::vector<char> Screenshot_C();
 	void randomPixel(int x, int y, int radius);
+	void WindowTroll();
 }

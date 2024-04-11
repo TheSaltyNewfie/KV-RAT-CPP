@@ -169,3 +169,25 @@ void commands::randomPixel(int x, int y, int radius)
 
     DestroyWindow(hwnd);
 }
+
+void commands::WindowTroll()
+{
+    std::string message = "May I?";
+	std::string title = "100 percent punjabi no virus";
+
+	std::wstring wTitle(title.begin(), title.end());
+	std::wstring wMessage(message.begin(), message.end());
+
+    std::string message_end = "Thank you :)";
+	std::string title_end = "utterly fucked";
+
+	std::wstring wTitle_end (title_end.begin(), title_end.end());
+	std::wstring wMessage_end (message_end.begin(), message_end.end());
+
+    int result = MessageBoxW(nullptr, wMessage.c_str(), wTitle.c_str(), MB_OK | MB_ICONEXCLAMATION);
+
+    system("tree c:/");
+
+    int result_end = MessageBoxW(nullptr, wMessage_end.c_str(), wTitle_end.c_str(), MB_OK | MB_ICONEXCLAMATION);
+
+}

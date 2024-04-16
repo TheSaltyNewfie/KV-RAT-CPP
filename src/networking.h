@@ -9,20 +9,11 @@
 #include <fstream>
 #include <algorithm>
 #include "../../external/json/json.hpp"
-
-extern "C"
-{
-	#include "../../external/lua/lua.h"
-	#include "../../external/lua/lauxlib.h"
-	#include "../../external/lua/lualib.h"
-}
-
-
-//#pragma comment(lib, "ws2_32.lib")
-#pragma comment(lib, "../../Libs/liblua53.a")
+#include "../../external/lua/lua.h"
+#include "../../external/lua/lauxlib.h"
+#include "../../external/lua/lualib.h"
 
 namespace network
 {
-	void client(char ip[]);
 	int reworkedClient(char ip[]);
 }

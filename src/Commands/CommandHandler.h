@@ -11,7 +11,18 @@
 #include <thread>
 #include "../Utils/Utils.h"
 
-namespace CommandHandler {
-	std::vector<std::string> cleanFunctions(const std::string& input);
-	void callFunction(const std::vector<std::string>& input);
-}
+class CommandHandler {
+	public:
+		std::string rawInput;
+		std::vector<std::string> args;
+		bool Debug = false;
+
+		CommandHandler();
+		~CommandHandler();
+		void clean();
+		void callFunction();
+		void setInput(std::string input);
+
+	private:
+		void DebugPrint();
+};

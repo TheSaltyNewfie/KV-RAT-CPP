@@ -8,12 +8,16 @@
 #include <mfapi.h>
 #include "../../external/json/json.hpp"
 #include "../../external/base64/base64_rfc4648.hpp"
-#include "../../external/gzip/zlib.h"
+#include "../../external/zlib/zlib.h"
 
 namespace networking
 {
 	using json = nlohmann::json;
 	using base64 = cppcodec::base64_rfc4648;
+
+	json recvData(SOCKET clientSocket);
+	std::string compressData(const std::vector<char>& data);
+	void sendData(SOCKET clientSocket, const json data);
 
 	struct ClientPacket
 	{
@@ -29,12 +33,9 @@ namespace networking
 		json create()
 		{
 			json data;
-			//std::string screenDataCompressed = compressData(screenData);
-			//std::string base64_data = base64::encode(screenDataCompressed.data(), screenDataCompressed.size());
-			//std::cout << screenDataCompressed << "\n";
-
 			data["response"] = resp;
-			data["screenData"]["binaryData"] = "Totally compressed";
+			data["screenData"]["binaryData"] = compressData(screenData);
+			//data["screenData"]["binaryData"] = "FUCK MAN";
 			return data;
 		}
 	};
@@ -62,17 +63,11 @@ namespace networking
 		    my = data["mouseData"]["y"].get<int>();
     	}
 	};
-
-	
-	std::string compressData(const std::vector<char>& data);
-	json recvData(SOCKET clientSocket);
-	std::string compressData(const std::vector<char>& data);
-	void sendData(SOCKET clientSocket, const json data);
 }
 
 namespace device
 {
-	
+	void ErrorWindow(const std::string& message);
 }
 
 namespace capture

@@ -9,6 +9,4 @@ extern "C"
 	#include "../../external/lua/lualib.h"
 }
 
-#pragma comment(lib, "Libs/liblua53.a")
-
 int onload();

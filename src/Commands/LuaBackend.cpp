@@ -168,7 +168,7 @@ int LuaBackend::moveMouse(lua_State* L)
     int deltaX = newX - currentPos.x;
     int deltaY = newY - currentPos.y;
 
-    double distance = sqrt(deltaX * deltaX + deltaY * deltaY);
+    //double distance = sqrt(deltaX * deltaX + deltaY * deltaY);
     int numSteps = durationMillis /10;
 
     double stepX = static_cast<double>(deltaX) / numSteps;

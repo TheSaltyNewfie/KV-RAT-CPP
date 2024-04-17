@@ -36,7 +36,6 @@ namespace networking
 			json data;
 			data["response"] = resp;
 			data["screenData"]["binaryData"] = compressData(screenData);
-			//data["screenData"]["binaryData"] = "FUCK MAN";
 			return data;
 		}
 	};

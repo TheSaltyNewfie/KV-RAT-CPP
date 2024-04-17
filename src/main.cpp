@@ -1,5 +1,5 @@
 #include <iostream>
-#include "networking.h"
+#include "Networking/Networking.h"
 #include "Commands/Commands.h"
 #include "Commands/CommandHandler.h"
 #include <../../external/SDL2/SDL.h>
@@ -29,7 +29,8 @@ int main(int argc, char** argv)
     else
     {
         LuaBackend lb("script.lua");
-        network::reworkedClient(argv[1]);
+        Network client(argv[1], 3002);
+        client.start();
     }
     
     return 0;

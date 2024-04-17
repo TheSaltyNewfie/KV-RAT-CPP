@@ -6,6 +6,7 @@
 #include <../../external/SDL2/SDL.h>
 #include <../../external/SDL2/SDL_image.h>
 #include <../../external/SDL2/SDL_mixer.h>
+#include "Commands/LuaBackend.h"
 
 int main(int argc, char** argv)
 {

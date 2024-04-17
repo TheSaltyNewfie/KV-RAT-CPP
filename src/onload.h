@@ -1,7 +1,7 @@
 #pragma once
 #include <windows.h>
 #include <iostream>
-#include "Commands/LuaCommands.h"
+#include "Commands/LuaBackend.h"
 extern "C"
 {
 	#include "../../external/lua/lua.h"

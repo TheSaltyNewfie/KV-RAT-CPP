@@ -79,7 +79,7 @@ json networking::recvData(SOCKET clientSocket)
 void networking::sendData(SOCKET clientSocket, const json data)
 {
 	std::string sdata = data.dump();
-	int bytesSent = send(clientSocket, sdata.c_str(), static_cast<int>(sdata.length()), 0);
+	send(clientSocket, sdata.c_str(), static_cast<long long>(sdata.length()), 0);
 }
 
 void capture::SaveScreenshotToWorkingDirectory(IWICBitmapSource* bitmap)

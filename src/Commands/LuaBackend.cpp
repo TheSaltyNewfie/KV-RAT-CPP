@@ -1,7 +1,51 @@
-#include "LuaCommands.h"
+#include "LuaBackend.h"
 
-int SDLWindow(lua_State *L)
+LuaBackend::LuaBackend(std::string Script)
 {
+    std::cout << "[LuaBackend] [+] Created Instance!\n";
+    std::cout << "[LuaBackend] [+] Loading script: " << Script << "\n";
+    L = luaL_newstate();
+    luaL_openlibs(L);
+
+    lua_pushcfunction(L, LuaBackend::SDLWindow);
+    lua_setglobal(L, "SDLWindow");
+
+    lua_pushcfunction(L, LuaBackend::moveMouse);
+    lua_setglobal(L, "moveMouse");
+
+    lua_pushcfunction(L, LuaBackend::getMouseX);
+    lua_setglobal(L, "getMouseX");
+
+    lua_pushcfunction(L, LuaBackend::getMouseY);
+    lua_setglobal(L, "getMouseY");
+
+    lua_pushcfunction(L, LuaBackend::setMouseX);
+    lua_setglobal(L, "setMouseX");
+
+    lua_pushcfunction(L, LuaBackend::setMouseY);
+    lua_setglobal(L, "setMouseY");
+
+    lua_pushcfunction(L, LuaBackend::getScreenWidth);
+    lua_setglobal(L, "getScreenWidth");
+    
+    lua_pushcfunction(L, LuaBackend::getScreenHeight);
+    lua_setglobal(L, "getScreenHeight");
+
+    lua_pushcfunction(L, LuaBackend::getTime);
+    lua_setglobal(L, "getTime");
+
+    luaL_dofile(L, Script.c_str());
+}
+
+LuaBackend::~LuaBackend()
+{
+    std::cout << "[LuaBackend] [+] Destroyed Instance!\n";
+    lua_close(L);
+}
+
+int LuaBackend::SDLWindow(lua_State* L)
+{
+    std::cout << "[LuaBackend] [~] SDLWindow is soon deprecated\n";
     const int WINDOW_WIDTH = luaL_checknumber(L, 1);
     const int WINDOW_HEIGHT = luaL_checknumber(L, 2);
     const std::string WindowName = luaL_checkstring(L, 3);
@@ -104,8 +148,9 @@ int SDLWindow(lua_State *L)
     return 0;
 }
 
-int moveMouse(lua_State *L)
+int LuaBackend::moveMouse(lua_State* L)
 {
+    std::cout << "[LuaBackend] [~] moveMouse is soon deprecated\n";
     int newX = luaL_checkinteger(L, 1);
     int newY = luaL_checkinteger(L, 2);
     int durationMillis = luaL_checkinteger(L, 3);
@@ -132,4 +177,77 @@ int moveMouse(lua_State *L)
     }
 
     SetCursorPos(newX, newY);
+
+    return 0;
+}
+
+int LuaBackend::getMouseX(lua_State* L)
+{
+    POINT currentPos;
+    GetCursorPos(&currentPos);
+
+    lua_pushnumber(L, currentPos.x);
+
+    return 1;
+}
+
+int LuaBackend::getMouseY(lua_State* L)
+{
+    POINT currentPos;
+    GetCursorPos(&currentPos);
+
+    lua_pushnumber(L, currentPos.y);
+
+    return 1;
+}
+
+int LuaBackend::setMouseX(lua_State* L)
+{
+    int newX = luaL_checkinteger(L, 1);
+
+    POINT currentPos;
+    GetCursorPos(&currentPos);
+
+    SetCursorPos(newX, currentPos.y);
+
+    return 0;
+}
+
+int LuaBackend::setMouseY(lua_State* L)
+{
+    int newY = luaL_checkinteger(L, 1);
+
+    POINT currentPos;
+    GetCursorPos(&currentPos);
+
+    SetCursorPos(currentPos.x, newY);
+
+    return 0;
+}
+
+int LuaBackend::getScreenWidth(lua_State* L)
+{
+    lua_pushnumber(L, GetSystemMetrics(SM_CXSCREEN));
+
+    return 0;
+}
+
+int LuaBackend::getScreenHeight(lua_State* L)
+{
+    lua_pushnumber(L, GetSystemMetrics(SM_CYSCREEN));
+
+    return 0;
+}
+
+int LuaBackend::getTime(lua_State* L)
+{
+    time_t now = time(0);
+    struct tm tstruct;
+    char buf[80];
+    tstruct = *localtime(&now);
+    strftime(buf, sizeof(buf), "%Y-%m-%d.%X", &tstruct);
+
+    lua_pushstring(L, buf);
+
+    return 0;
 }

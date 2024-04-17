@@ -11,7 +11,8 @@
 #include <thread>
 #include "../Utils/Utils.h"
 
-class CommandHandler {
+class CommandHandler 
+{
 	public:
 		std::string rawInput;
 		std::vector<std::string> args;

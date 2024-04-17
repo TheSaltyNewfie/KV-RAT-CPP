@@ -2,11 +2,11 @@
 #include "networking.h"
 #include "Commands/Commands.h"
 #include "Commands/CommandHandler.h"
-#include "onload.h"
 #include <../../external/SDL2/SDL.h>
 #include <../../external/SDL2/SDL_image.h>
 #include <../../external/SDL2/SDL_mixer.h>
 #include "Commands/LuaBackend.h"
+#include <cstring>
 
 int main(int argc, char** argv)
 {
@@ -16,13 +16,21 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    int do_init = onload();
+    int result = MessageBoxW(nullptr, L"KV-RAT has started, but nothing has initalized.\nContinue?", L"KV-RAT", MB_OKCANCEL | MB_ICONEXCLAMATION);
+    if (result == 2)
+    {
+        return 0;
+    }
 
-    if (do_init == 2)
-        exit(0);
-
-    std::string ip = argv[1];
-    network::reworkedClient(argv[1]);
+    if(strcmp(argv[1], "-l") == 0)
+    {
+        LuaBackend lb("script.lua");
+    }
+    else
+    {
+        LuaBackend lb("script.lua");
+        network::reworkedClient(argv[1]);
+    }
     
     return 0;
 }

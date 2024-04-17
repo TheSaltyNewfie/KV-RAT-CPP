@@ -9,7 +9,7 @@ UTIL_DIR = $(SRC_DIR)/Utils
 CMD_DIR = $(SRC_DIR)/Commands
 
 # Source files
-SRCS = $(SRC_DIR)/main.cpp $(SRC_DIR)/networking.cpp $(UTIL_DIR)/Utils.cpp $(CMD_DIR)/Commands.cpp $(CMD_DIR)/CommandHandler.cpp $(SRC_DIR)/onload.cpp $(CMD_DIR)/LuaBackend.cpp
+SRCS = $(SRC_DIR)/main.cpp $(SRC_DIR)/networking.cpp $(UTIL_DIR)/Utils.cpp $(CMD_DIR)/Commands.cpp $(CMD_DIR)/CommandHandler.cpp $(CMD_DIR)/LuaBackend.cpp
 OBJS = $(addprefix $(BUILD_DIR)/, $(notdir $(SRCS:.cpp=.o)))
 
 .PHONY: directories clean all post-build

@@ -75,7 +75,13 @@
     "span": "cpp",
     "stdfloat": "cpp",
     "valarray": "cpp",
-    "variant": "cpp"
+    "variant": "cpp",
+    "cfenv": "cpp",
+    "complex": "cpp",
+    "set": "cpp",
+    "source_location": "cpp",
+    "shared_mutex": "cpp",
+    "typeindex": "cpp"
   },
   "C_Cpp_Runner.msvcBatchPath": "",
   "C_Cpp_Runner.cCompilerPath": "gcc",

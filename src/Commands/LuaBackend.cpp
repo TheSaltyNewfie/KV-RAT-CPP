@@ -2,50 +2,57 @@
 
 LuaBackend::LuaBackend(std::string Script)
 {
-    std::cout << "[LuaBackend] [+] Created Instance!\n";
-    std::cout << "[LuaBackend] [+] Loading script: " << Script << "\n";
+    device::print("[LuaBackend] [+] Created Instance!");
+    device::print("[LuaBackend] [+] Loading Script: %s", Script.c_str());
     L = luaL_newstate();
     luaL_openlibs(L);
 
-    lua_pushcfunction(L, LuaBackend::SDLWindow);
+    lua_pushcfunction(L, this->SDLWindow);
     lua_setglobal(L, "SDLWindow");
 
-    lua_pushcfunction(L, LuaBackend::moveMouse);
+    lua_pushcfunction(L, this->moveMouse);
     lua_setglobal(L, "moveMouse");
 
-    lua_pushcfunction(L, LuaBackend::getMouseX);
+    lua_pushcfunction(L, this->getMouseX);
     lua_setglobal(L, "getMouseX");
 
-    lua_pushcfunction(L, LuaBackend::getMouseY);
+    lua_pushcfunction(L, this->getMouseY);
     lua_setglobal(L, "getMouseY");
 
-    lua_pushcfunction(L, LuaBackend::setMouseX);
+    lua_pushcfunction(L, this->setMouseX);
     lua_setglobal(L, "setMouseX");
 
-    lua_pushcfunction(L, LuaBackend::setMouseY);
+    lua_pushcfunction(L, this->setMouseY);
     lua_setglobal(L, "setMouseY");
 
-    lua_pushcfunction(L, LuaBackend::getScreenWidth);
+    lua_pushcfunction(L, this->getScreenWidth);
     lua_setglobal(L, "getScreenWidth");
     
-    lua_pushcfunction(L, LuaBackend::getScreenHeight);
+    lua_pushcfunction(L, this->getScreenHeight);
     lua_setglobal(L, "getScreenHeight");
 
-    lua_pushcfunction(L, LuaBackend::getTime);
+    lua_pushcfunction(L, this->getTime);
     lua_setglobal(L, "getTime");
 
+    lua_pushcfunction(L, this->getDay);
+    lua_setglobal(L, "getDay");
+
     luaL_dofile(L, Script.c_str());
+
+    device::print("[LuaBackend] [//] Checking Stack...");
+    int result = lua_checkstack(L, 1);
+    device::print("[LuaBackend] [//] Stack Check: %d", result);
 }
 
 LuaBackend::~LuaBackend()
 {
-    std::cout << "[LuaBackend] [+] Destroyed Instance!\n";
+    device::print("[LuaBackend] [+] Destroying Instance!");
     lua_close(L);
 }
 
 int LuaBackend::SDLWindow(lua_State* L)
 {
-    std::cout << "[LuaBackend] [~] SDLWindow is soon deprecated\n";
+    device::print("[LuaBackend] [~] SDLWindow is soon deprecated");
     const int WINDOW_WIDTH = luaL_checknumber(L, 1);
     const int WINDOW_HEIGHT = luaL_checknumber(L, 2);
     const std::string WindowName = luaL_checkstring(L, 3);
@@ -150,7 +157,7 @@ int LuaBackend::SDLWindow(lua_State* L)
 
 int LuaBackend::moveMouse(lua_State* L)
 {
-    std::cout << "[LuaBackend] [~] moveMouse is soon deprecated\n";
+    device::print("[LuaBackend] [~] moveMouse is soon deprecated");
     int newX = luaL_checkinteger(L, 1);
     int newY = luaL_checkinteger(L, 2);
     int durationMillis = luaL_checkinteger(L, 3);
@@ -241,13 +248,28 @@ int LuaBackend::getScreenHeight(lua_State* L)
 
 int LuaBackend::getTime(lua_State* L)
 {
-    time_t now = time(0);
-    struct tm tstruct;
-    char buf[80];
-    tstruct = *localtime(&now);
-    strftime(buf, sizeof(buf), "%Y-%m-%d.%X", &tstruct);
+    // Get the current time
+    auto now = std::chrono::system_clock::now();
+    auto duration = now.time_since_epoch();
+    auto millis = std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
 
-    lua_pushstring(L, buf);
+    // Push the time onto the Lua stack
+    lua_pushinteger(L, millis);
+
+    // Return the number of results
+    return 1;
+}
+
+int LuaBackend::getDay(lua_State* L)
+{
+    std::time_t currentTime = std::time(nullptr);
+
+    struct tm* timeInfo = std::localtime(&currentTime);
+
+    char formattedTime[100];
+    strftime(formattedTime, sizeof(formattedTime), "%d", timeInfo);
+
+    lua_pushstring(L, static_cast<std::string>(std::asctime(std::localtime(&currentTime))).c_str());
 
     return 0;
 }

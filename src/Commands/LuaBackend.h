@@ -11,6 +11,7 @@
 #include <../../external/SDL2/SDL_mixer.h>
 #include <../../external/SDL2/SDL_ttf.h>
 #include "../Utils/Utils.h"
+#include <ctime>
 
 extern "C"
 {
@@ -37,6 +38,7 @@ class LuaBackend
         static int getScreenHeight(lua_State* L); // Returns int
 
         static int getTime(lua_State* L); // Returns string
+        static int getDay(lua_State* L); // Returns string
     private:
         lua_State* L;
 };

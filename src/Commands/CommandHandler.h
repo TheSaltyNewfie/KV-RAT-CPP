@@ -23,6 +23,7 @@ class CommandHandler
 		void clean();
 		void callFunction();
 		void setInput(std::string input);
+		void clear();
 
 	private:
 		void DebugPrint();

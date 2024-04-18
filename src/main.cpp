@@ -7,6 +7,7 @@
 #include <../../external/SDL2/SDL_mixer.h>
 #include "Commands/LuaBackend.h"
 #include <cstring>
+#include <thread>
 
 int main(int argc, char** argv)
 {
@@ -28,9 +29,21 @@ int main(int argc, char** argv)
     }
     else
     {
-        LuaBackend lb("script.lua");
         Network client(argv[1], 3002);
         client.start();
+        //client.udp_datastream();
+
+        /*
+        std::thread LuaThread([]() {
+            LuaBackend lb("script.lua");
+        });
+
+        std::thread ClientThread([=]() {
+            Network client(argv[1], 3002);
+            client.start();
+            client.udp_datastream();
+        });
+        */
     }
     
     return 0;

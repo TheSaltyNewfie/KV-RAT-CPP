@@ -6,6 +6,7 @@ Network::Network(char ip[], int port)
 {
     this->port = port;
     this->ip = ip;
+	this->udpPort = 3333;
 	this->bufferSize = 1024;
 	device::print("[Network] [+] Created Instance!");
 }
@@ -21,19 +22,19 @@ Network::~Network()
 struct Network::ClientPacket
 {
 	std::string resp;
-	std::vector<char> screenData;
+	std::string information;
 
 	void clear()
 	{
 		resp = "";
-		screenData.clear();
+		information = "";
 	}
 
 	json create()
 	{
 		json data;
 		data["response"] = resp;
-		data["screenData"]["binaryData"] = compress(screenData);
+		data["information"] = information;
 		return data;
 	}
 };
@@ -60,6 +61,16 @@ struct Network::ServerPacket
 	    mx = data["mouseData"]["x"].get<int>();
 	    my = data["mouseData"]["y"].get<int>();
     }
+};
+
+struct Network::UDPPacket
+{
+	json create(std::vector<char> screenData)
+	{
+		json data;
+		data["screenData"] = compress(screenData);
+		return data;
+	}
 };
 
 void Network::start()
@@ -123,7 +134,7 @@ void Network::start()
 
 		ClientPacket clientPacket;
 		clientPacket.resp = "handled";
-		clientPacket.screenData = commands::Screenshot_C();
+		clientPacket.information = "Some goodies will be here later";
 		json clientData = clientPacket.create();
 
 		commandHandler.callFunction();
@@ -132,6 +143,38 @@ void Network::start()
 		device::print("[Network] [+] Sending data...");
 		this->send_(clientSocket, clientData);
 		device::print("[Network] [+] Data sent!\n");
+	}
+
+	closesocket(clientSocket);
+	WSACleanup();
+}
+
+void Network::udp_datastream()
+{
+	device::print("[UDP Datastream] [+] Connecting to %s:%d...", ip, udpPort);
+
+	WSADATA wsaData;
+	WSAStartup(MAKEWORD(2, 2), &wsaData);
+
+	SOCKET clientSocket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+
+	sockaddr_in serverAddress;
+	serverAddress.sin_family = AF_INET;
+	serverAddress.sin_addr.s_addr = inet_addr(ip);
+	serverAddress.sin_port = htons(udpPort);
+
+	device::print("[UDP Datastream] [+] Connected to %s:%d! Maybe?", ip, udpPort);
+
+	UDPPacket udpPacket;
+
+	while(true)
+	{
+		device::print("[UDP Datastream] [+] Preparing data...");
+		json data = udpPacket.create(commands::Screenshot_C());
+		Sleep(67); //15-ish fps
+		device::print("[UDP Datastream] [+] Sending data...");
+		this->udpSend(clientSocket, serverAddress, data);
+		device::print("[UDP Datastream] [+] Data sent!\n");
 	}
 
 	closesocket(clientSocket);
@@ -167,6 +210,37 @@ void Network::send_(SOCKET clientSocket, const json data)
 {
 	std::string sdata = data.dump();
 	send(clientSocket, sdata.c_str(), static_cast<long long>(sdata.length()), 0);
+}
+
+void Network::udpSend(SOCKET clientSocket, sockaddr_in server, const json data)
+{
+	std::string sdata = data.dump();
+	sendto(clientSocket, sdata.c_str(), static_cast<long long>(sdata.length()), 0, (sockaddr*)&server, sizeof(server));
+}
+
+json Network::udpRecv(SOCKET clientSocket, sockaddr_in server)
+{
+	buffer = new char[bufferSize];
+
+	std::string jsonData;
+
+	while(true)
+	{
+		int bytesRead = recvfrom(clientSocket, buffer, 1024, 0, (sockaddr*)&server, NULL);
+		if(bytesRead <= 0)
+		{
+			return json(nullptr);
+		}
+
+		jsonData.append(buffer, bytesRead);
+
+		try
+		{
+			json data = json::parse(jsonData.begin(), jsonData.end());
+			delete[] buffer; // I think this is in the right spot?
+			return data;
+		} catch (const json::parse_error& e){}
+	}
 }
 
 std::string Network::compress(const std::vector<char>& data)

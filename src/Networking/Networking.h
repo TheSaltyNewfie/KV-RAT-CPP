@@ -22,10 +22,10 @@ class Network
         ~Network();
 
         void start();
-        void udp_datastream();
+        void tcp_datastream();
 
-        json recv_(SOCKET clientSocket);
-        void send_(SOCKET clientSocket, const json data);
+        json Recv(SOCKET clientSocket);
+        void Send(SOCKET clientSocket, const json data);
         static std::string compress(const std::vector<char>& data);
         
         void udpSend(SOCKET clientSocket, sockaddr_in server, const json data);

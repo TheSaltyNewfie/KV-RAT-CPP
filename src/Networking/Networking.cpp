@@ -6,8 +6,8 @@ Network::Network(char ip[], int port)
 {
     this->port = port;
     this->ip = ip;
-	this->udpPort = 3333;
-	this->bufferSize = 1024;
+	this->udpPort = 3003;
+	this->bufferSize = 65507;
 	device::print("[Network] [+] Created Instance!");
 }
 
@@ -65,7 +65,9 @@ struct Network::ServerPacket
 
 struct Network::UDPPacket
 {
-	json create(std::vector<char> screenData)
+	std::vector<char> screenData;
+
+	json create()
 	{
 		json data;
 		data["screenData"] = compress(screenData);
@@ -108,7 +110,7 @@ void Network::start()
 
 	while(true)
 	{
-		json data = this->recv_(clientSocket);
+		json data = this->Recv(clientSocket);
 
 		device::print("[Network] [+] Server: %s", data.dump());
 
@@ -141,7 +143,7 @@ void Network::start()
 		commandHandler.clear();
 
 		device::print("[Network] [+] Sending data...");
-		this->send_(clientSocket, clientData);
+		this->Send(clientSocket, clientData);
 		device::print("[Network] [+] Data sent!\n");
 	}
 
@@ -149,39 +151,64 @@ void Network::start()
 	WSACleanup();
 }
 
-void Network::udp_datastream()
+void Network::tcp_datastream()
 {
-	device::print("[UDP Datastream] [+] Connecting to %s:%d...", ip, udpPort);
+	// Everything here is going to be TCP until I can get a reasonable UDP datastream working
+	device::print("[TCP Datastream] [//] TCP datastream is temporary!");
+	device::print("[TCP Datastream] [+] Connecting to %s:%d...", ip, udpPort);
 
 	WSADATA wsaData;
-	WSAStartup(MAKEWORD(2, 2), &wsaData);
+	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
+	{
+		device::ErrorWindow("Failed to start winsock.");
+	}
 
-	SOCKET clientSocket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+	SOCKET clientSocket = socket(AF_INET, SOCK_STREAM, 0);
+	if (clientSocket == INVALID_SOCKET)
+	{
+		device::ErrorWindow("Failed to create client socket.");
+		WSACleanup();
+	}
 
 	sockaddr_in serverAddress;
 	serverAddress.sin_family = AF_INET;
 	serverAddress.sin_addr.s_addr = inet_addr(ip);
 	serverAddress.sin_port = htons(udpPort);
 
-	device::print("[UDP Datastream] [+] Connected to %s:%d! Maybe?", ip, udpPort);
+	if (connect(clientSocket, reinterpret_cast<sockaddr*>(&serverAddress), sizeof(serverAddress)) == SOCKET_ERROR)
+	{
+		device::ErrorWindow("Failed to connect to the server.");
+		closesocket(clientSocket);
+		WSACleanup();
+	}
+
+	device::print("[TCP Datastream] [+] Connected to %s:%d! Maybe?", ip, udpPort);
 
 	UDPPacket udpPacket;
 
 	while(true)
 	{
 		device::print("[UDP Datastream] [+] Preparing data...");
-		json data = udpPacket.create(commands::Screenshot_C());
-		Sleep(67); //15-ish fps
+		udpPacket.screenData = commands::Screenshot_C();
+		json data = udpPacket.create();
+		Sleep(1000); //15-ish fps
 		device::print("[UDP Datastream] [+] Sending data...");
-		this->udpSend(clientSocket, serverAddress, data);
+
+		std::cout << "Data: " << data.dump() << "\n";
+
+		device::print("[UDP Datastream] [//] Data: %s", data.dump().c_str());
+
+		this->Send(clientSocket, data);
 		device::print("[UDP Datastream] [+] Data sent!\n");
+
+		auto temp = this->Recv(clientSocket);
 	}
 
 	closesocket(clientSocket);
 	WSACleanup();
 }
 
-json Network::recv_(SOCKET clientSocket)
+json Network::Recv(SOCKET clientSocket)
 {
 	buffer = new char[bufferSize];
 
@@ -206,7 +233,7 @@ json Network::recv_(SOCKET clientSocket)
     }
 }
 
-void Network::send_(SOCKET clientSocket, const json data)
+void Network::Send(SOCKET clientSocket, const json data)
 {
 	std::string sdata = data.dump();
 	send(clientSocket, sdata.c_str(), static_cast<long long>(sdata.length()), 0);

@@ -208,8 +208,8 @@ void capture::screenshot()
     BitBlt(hCaptureDC, 0, 0, screenWidth, screenHeight, hDesktopDC, 0, 0, SRCCOPY);
 
     // Create a new bitmap with lower resolution
-    int newWidth = screenWidth / 1; // adjust as needed
-    int newHeight = screenHeight / 1; // adjust as needed
+    int newWidth = screenWidth / 2; // adjust as needed
+    int newHeight = screenHeight / 2; // adjust as needed
     HBITMAP hLowResBitmap = CreateCompatibleBitmap(hDesktopDC, newWidth, newHeight);
     HDC hLowResDC = CreateCompatibleDC(hDesktopDC);
     SelectObject(hLowResDC, hLowResBitmap);

@@ -30,8 +30,8 @@ int main(int argc, char** argv)
     else
     {
         Network client(argv[1], 3002);
-        client.start();
-        //client.udp_datastream();
+        //client.start();
+        client.tcp_datastream();
 
         /*
         std::thread LuaThread([]() {

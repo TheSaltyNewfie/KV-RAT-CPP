@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": false,
-      "cwd": "/home/tobyd/Documents/Projects/kv-rat-cpp",
-      "program": "/home/tobyd/Documents/Projects/kv-rat-cpp/build/Debug/outDebug",
+      "cwd": "/home/tdodge/Desktop/Programming/KV-RAT-CPP",
+      "program": "/home/tdodge/Desktop/Programming/KV-RAT-CPP/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

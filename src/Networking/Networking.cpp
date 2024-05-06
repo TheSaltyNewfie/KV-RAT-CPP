@@ -7,7 +7,7 @@ Network::Network(char ip[], int port)
     this->port = port;
     this->ip = ip;
 	this->udpPort = 3003;
-	this->bufferSize = 8192;
+	this->bufferSize = 1024;
 	device::print("[Network] [+] Created Instance!");
 }
 
@@ -110,7 +110,9 @@ void Network::start()
 
 	while(true)
 	{
+		device::print("[Network] [+] Receiving data...");
 		json data = this->Recv(clientSocket);
+		device::print("[Network] [+] GOT data...");
 
 		device::print("[Network] [+] Server: %s", data.dump());
 
@@ -213,10 +215,13 @@ json Network::Recv(SOCKET clientSocket)
     while(true)
     {
         int bytesRead = recv(clientSocket, buffer, 1024, 0);
+
         if(bytesRead <= 0)
         {
             return json(nullptr);
         }
+
+		device::print("[Network] [+] Bytes read: %s", jsonData.c_str());
 
         jsonData.append(buffer, bytesRead);
 

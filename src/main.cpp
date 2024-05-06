@@ -28,25 +28,24 @@ int main(int argc, char** argv)
         LuaBackend lb("script.lua");
     }
     else
-    {
+    {    
         Network client(argv[1], 3002);
-        //client.start();
-        client.tcp_datastream();
 
-        
-        std::thread LuaThread([]() {
+        std::thread LuaThread([&]() {
             LuaBackend lb("script.lua");
         });
 
-        std::thread ClientThread([=]() {
-            Network client(argv[1], 3002);
+        std::thread ClientThread([&]() {
             client.start();
-            //client.tcp_datastream();
+        });
+
+        std::thread DataStream([&]() {
+            client.tcp_datastream();
         });
 
         LuaThread.join();
         ClientThread.join();
-        
+        DataStream.join();   
     }
     
     return 0;

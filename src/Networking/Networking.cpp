@@ -7,7 +7,7 @@ Network::Network(char ip[], int port)
     this->port = port;
     this->ip = ip;
 	this->udpPort = 3003;
-	this->bufferSize = 65507;
+	this->bufferSize = 1024;
 	device::print("[Network] [+] Created Instance!");
 }
 
@@ -110,7 +110,9 @@ void Network::start()
 
 	while(true)
 	{
+		device::print("[Network] [+] Receiving data...");
 		json data = this->Recv(clientSocket);
+		device::print("[Network] [+] GOT data...");
 
 		device::print("[Network] [+] Server: %s", data.dump());
 
@@ -188,18 +190,14 @@ void Network::tcp_datastream()
 
 	while(true)
 	{
-		device::print("[UDP Datastream] [+] Preparing data...");
+		//device::print("[UDP Datastream] [+] Preparing data...");
 		udpPacket.screenData = commands::Screenshot_C();
 		json data = udpPacket.create();
 		Sleep(1000); //15-ish fps
-		device::print("[UDP Datastream] [+] Sending data...");
-
-		std::cout << "Data: " << data.dump() << "\n";
-
-		device::print("[UDP Datastream] [//] Data: %s", data.dump().c_str());
+		//device::print("[UDP Datastream] [+] Sending data...");
 
 		this->Send(clientSocket, data);
-		device::print("[UDP Datastream] [+] Data sent!\n");
+		//device::print("[UDP Datastream] [+] Data sent!\n");
 
 		auto temp = this->Recv(clientSocket);
 	}
@@ -217,10 +215,13 @@ json Network::Recv(SOCKET clientSocket)
     while(true)
     {
         int bytesRead = recv(clientSocket, buffer, 1024, 0);
+
         if(bytesRead <= 0)
         {
             return json(nullptr);
         }
+
+		device::print("[Network] [+] Bytes read: %s", jsonData.c_str());
 
         jsonData.append(buffer, bytesRead);
 

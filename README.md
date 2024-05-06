@@ -5,10 +5,6 @@ What exactly is it
 ---
 KV-RAT-CPP is a remote access trojan (RAT) developed solely for educational and demonstration purposes. Inspired by the famous MEMZ virus, KV-RAT-CPP is designed as a 'joke virus', showcasing programming skills and understanding of computer networks without causing actual harm.
 
-Warning
----
-This branch is the experiemental 2.0 code, it will *often* break and not work as expected and will contain random variable names, tread carefully in this minefield of code.
-
 How to build
 ---
 To build this virus, you will need a linux install (WSL or any other distro)

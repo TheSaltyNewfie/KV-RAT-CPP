@@ -37,6 +37,12 @@ struct Network::ClientPacket
 		data["information"] = information;
 		return data;
 	}
+
+	friend std::ostream& operator<<(std::ostream& os, const ClientPacket& cp) 
+	{
+        os << "Response: " << cp.resp << ", Information: " << cp.information;
+        return os;
+    }
 };
 
 struct Network::ServerPacket

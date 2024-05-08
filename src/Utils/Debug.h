@@ -18,7 +18,7 @@ class Debug
 
         Debug();
         ~Debug();
-        void init();
+        int init();
 
     private:
         SDL_Window* window;

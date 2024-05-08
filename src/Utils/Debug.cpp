@@ -78,10 +78,30 @@ void Debug::Gui()
     ImGui::Begin("KV-RAT Debug Tools", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoTitleBar);
     ImGui::SetWindowSize(ImVec2(width, height));
     {
-        ImGui::Text("Welcome to the KV-RAT Debug Tools!");
-        ImGui::Button("Test Button");
+        ImGui::BeginTabBar("DebugTabs");
 
-        ImGui::Text("Current Client Packet: {\"response\": \"\", \"information\": \"\"}");
+        if (ImGui::BeginTabItem("Network"))
+        {
+            // Code for Tab 1
+            ImGui::Text("This is Tab 1");
+            ImGui::EndTabItem();
+        }
+
+        if (ImGui::BeginTabItem("Commands"))
+        {
+            // Code for Tab 2
+            ImGui::Text("This is Tab 2");
+            ImGui::EndTabItem();
+        }
+
+        if (ImGui::BeginTabItem("Settings"))
+        {
+            // Code for Tab 3
+            ImGui::Text("This is Tab 3");
+            ImGui::EndTabItem();
+        }
+
+        ImGui::EndTabBar();
 
         done = ImGui::Button("Close");
     }

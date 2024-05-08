@@ -1,6 +1,6 @@
 CC = x86_64-w64-mingw32-g++
-CFLAGS = -Wall -I/usr/x86_64-w64-mingw32/include/ -I./external/SDL2 -O0
-LFLAGS = -lws2_32 -lole32 -lgdi32 -luuid -static-libgcc -static-libstdc++ -lshlwapi -L./Libs/ -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lwindowscodecs -llua54 -fpthread -lz
+CFLAGS = -Wall -I/usr/x86_64-w64-mingw32/include/ -I./external/SDL2 -O0 -I$(IMGUI_DIR) 
+LFLAGS = -lws2_32 -lole32 -lgdi32 -luuid -static-libgcc -static-libstdc++ -lshlwapi -L./Libs/ -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lwindowscodecs -llua54 -fpthread -lz -lopengl32
 
 # Directories
 SRC_DIR = src
@@ -9,8 +9,12 @@ UTIL_DIR = $(SRC_DIR)/Utils
 CMD_DIR = $(SRC_DIR)/Commands
 NET_DIR = $(SRC_DIR)/Networking
 
+IMGUI_DIR = external/imgui/
+
 # Source files
-SRCS = $(SRC_DIR)/main.cpp $(UTIL_DIR)/Utils.cpp $(CMD_DIR)/Commands.cpp $(CMD_DIR)/CommandHandler.cpp $(CMD_DIR)/LuaBackend.cpp $(NET_DIR)/Networking.cpp
+SRCS = $(SRC_DIR)/main.cpp $(UTIL_DIR)/Utils.cpp $(CMD_DIR)/Commands.cpp $(CMD_DIR)/CommandHandler.cpp $(CMD_DIR)/LuaBackend.cpp $(NET_DIR)/Networking.cpp $(UTIL_DIR)/Debug.cpp
+SRCS += $(IMGUI_DIR)/imgui.cpp $(IMGUI_DIR)/imgui_demo.cpp $(IMGUI_DIR)/imgui_draw.cpp $(IMGUI_DIR)/imgui_tables.cpp $(IMGUI_DIR)/imgui_widgets.cpp $(IMGUI_DIR)/imgui_stdlib.cpp
+SRCS += $(IMGUI_DIR)/imgui_impl_sdl2.cpp $(IMGUI_DIR)/imgui_impl_opengl2.cpp 
 OBJS = $(addprefix $(BUILD_DIR)/, $(notdir $(SRCS:.cpp=.o)))
 
 .PHONY: directories clean all post-build
@@ -34,6 +38,9 @@ $(BUILD_DIR)/%.o: $(CMD_DIR)/%.cpp
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(BUILD_DIR)/%.o: $(NET_DIR)/%.cpp
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(BUILD_DIR)/%.o: $(IMGUI_DIR)/%.cpp
 	$(CC) $(CFLAGS) -c $< -o $@
 
 post-build: 

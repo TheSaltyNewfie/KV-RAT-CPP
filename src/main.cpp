@@ -8,6 +8,7 @@
 #include "Commands/LuaBackend.h"
 #include <cstring>
 #include <thread>
+#include "Utils/Debug.h"
 
 int main(int argc, char** argv)
 {
@@ -21,6 +22,12 @@ int main(int argc, char** argv)
     if (result == 2)
     {
         return 0;
+    }
+
+    if(strcmp(argv[1], "-debug") == 0)
+    {
+        Debug dbg;
+        dbg.init();
     }
 
     if(strcmp(argv[1], "-l") == 0)

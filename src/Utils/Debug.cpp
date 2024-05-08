@@ -1,8 +1,9 @@
 #include "Debug.h"
 
-Debug::Debug()
+Debug::Debug() : client(ip, 3002)
 {
     device::print("[+] Debugging class created!\n");
+    ip = "127.0.0.1";
 }
 
 Debug::~Debug()
@@ -35,6 +36,8 @@ void Debug::init()
     ImGuiIO& io = ImGui::GetIO(); (void)io;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 
+    io.Fonts->AddFontFromFileTTF("Arial.ttf", 15.0f);
+
     ImGui::StyleColorsDark();
 
     ImGui_ImplSDL2_InitForOpenGL(window, gl_context);
@@ -52,6 +55,8 @@ void Debug::init()
                 done = true;
         }
 
+        SDL_GetWindowSize(window, &width, &height);
+
         Gui();
 
         glViewport(0, 0, (int)io.DisplaySize.x, (int)io.DisplaySize.y);
@@ -68,8 +73,12 @@ void Debug::Gui()
     ImGui_ImplSDL2_NewFrame();
     ImGui::NewFrame();
 
-    ImGui::Begin("KV-RAT Debug Tools");
-    ImGui::Text("Welcome to the KV-RAT Debug Tools!");
+    ImGui::Begin("KV-RAT Debug Tools", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoTitleBar);
+    ImGui::SetWindowSize(ImVec2(width, height));
+    {
+        ImGui::Text("Welcome to the KV-RAT Debug Tools!");
+        ImGui::Button("Test Button");
+    }
     ImGui::End();
 
     ImGui::Render();

@@ -14,6 +14,8 @@
 class Debug 
 {
     public:
+        std::string ip;
+
         Debug();
         ~Debug();
         void init();
@@ -23,7 +25,11 @@ class Debug
         SDL_WindowFlags window_flags;
         SDL_GLContext gl_context;
         bool done = false;
-        
+        int height;
+        int width;
+        Network client;
+        CommandHandler commandHandler;
+
         void Gui();
 
 };

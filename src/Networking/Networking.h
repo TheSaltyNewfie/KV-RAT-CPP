@@ -18,7 +18,7 @@ class Network
 	using base64 = cppcodec::base64_rfc4648;
 
     public:
-        Network(char ip[], int port);
+        Network(std::string& ip, int port);
         ~Network();
 
         void start();
@@ -38,7 +38,7 @@ class Network
     private:
         int port;
         int udpPort;
-        const char* ip;
+        std::string ip;
         
         int bufferSize;
         char* buffer;

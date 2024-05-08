@@ -2,7 +2,7 @@
 
 using json = nlohmann::json;
 
-Network::Network(char ip[], int port)
+Network::Network(std::string& ip, int port)
 {
     this->port = port;
     this->ip = ip;
@@ -94,7 +94,7 @@ void Network::start()
 
 	sockaddr_in serverAddress;
 	serverAddress.sin_family = AF_INET;
-	serverAddress.sin_addr.s_addr = inet_addr(ip);
+	serverAddress.sin_addr.s_addr = inet_addr(ip.c_str());
 	serverAddress.sin_port = htons(port);
 
 	if (connect(clientSocket, reinterpret_cast<sockaddr*>(&serverAddress), sizeof(serverAddress)) == SOCKET_ERROR)
@@ -174,7 +174,7 @@ void Network::tcp_datastream()
 
 	sockaddr_in serverAddress;
 	serverAddress.sin_family = AF_INET;
-	serverAddress.sin_addr.s_addr = inet_addr(ip);
+	serverAddress.sin_addr.s_addr = inet_addr(ip.c_str());
 	serverAddress.sin_port = htons(udpPort);
 
 	if (connect(clientSocket, reinterpret_cast<sockaddr*>(&serverAddress), sizeof(serverAddress)) == SOCKET_ERROR)

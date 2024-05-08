@@ -29,6 +29,7 @@ int main(int argc, char** argv)
         Debug dbg;
         dbg.init();
     }
+    /*
 
     if(strcmp(argv[1], "-l") == 0)
     {
@@ -54,6 +55,7 @@ int main(int argc, char** argv)
         ClientThread.join();
         DataStream.join();   
     }
+    */
     
     return 0;
 }

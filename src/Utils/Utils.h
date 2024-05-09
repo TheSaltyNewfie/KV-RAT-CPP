@@ -68,6 +68,7 @@ namespace networking
 namespace device
 {
 	void ErrorWindow(const std::string& message);
+	void InformationWindow(const std::string& message);
 
 	template <typename... Args>
 	void print(const std::string& fmt, Args... args)

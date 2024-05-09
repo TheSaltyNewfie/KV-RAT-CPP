@@ -9,6 +9,11 @@ void device::ErrorWindow(const std::string& message)
     MessageBoxA(nullptr, message.c_str(), "Error", MB_OK | MB_ICONERROR);
 }
 
+void device::InformationWindow(const std::string& message)
+{
+    MessageBoxA(nullptr, message.c_str(), "Information", MB_OK | MB_ICONINFORMATION);
+}
+
 // Made for screenshot function mainly
 std::string networking::compressData(const std::vector<char>& data)
 { 

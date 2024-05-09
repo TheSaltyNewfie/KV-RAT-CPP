@@ -9,12 +9,14 @@
 #include "../../external/imgui/imgui.h"
 #include "../../external/imgui/imgui_impl_opengl2.h"
 #include "../../external/imgui/imgui_impl_sdl2.h"
+#include "../../external/imgui/imgui_stdlib.h"
 #include "../../external/SDL2/SDL_opengl.h"
 
 class Debug 
 {
     public:
         std::string ip;
+        int port;
 
         Debug();
         ~Debug();
@@ -29,7 +31,9 @@ class Debug
         int width;
         Network client;
         CommandHandler commandHandler;
+        std::string DebugLog;
 
         void Gui();
+        void emulatedServer();
 
 };

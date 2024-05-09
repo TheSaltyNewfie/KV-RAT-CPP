@@ -1,9 +1,10 @@
 #include "Debug.h"
 
-Debug::Debug() : client(ip, 3002)
+Debug::Debug() : client(ip, port)
 {
     device::print("[+] Debugging class created!\n");
     ip = "127.0.0.1";
+    port = 4560;
 }
 
 Debug::~Debug()
@@ -83,7 +84,12 @@ void Debug::Gui()
         if (ImGui::BeginTabItem("Network"))
         {
             // Code for Tab 1
-            ImGui::Text("This is Tab 1");
+            ImGui::InputText("IP", &ip);
+            ImGui::InputInt("Port", &port);
+            ImGui::Button("Connect");
+            if(ImGui::Button("Enable Emulated Server")) {emulatedServer();}
+            ImGui::SameLine();
+            ImGui::Text("(runs at 127.0.0.1:4560)");
             ImGui::EndTabItem();
         }
 
@@ -101,11 +107,68 @@ void Debug::Gui()
             ImGui::EndTabItem();
         }
 
-        ImGui::EndTabBar();
+        if(ImGui::BeginTabItem("Debug Log"))
+        {
+            ImGui::Text("Debug Log");
+            ImGui::BeginChild("DebugLog", ImVec2(0, 0), true);
 
-        done = ImGui::Button("Close");
+            ImGui::Text("Emulated Server Started on %s:%d", ip.c_str(), port);
+
+            ImGui::EndChild();
+            ImGui::EndTabItem();
+        }
+
+        ImGui::EndTabBar();
     }
     ImGui::End();
 
     ImGui::Render();
+}
+
+void Debug::emulatedServer()
+{
+    device::InformationWindow("This will start an emulated server on the specified IP and Port. This is for debugging purposes only!");
+
+    WSAData wsaData;
+    if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
+    {
+        std::cerr << "Failed to init winsock.\n";
+    }
+
+    SOCKET server = socket(AF_INET, SOCK_STREAM, 0);
+    if (server == INVALID_SOCKET)
+    {
+        std::cerr << "Failed to create server socket.\n";
+        WSACleanup();
+    }
+
+    sockaddr_in serverAddress;
+    serverAddress.sin_family = AF_INET;
+    serverAddress.sin_addr.s_addr = inet_addr(ip.c_str());
+    serverAddress.sin_port = htons(port);
+
+    if(bind(server, reinterpret_cast<sockaddr*>(&serverAddress), sizeof(serverAddress)) == SOCKET_ERROR)
+    {
+        std::cerr << "Failed to bind server socket.\n";
+        closesocket(server);
+        WSACleanup();
+    }
+
+    if(listen(server, SOMAXCONN) == SOCKET_ERROR)
+    {
+        std::cerr << "Failed to listen on server socket.\n";
+        closesocket(server);
+        WSACleanup();
+    }
+
+    while(true)
+    {
+        SOCKET clientSocket = accept(server, NULL, NULL);
+        if(clientSocket == INVALID_SOCKET)
+        {
+            std::cerr << "Failed to accept client connection.\n";
+            closesocket(server);
+            WSACleanup();
+        }
+    }
 }

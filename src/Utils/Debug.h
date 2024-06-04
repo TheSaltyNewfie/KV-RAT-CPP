@@ -34,6 +34,7 @@ class Debug
         std::string DebugLog;
 
         void Gui();
-        void emulatedServer();
+        void EmulatedServer();
+        void HandleClient(SOCKET clientSocket);
 
 };

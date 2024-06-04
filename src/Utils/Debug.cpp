@@ -125,7 +125,7 @@ void Debug::Gui()
     ImGui::Render();
 }
 
-void Debug::emulatedServer()
+void Debug::EmulatedServer()
 {
     device::InformationWindow("This will start an emulated server on the specified IP and Port. This is for debugging purposes only!");
 
@@ -170,5 +170,38 @@ void Debug::emulatedServer()
             closesocket(server);
             WSACleanup();
         }
+
+        HandleClient(clientSocket);
+
+        closesocket(clientSocket);
     }
+
+    closesocket(server);
+    WSACleanup();
+}
+
+void Debug::HandleClient(SOCKET clientSocket)
+{
+    char buffer[4096];
+    int bytesReceived = recv(clientSocket, buffer, 4096, 0);
+    if(bytesReceived == SOCKET_ERROR)
+    {
+        std::cerr << "Failed to receive data from client.\n";
+        closesocket(clientSocket);
+        WSACleanup();
+    }
+
+    if(bytesReceived == 0)
+    {
+        std::cerr << "Client disconnected.\n";
+        closesocket(clientSocket);
+        WSACleanup();
+    }
+
+    std::cout << "Received: " << std::string(buffer, 0, bytesReceived) << std::endl;
+
+    std::string response = "Server received: ";
+    response += std::string(buffer, 0, bytesReceived);
+
+    send(clientSocket, response.c_str(), response.size() + 1, 0);
 }
